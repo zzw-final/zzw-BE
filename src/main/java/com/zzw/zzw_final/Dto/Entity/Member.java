@@ -39,4 +39,11 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Grade> grades;
 
+    public Member(String email, String kakao) {
+        this.email = email;
+        this.nickname = kakao;
+        this.oauth = "kakaoUser";
+        this.grade = "준비중";
+        this.profile = "https://postimagestorage.s3.amazonaws.com/mini_project/zzw.-removebg-preview.png";
+    }
 }
