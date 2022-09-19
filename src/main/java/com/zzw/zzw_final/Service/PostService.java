@@ -96,6 +96,34 @@ public class PostService {
         return ResponseDto.success("success post");
     }
 
+    public ResponseDto<?> putRecipe(PostRecipeRequestDto requestDto, HttpServletRequest request,
+                                    MultipartFile multipartFile, Long post_id) {
+        //1. HttpServletRequest로 헤더에 있는 유저 확인
+
+        //2. post_id의 게시물이 유저가 글 작성인이 맞는지 확인 -> 아닐 시 오류 반환
+
+        //3. multipartFile가 null인지 아닌지 확인 후 -> null이면 url 변경 X, null이 아니면 update (Content -> image)
+
+        //4. PostRecipeRequestDto에 있는 값들 중에 ""이 아닌 것만 update
+        // (Content -> 글 내용) (Post -> 글 제목, 조리시간) (TagList -> 재료, 요리제목)
+
+
+        return ResponseDto.success("success update");
+    }
+
+
+    public ResponseDto<?> deleteRecipe(HttpServletRequest request, Long post_id) {
+
+        //1. HttpServletRequest로 헤더에 있는 유저 확인
+
+        //2. post_id의 게시물이 유저가 글 작성인이 맞는지 확인 -> 아닐 시 오류 반환
+
+        //3. 만약 작성인이 맞으면 delete !
+
+
+        return ResponseDto.success("success delete");
+    }
+
     public ResponseDto<?> getBestRecipe() {
 
         //제일 등록된 태그 상위 5개 리스트에 담기
