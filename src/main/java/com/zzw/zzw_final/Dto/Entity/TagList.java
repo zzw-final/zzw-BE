@@ -29,4 +29,14 @@ public class TagList {
     @JoinColumn(name = "tag_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Tag tag;
+
+    public TagList(String ingredient, Post post, Tag tag, Boolean isTitle){
+        this.name = ingredient;
+        if (isTitle)
+            this.isTitle =  true;
+        else
+            this.isTitle = false;
+        this.post = post;
+        this.tag = tag;
+    }
 }

@@ -25,4 +25,9 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TagList> tagLists;
+
+    public Tag(String ingredient){
+        this.name = ingredient;
+        this.count = 1;
+    }
 }

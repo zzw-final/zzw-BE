@@ -26,4 +26,10 @@ public class Content {
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
+    public Content(String url, String content, Post post){
+        this.image = url;
+        this.content = content;
+        this.post = post;
+    }
+
 }

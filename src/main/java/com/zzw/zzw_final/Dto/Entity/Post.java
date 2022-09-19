@@ -1,5 +1,6 @@
 package com.zzw.zzw_final.Dto.Entity;
 
+import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,7 +25,7 @@ public class Post extends Timestamped{
     private int likeNum;
 
     @Column
-    private int time;
+    private String time;
 
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,4 +39,11 @@ public class Post extends Timestamped{
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TagList> tagLists;
+
+    public Post(PostRecipeRequestDto requestDto, Member member){
+        this.title = requestDto.getTitle();
+        this.time = requestDto.getTime();
+        this.likeNum = 0;
+        this.member = member;
+    }
 }
