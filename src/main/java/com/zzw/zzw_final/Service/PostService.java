@@ -1,14 +1,12 @@
 package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Dto.Entity.*;
+import com.zzw.zzw_final.Dto.Request.FilterPostByNicknameRequestDto;
 import com.zzw.zzw_final.Dto.Request.FilterPostByTitleRequestDto;
 import com.zzw.zzw_final.Dto.Request.IngredientRequestDto;
 import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
 import com.zzw.zzw_final.Dto.Response.*;
-import com.zzw.zzw_final.Repository.ContentRepository;
-import com.zzw.zzw_final.Repository.PostRepository;
-import com.zzw.zzw_final.Repository.TagListRepository;
-import com.zzw.zzw_final.Repository.TagRepository;
+import com.zzw.zzw_final.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +26,7 @@ public class PostService {
     private final TagRepository tagRepository;
     private final ContentRepository contentRepository;
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public ResponseDto<?> postRecipe(PostRecipeRequestDto requestDto, HttpServletRequest request, MultipartFile multipartFile) {
@@ -180,5 +179,23 @@ public class PostService {
         }
 
         return ResponseDto.success(Posts);
+    }
+
+
+    public ResponseDto<?> filterPostNickname(FilterPostByNicknameRequestDto requestDto) {
+        String nickname = requestDto.getNickname();
+
+        List<Member> members = memberRepository.findAllByNicknameContaining(nickname);
+        List<PostResponseDto> responseDtos = new ArrayList<>();
+
+        for (Member member : members){
+            List<Post> posts = postRepository.findAllByMember(member);
+            for(Post post : posts){
+                Content content = contentRepository.findContentByPost(post);
+                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+                responseDtos.add(new PostResponseDto(post, content, ingredientResponseDtos));
+            }
+        }
+        return ResponseDto.success(responseDtos);
     }
 }

@@ -1,8 +1,10 @@
 package com.zzw.zzw_final.Controller;
 
+import com.zzw.zzw_final.Dto.Request.FilterPostByNicknameRequestDto;
 import com.zzw.zzw_final.Dto.Request.FilterPostByTitleRequestDto;
 import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
+import com.zzw.zzw_final.Service.MemberService;
 import com.zzw.zzw_final.Service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,12 @@ public class PostController {
     @GetMapping("/api/post/filter/title")
     public ResponseDto<?> filterPostTitle(@RequestBody FilterPostByTitleRequestDto requestDto){
         return postService.filterPostTitle(requestDto);
+    }
+
+    //메인페이지 - 검색 (닉네임)
+    @GetMapping("/api/post/filter/nickname")
+    public ResponseDto<?> filterPostNickname(@RequestBody FilterPostByNicknameRequestDto requestDto){
+        return postService.filterPostNickname(requestDto);
     }
 
 

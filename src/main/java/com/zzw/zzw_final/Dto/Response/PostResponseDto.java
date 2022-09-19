@@ -12,6 +12,7 @@ import java.util.List;
 public class PostResponseDto {
     private Long postId;
     private String title;
+    private String nickname;
     private int likeNum;
     private List<IngredientResponseDto> ingredient;
     private String foodImg;
@@ -19,6 +20,7 @@ public class PostResponseDto {
     public PostResponseDto(Post post, Content content, List<IngredientResponseDto> responseDtos){
         this.postId = post.getId();
         this.title = post.getTitle();
+        this.nickname = post.getMember().getNickname();
         this.likeNum = post.getLikeNum();
         this.foodImg = content.getImage();
         this.ingredient = responseDtos;

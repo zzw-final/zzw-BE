@@ -2,13 +2,19 @@ package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.Member;
+import com.zzw.zzw_final.Dto.Entity.Post;
+import com.zzw.zzw_final.Dto.Request.FilterPostByNicknameRequestDto;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
+import com.zzw.zzw_final.Dto.Response.PostResponseDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.zzw.zzw_final.Dto.ErrorCode.INVALID_TOKEN;
 import static com.zzw.zzw_final.Dto.ErrorCode.NULL_TOKEN;
@@ -55,4 +61,5 @@ public class MemberService {
 
         return ResponseDto.success("success signup");
     }
+
 }
