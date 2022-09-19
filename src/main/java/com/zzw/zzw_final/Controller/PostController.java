@@ -1,5 +1,6 @@
 package com.zzw.zzw_final.Controller;
 
+import com.zzw.zzw_final.Dto.Request.FilterPostByTitleRequestDto;
 import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Service.PostService;
@@ -20,6 +21,13 @@ public class PostController {
     @GetMapping("/api/post")
     public ResponseDto<?> getBestRecipe(){
         return postService.getBestRecipe();
+    }
+
+
+    //메인페이지 - 검색 (제목)
+    @GetMapping("/api/post/filter/title")
+    public ResponseDto<?> filterPostTitle(@RequestBody FilterPostByTitleRequestDto requestDto){
+        return postService.filterPostTitle(requestDto);
     }
 
 

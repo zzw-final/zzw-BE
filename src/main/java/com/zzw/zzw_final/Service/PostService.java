@@ -1,6 +1,7 @@
 package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Dto.Entity.*;
+import com.zzw.zzw_final.Dto.Request.FilterPostByTitleRequestDto;
 import com.zzw.zzw_final.Dto.Request.IngredientRequestDto;
 import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
 import com.zzw.zzw_final.Dto.Response.*;
@@ -164,5 +165,20 @@ public class PostService {
             ingredientResponseDtos.add(new IngredientResponseDto(tagList));
 
         return ingredientResponseDtos;
+    }
+
+    public ResponseDto<?> filterPostTitle(FilterPostByTitleRequestDto requestDto) {
+        String title = requestDto.getTitle();
+
+        List<Post> posts = postRepository.findAllByTitleContaining(title);
+        List<PostResponseDto> Posts = new ArrayList<>();
+
+        for(Post post : posts){
+            Content content = contentRepository.findContentByPost(post);
+            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+            Posts.add(new PostResponseDto(post, content, ingredientResponseDtos));
+        }
+
+        return ResponseDto.success(Posts);
     }
 }
