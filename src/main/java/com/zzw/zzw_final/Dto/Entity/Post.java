@@ -4,6 +4,7 @@ import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,6 +21,9 @@ public class Post extends Timestamped{
 
     @Column
     private String title;
+
+    @Column
+    private String useremail;
 
     @Column
     private int likeNum;
@@ -50,4 +54,13 @@ public class Post extends Timestamped{
         this.member = member;
         this.useremail = member.getEmail();
     }
-}
+
+    public boolean validateMember(Member member) {
+        return !this.member.equals(member);
+    }
+
+    public void update(PostRecipeRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.time = requestDto.getTime();
+        }
+    }
