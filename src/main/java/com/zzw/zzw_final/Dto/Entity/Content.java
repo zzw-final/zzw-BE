@@ -1,5 +1,6 @@
 package com.zzw.zzw_final.Dto.Entity;
 
+import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,4 +33,8 @@ public class Content {
         this.post = post;
     }
 
+    public void update(PostRecipeRequestDto requestDto, String url) {
+        this.content= requestDto.getContent();
+        this.image = url;
+    }
 }

@@ -29,7 +29,7 @@ public class PostController {
     }
 
     @DeleteMapping("/api/auth/post/{post_id}")
-    public ResponseDto<?> delteRecipe(HttpServletRequest request, @PathVariable Long post_id){
+    public ResponseDto<?> deleteRecipe(HttpServletRequest request, @PathVariable Long post_id){
         return postService.deleteRecipe(request, post_id);
     }
 }

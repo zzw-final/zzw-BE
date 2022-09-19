@@ -15,8 +15,12 @@ public enum ErrorCode {
     INVALID_MEMBER("INVALID_MEMBER", "비밀번호가 일치하지 않습니다."),
     TOKEN_NOT_FOUND("TOKEN_NOT_FOUND", "존재하지 않는 Token 입니다."),
 
+
     //회원가입 관련 오류
     DUPLICATE_EMAIL("DUPLICATE_EMAIL", "이미 이메일이 사용중입니다."),
+
+    //게시글 관련 오류
+    NOT_EQUAL_MEMBER("NOT_EQUAL_MEMBER","작성하신 글이 아닙니다."),
 
     //제품(Product) 관련 오류
     INVALID_PRODUCT("INVALID_PRODUCT", "해당하는 제품이 없습니다."),
