@@ -46,4 +46,8 @@ public class Member {
         this.grade = "준비중";
         this.profile = "https://postimagestorage.s3.amazonaws.com/mini_project/zzw.-removebg-preview.png";
     }
+
+    public void update(String nickname) {
+        this.nickname = nickname;
+    }
 }

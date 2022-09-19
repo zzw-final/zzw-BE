@@ -2,7 +2,9 @@ package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.Member;
+import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
+import com.zzw.zzw_final.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import static com.zzw.zzw_final.Dto.ErrorCode.NULL_TOKEN;
 public class MemberService {
 
     private final TokenProvider tokenProvider;
+    private final MemberRepository memberRepository;
 
     public ResponseDto<?> checkMember(HttpServletRequest request){
 
@@ -37,5 +40,19 @@ public class MemberService {
         Member member = tokenProvider.getMemberFromAuthentication();
 
         return ResponseDto.success(member);
+    }
+
+    public ResponseDto<?> postUserNickname(HttpServletRequest request, SignupRequestDto requestDto) {
+
+        //로그인 토큰 유효성 검증하기
+        checkMember(request);
+        String email = tokenProvider.getUserEmail(request.getHeader("Authorization").substring(7));
+
+        Member member = memberRepository.findMemberByEmail(email);
+        member.update(requestDto.getNickname());
+
+        memberRepository.save(member);
+
+        return ResponseDto.success("success signup");
     }
 }

@@ -124,7 +124,16 @@ public class TokenProvider {
 
     @Transactional
     public String getUserEmail(String token) {
-        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
+        return this.parseClaims(token).getSubject();
+    }
+
+    @Transactional
+    public Claims parseClaims(String accessToken) {
+        try {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+        } catch (ExpiredJwtException e) { // 만료된 토큰이 더라도 일단 파싱을 함
+            return e.getClaims();
+        }
     }
 
 }
