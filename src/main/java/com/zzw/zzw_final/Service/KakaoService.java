@@ -36,7 +36,7 @@ import java.net.URL;
 @Service
 @RequiredArgsConstructor
 public class KakaoService {
-    private final MemberRepository userRepository;
+    private final MemberRepository memberRepository;
     private final TokenProvider jwtTokenProvider;
 
     @Value("${kakao.client-id}")
@@ -47,10 +47,10 @@ public class KakaoService {
 
     public ResponseDto<?> kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
-        String accessToken = getAccessToken(code);
+        String kakaoToken = getAccessToken(code);
 
         // 2. 토큰으로 카카오 API 호출
-        OauthUserDto kakaoUserInfo = getKakaoUserInfo(accessToken);
+        OauthUserDto kakaoUserInfo = getKakaoUserInfo(kakaoToken);
 
         // 3. 필요시에 회원가입
         Member kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
@@ -60,7 +60,7 @@ public class KakaoService {
         response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
         response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
 
-        OAuthResponseDto responseDto = new OAuthResponseDto(kakaoUser, tokenDto, accessToken);
+        OAuthResponseDto responseDto = new OAuthResponseDto(kakaoUser, tokenDto, kakaoToken);
 
         return ResponseDto.success(responseDto);
     }
@@ -115,6 +115,7 @@ public class KakaoService {
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
+
         Long id = jsonNode.get("id").asLong();
         String email = jsonNode.get("kakao_account")
                 .get("email").asText();
@@ -127,11 +128,12 @@ public class KakaoService {
         // DB 에 중복된 Kakao Id 가 있는지 확인
         Long kakaoId = kakaoUserInfo.getId();
         String email = kakaoUserInfo.getEmail();
-        Member kakaoUser = userRepository.findMemberByEmail(email);
+
+        Member kakaoUser = memberRepository.findMemberByEmail(email);
         if (kakaoUser == null) {
             // 카카오 사용자 이메일과 동일한 이메일을 가진 회원이 있는지 확인
             String kakaoEmail = kakaoUserInfo.getEmail();
-            Member sameEmailUser = userRepository.findMemberByEmail(kakaoEmail);
+            Member sameEmailUser = memberRepository.findMemberByEmail(kakaoEmail);
             if (sameEmailUser != null) {
                 kakaoUser = sameEmailUser;
                 // 기존 회원정보에 카카오 Id 추가
@@ -145,7 +147,7 @@ public class KakaoService {
                 forceLogin(kakaoUser);
             }
 
-            userRepository.save(kakaoUser);
+            memberRepository.save(kakaoUser);
         }
         return kakaoUser;
     }
