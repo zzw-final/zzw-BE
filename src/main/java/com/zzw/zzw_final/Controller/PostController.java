@@ -20,7 +20,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/api/auth/post")
-    public ResponseDto<?> postRecipe(@RequestPart PostRecipeRequestDto requestDto, HttpServletRequest request,
+    public ResponseDto<?> postRecipe(@RequestPart(value = "data") PostRecipeRequestDto requestDto, HttpServletRequest request,
                                      @RequestPart(value = "file") MultipartFile multipartFile){
         return postService.postRecipe(requestDto, request, multipartFile);
     }

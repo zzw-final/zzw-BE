@@ -39,11 +39,10 @@ public class PostService {
 
         Post post = new Post(requestDto, member);
         postRepository.save(post);
-        List<IngredientResponseDto> ingredients = requestDto.getIngredient();
 
-        //프론트로부터 받은 태그를 Tag, TagList에 저장 및 업데이트
+        //음식 이름 -> 프론트로부터 받은 태그를 Tag, TagList에 저장 및 업데이트
         String foodname = requestDto.getFoodName();
-        Tag tag = tagRepository.findTagByName(foodname);
+        Tag tag = tagRepository.findTagByName(foodname);   // 이전에 음식 이름이 태그가 된 적이 있는가
 
         //이전에 없었던 새로운 태그라면
         if (tag == null){
@@ -61,6 +60,10 @@ public class PostService {
             tag.setCount(tagLists.size());
         }
 
+
+
+        //음식 재료 -> 프론트로부터 받은 태그를 Tag, TagList에 저장 및 업데이트
+        List<IngredientResponseDto> ingredients = requestDto.getIngredient();
 
         for(IngredientResponseDto responseDto : ingredients){
             String ingredient = responseDto.getIngredientName();
