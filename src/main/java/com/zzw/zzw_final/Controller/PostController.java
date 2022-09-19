@@ -16,6 +16,14 @@ public class PostController {
 
     private final PostService postService;
 
+    //메인페이지 -> 베스트 게시물 보여주기
+    @GetMapping("/api/post")
+    public ResponseDto<?> getBestRecipe(){
+        return postService.getBestRecipe();
+    }
+
+
+    //상세페이지 -> 레시피 등록 POST
     @PostMapping("/api/auth/post")
     public ResponseDto<?> postRecipe(@RequestPart(value = "data") PostRecipeRequestDto requestDto, HttpServletRequest request,
                                      @RequestPart(value = "file") MultipartFile multipartFile){

@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class IngredientResponseDto {
+public class IngredientRequestDto {
     private String ingredientName;
 }

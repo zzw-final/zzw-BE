@@ -122,4 +122,9 @@ public class TokenProvider {
         return ResponseDto.success("success");
     }
 
+    @Transactional
+    public String getUserEmail(String token) {
+        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
+    }
+
 }
