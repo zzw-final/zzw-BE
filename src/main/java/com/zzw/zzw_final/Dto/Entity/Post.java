@@ -27,6 +27,9 @@ public class Post extends Timestamped{
     @Column
     private String time;
 
+    @Column
+    private String useremail;
+
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
@@ -45,5 +48,6 @@ public class Post extends Timestamped{
         this.time = requestDto.getTime();
         this.likeNum = 0;
         this.member = member;
+        this.useremail = member.getEmail();
     }
 }
