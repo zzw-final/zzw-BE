@@ -11,5 +11,5 @@ public class PostRecipeRequestDto {
     private String foodName;
     private String content;
     private String time;
-    private List<IngredientResponseDto> ingredient;
+    private List<IngredientRequestDto> ingredient;
 }

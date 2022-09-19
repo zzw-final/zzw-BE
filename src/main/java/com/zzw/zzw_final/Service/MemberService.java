@@ -33,7 +33,7 @@ public class MemberService {
         if(!tokenProvider.validateToken(request.getHeader("Refresh-Token")))
             return ResponseDto.fail(INVALID_TOKEN);
 
-        //헤더에 정상적으로 토큰이 전달 됐을 경우 현재 로그인한 유저 반환
+        //헤더에 정상적으로 토큰이 전달 됐을 경우
         Member member = tokenProvider.getMemberFromAuthentication();
 
         return ResponseDto.success(member);

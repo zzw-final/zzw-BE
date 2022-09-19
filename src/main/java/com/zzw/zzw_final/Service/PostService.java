@@ -1,9 +1,9 @@
 package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Dto.Entity.*;
-import com.zzw.zzw_final.Dto.Request.IngredientResponseDto;
+import com.zzw.zzw_final.Dto.Request.IngredientRequestDto;
 import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
-import com.zzw.zzw_final.Dto.Response.ResponseDto;
+import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Repository.ContentRepository;
 import com.zzw.zzw_final.Repository.PostRepository;
 import com.zzw.zzw_final.Repository.TagListRepository;
@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -63,9 +64,9 @@ public class PostService {
 
 
         //음식 재료 -> 프론트로부터 받은 태그를 Tag, TagList에 저장 및 업데이트
-        List<IngredientResponseDto> ingredients = requestDto.getIngredient();
+        List<IngredientRequestDto> ingredients = requestDto.getIngredient();
 
-        for(IngredientResponseDto responseDto : ingredients){
+        for(IngredientRequestDto responseDto : ingredients){
             String ingredient = responseDto.getIngredientName();
 
             Tag tag2 = tagRepository.findTagByName(ingredient);
@@ -93,5 +94,47 @@ public class PostService {
         contentRepository.save(content);
 
         return ResponseDto.success("success post");
+    }
+
+    public ResponseDto<?> getBestRecipe() {
+
+        //제일 등록된 태그 상위 5개 리스트에 담기
+        List<Tag> tags = tagRepository.findAllByOrderByCountDesc();
+        List<BestTagResponseDto> tagResponseDtos = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++)
+            tagResponseDtos.add(new BestTagResponseDto(tags.get(i)));
+
+        //제일 좋아요 많은 순으로 레시피 리스트에 담기
+        List<Post> best_posts = postRepository.findAllByOrderByLikeNumDesc();
+        List<PostResponseDto> best_postResponseDtos = new ArrayList<>();
+
+        for(Post post : best_posts){
+            Content content = contentRepository.findContentByPost(post);
+            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+            best_postResponseDtos.add(new PostResponseDto(post, content, ingredientResponseDtos));
+        }
+
+        //제일 최신 순으로 레시피 리스트에 담기
+        List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
+        List<PostResponseDto> recent_postResponseDtos = new ArrayList<>();
+
+        for(Post post : recent_posts){
+            Content content = contentRepository.findContentByPost(post);
+            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+            recent_postResponseDtos.add(new PostResponseDto(post, content, ingredientResponseDtos));
+        }
+
+        MainPostResponseDto mainPostResponseDto = new MainPostResponseDto(tagResponseDtos, best_postResponseDtos, recent_postResponseDtos);
+        return ResponseDto.success(mainPostResponseDto);
+    }
+
+    public List<IngredientResponseDto> getIngredientByPost(Post post) {
+        List<TagList> tagLists = tagListRepository.findAllByPost(post);
+        List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
+        for (TagList tagList : tagLists)
+            ingredientResponseDtos.add(new IngredientResponseDto(tagList));
+
+        return ingredientResponseDtos;
     }
 }
