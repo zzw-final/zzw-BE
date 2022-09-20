@@ -2,12 +2,9 @@ package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.*;
-import com.zzw.zzw_final.Dto.Request.FilterPostByNicknameRequestDto;
-import com.zzw.zzw_final.Dto.Request.FilterPostByTitleRequestDto;
-import com.zzw.zzw_final.Dto.Request.IngredientRequestDto;
+import com.zzw.zzw_final.Dto.Request.*;
 
 import com.zzw.zzw_final.Dto.ErrorCode;
-import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
 import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Repository.*;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -289,6 +285,43 @@ public class PostService {
             }
         }
         return ResponseDto.success(tagResponseDtos);
+    }
+
+    public ResponseDto<?> filterPostTag(FilterTagListRequestDto requestDto) {
+        List<Post> response_posts = new ArrayList<>();
+        List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
+
+        for(Post post : posts){
+            if (isPostinTag(post, requestDto)){
+                response_posts.add(post);
+            }
+        }
+
+        List<PostResponseDto> responseDtos = new ArrayList<>();
+        for(Post post : response_posts){
+            Content content = contentRepository.findContentByPost(post);
+            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+            responseDtos.add(new PostResponseDto(post, content, ingredientResponseDtos));
+        }
+
+        return ResponseDto.success(responseDtos);
+    }
+    public Boolean isPostinTag(Post post, FilterTagListRequestDto requestDto){
+        int count = 0;
+
+        for(int i=0; i<requestDto.getTagList().size(); i++){
+            String tag = requestDto.getTagList().get(i).getTagName();
+
+            for (TagList tagList : post.getTagLists()) {
+                if (tagList.getName().equals(tag)) {
+                    count ++;
+                }
+            }
+        }
+        if (count >= requestDto.getTagList().size())
+            return true;
+        else
+            return false;
     }
 }
 

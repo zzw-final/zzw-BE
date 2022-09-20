@@ -2,7 +2,9 @@ package com.zzw.zzw_final.Controller;
 
 import com.zzw.zzw_final.Dto.Request.FilterPostByNicknameRequestDto;
 import com.zzw.zzw_final.Dto.Request.FilterPostByTitleRequestDto;
+import com.zzw.zzw_final.Dto.Request.FilterTagListRequestDto;
 import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
+import com.zzw.zzw_final.Dto.Response.BestTagResponseDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Service.MemberService;
 import com.zzw.zzw_final.Service.PostService;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,6 +39,11 @@ public class PostController {
     @GetMapping("/api/post/filter/nickname")
     public ResponseDto<?> filterPostNickname(@RequestBody FilterPostByNicknameRequestDto requestDto){
         return postService.filterPostNickname(requestDto);
+    }
+
+    @GetMapping("/api/post/filter/tag")
+    public ResponseDto<?> filterPostTag(@RequestBody FilterTagListRequestDto requestDto){
+        return postService.filterPostTag(requestDto);
     }
 
     //상세페이지 -> GET
