@@ -62,4 +62,10 @@ public class PostController {
     public ResponseDto<?> deleteRecipe(HttpServletRequest request, @PathVariable Long post_id){
         return postService.deleteRecipe(request, post_id);
     }
+
+    //메인페이지 - 하단바 (태그)
+    @GetMapping("/api/post/filter")
+    public ResponseDto<?> getAllTag(){
+        return postService.getAllTag();
+    }
 }

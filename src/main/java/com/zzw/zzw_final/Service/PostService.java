@@ -274,5 +274,21 @@ public class PostService {
 
         return ResponseDto.success("성공 -- 여기 값도 바꿔주십쇼 ~");
     }
+
+    public ResponseDto<?> getAllTag() {
+
+        List<Tag> tags = tagRepository.findAllByOrderByCountDesc();
+        List<BestTagResponseDto> tagResponseDtos = new ArrayList<>();
+        if(tags.size() < 100){
+            for(Tag tag : tags){
+                tagResponseDtos.add(new BestTagResponseDto(tag));
+            }
+        }else{
+            for(int i=0; i < 100; i++){
+                tagResponseDtos.add(new BestTagResponseDto(tags.get(i)));
+            }
+        }
+        return ResponseDto.success(tagResponseDtos);
+    }
 }
 
