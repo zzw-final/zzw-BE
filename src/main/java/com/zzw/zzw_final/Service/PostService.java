@@ -263,5 +263,16 @@ public class PostService {
         return tokenProvider.getMemberFromAuthentication();
     }
 
+    public ResponseDto<?> getRecipe(Long post_id) {
+
+        // 1. post_id로 이에 맞는 Post 가져오기
+
+        //2. API 명세서에 있는 Response 대로 Dto 생성하기
+
+        //3. Dto 생성자를 만들어서 1번에서 가져온 Post 정보 넣어주기
+
+
+        return ResponseDto.success("성공 -- 여기 값도 바꿔주십쇼 ~");
+    }
 }
 

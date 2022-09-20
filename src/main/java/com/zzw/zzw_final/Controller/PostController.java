@@ -38,6 +38,12 @@ public class PostController {
         return postService.filterPostNickname(requestDto);
     }
 
+    //상세페이지 -> GET
+    @GetMapping("/api/post/{post_id}")
+    public ResponseDto<?> getRecipe(@PathVariable Long post_id){
+        return postService.getRecipe(post_id);
+    }
+
 
     //상세페이지 -> 레시피 등록 POST
     @PostMapping("/api/auth/post")

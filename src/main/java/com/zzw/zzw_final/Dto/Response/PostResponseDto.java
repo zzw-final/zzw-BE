@@ -15,11 +15,13 @@ public class PostResponseDto {
     private String nickname;
     private int likeNum;
     private List<IngredientResponseDto> ingredient;
+    private String createAt;
     private String foodImg;
 
     public PostResponseDto(Post post, Content content, List<IngredientResponseDto> responseDtos){
         this.postId = post.getId();
         this.title = post.getTitle();
+        this.createAt = post.getCreatedAt().toString();
         this.nickname = post.getMember().getNickname();
         this.likeNum = post.getLikeNum();
         this.foodImg = content.getImage();
