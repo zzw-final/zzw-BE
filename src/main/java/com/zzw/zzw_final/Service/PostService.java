@@ -255,24 +255,31 @@ public class PostService {
         return ResponseDto.success(responseDtos);
     }
 
-    @Transactional
-    public Member validateMember(HttpServletRequest request) {
-        if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
-            return null;
-        }
-        return tokenProvider.getMemberFromAuthentication();
-    }
+//    @Transactional
+//    public Member validateMember(HttpServletRequest request) {
+//        if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
+//            return null;
+//        }
+//        return tokenProvider.getMemberFromAuthentication();
+//    }
 
     public ResponseDto<?> getRecipe(Long post_id) {
 
-        // 1. post_id로 이에 맞는 Post 가져오기
+        // post_id로 이에 맞는 Post 가져오기
+        Post post = postRepository.findPostById(post_id);
 
-        //2. API 명세서에 있는 Response 대로 Dto 생성하기
+        Content content = contentRepository.findContentByPost(post);
 
-        //3. Dto 생성자를 만들어서 1번에서 가져온 Post 정보 넣어주기
+        //Dto 생성자를 만들어서 1번에서 가져온 Post 정보 넣어주기
+        List<TagList> tagLists = tagListRepository.findAllByPost(post);   //API 명세서에 있는 Response 대로 Dto 생성하기
+        List<IngredientResponseDto> responseDtos = new ArrayList<>();
+            for(TagList tagList : tagLists){
+                responseDtos.add(new IngredientResponseDto(tagList));
+            }
 
+        TimeResponseDto timeResponseDto = new TimeResponseDto(post, content, responseDtos);
 
-        return ResponseDto.success("성공 -- 여기 값도 바꿔주십쇼 ~");
+        return ResponseDto.success(timeResponseDto);
     }
 }
 
