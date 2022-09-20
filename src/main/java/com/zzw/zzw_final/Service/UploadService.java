@@ -14,7 +14,7 @@ import java.io.InputStream;
 public class UploadService {
 
     private final AmazonS3 amazonS3;
-    private String bucket = "zzw";  //--------------수정하기
+    private String bucket = "zzwimage";  //--------------수정하기
 
 
     public void uploadFile(InputStream inputStream, ObjectMetadata objectMetadata, String fileName) {

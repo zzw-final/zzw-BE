@@ -4,7 +4,6 @@ import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
@@ -30,9 +29,6 @@ public class Post extends Timestamped{
 
     @Column
     private String time;
-
-    @Column
-    private String useremail;
 
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
