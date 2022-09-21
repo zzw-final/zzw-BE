@@ -23,4 +23,9 @@ public class Grade {
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
+
+    public Grade(Member member, GradeList gradeList) {
+        this.gradeList = gradeList;
+        this.member = member;
+    }
 }
