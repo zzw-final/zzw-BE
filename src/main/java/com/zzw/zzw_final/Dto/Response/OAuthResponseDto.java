@@ -16,13 +16,14 @@ public class OAuthResponseDto {
     private String nickname;
     private String profile;
 
-    public OAuthResponseDto(Member kakaoUser, TokenDto tokenDto, String kakaoToken) {
-        this.email = kakaoUser.getEmail();
+    public OAuthResponseDto(Member member, TokenDto tokenDto, String oauthToken) {
+        this.email = member.getEmail();
         this.accessToken = tokenDto.getAccessToken();
         this.refreshToken = tokenDto.getRefreshToken();
-        this.kakaoToken = kakaoToken;
-        this.userId = kakaoUser.getId();
-        this.nickname = kakaoUser.getNickname();
-        this.profile = kakaoUser.getProfile();
+        this.kakaoToken = oauthToken;
+        this.userId = member.getId();
+        this.nickname = member.getNickname();
+        this.profile = member.getProfile();
     }
+
 }

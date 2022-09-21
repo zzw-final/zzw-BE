@@ -1,5 +1,7 @@
 package com.zzw.zzw_final.Dto.Entity;
 
+import com.zzw.zzw_final.Dto.GoogleLoginDto;
+import com.zzw.zzw_final.Dto.OauthUserDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -42,10 +44,21 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Grade> grades;
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostLike> postLikes;
+
     public Member(String email, String kakao) {
         this.email = email;
         this.nickname = kakao;
         this.oauth = "kakaoUser";
+        this.grade = "준비중";
+        this.profile = "https://postimagestorage.s3.amazonaws.com/mini_project/zzw.-removebg-preview.png";
+    }
+
+    public Member(GoogleLoginDto googleUser) {
+        this.nickname = "google";
+        this.email = googleUser.getEmail();
+        this.oauth = "googleUser";
         this.grade = "준비중";
         this.profile = "https://postimagestorage.s3.amazonaws.com/mini_project/zzw.-removebg-preview.png";
     }

@@ -10,22 +10,22 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Grade {
+public class PostLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @JoinColumn(name = "gradeList_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private GradeList gradeList;
+    @JoinColumn(name = "post_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Post post;
 
     @JoinColumn(name = "member_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Member member;
 
-    public Grade(Member member, GradeList gradeList) {
-        this.gradeList = gradeList;
+    public PostLike(Member member, Post post) {
         this.member = member;
+        this.post = post;
     }
 }
