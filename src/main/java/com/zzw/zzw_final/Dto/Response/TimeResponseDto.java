@@ -5,6 +5,7 @@ import com.zzw.zzw_final.Dto.Entity.Post;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
@@ -25,7 +26,7 @@ public class TimeResponseDto {
     public TimeResponseDto(Post post, Content content, List<IngredientResponseDto> responseDtos, List<CommentResponseDto> commentList){
         this.postId = post.getId();
         this.title = post.getTitle();
-        this.createAt = post.getCreatedAt().toString();
+        this.createAt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(post.getModifiedAt());
         this.nickname = post.getMember().getNickname();
         this.likeNum = post.getLikeNum();
         this.foodImg = content.getImage();

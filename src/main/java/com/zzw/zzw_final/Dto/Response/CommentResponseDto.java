@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.format.DateTimeFormatter;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,6 +23,6 @@ public class CommentResponseDto {
         this.comment = comment.getComment();
         this.nickname = comment.getMember().getNickname();
         this.grade = comment.getMember().getGrade();
-        this.createdAt = comment.getCreatedAt().toString();
+        this.createdAt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(comment.getModifiedAt());
     }
 }
