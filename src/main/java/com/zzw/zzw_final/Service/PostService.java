@@ -233,7 +233,6 @@ public class PostService {
         return ResponseDto.success(Posts);
     }
 
-
     public ResponseDto<?> filterPostNickname(FilterPostByNicknameRequestDto requestDto) {
         String nickname = requestDto.getNickname();
 
@@ -250,14 +249,6 @@ public class PostService {
         }
         return ResponseDto.success(responseDtos);
     }
-
-//    @Transactional
-//    public Member validateMember(HttpServletRequest request) {
-//        if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
-//            return null;
-//        }
-//        return tokenProvider.getMemberFromAuthentication();
-//    }
 
     public ResponseDto<?> getRecipe(Long post_id) {
 

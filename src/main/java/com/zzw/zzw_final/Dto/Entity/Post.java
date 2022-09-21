@@ -51,10 +51,6 @@ public class Post extends Timestamped{
         this.useremail = member.getEmail();
     }
 
-    public boolean validateMember(Member member) {
-        return !this.member.equals(member);
-    }
-
     public void update(PostRecipeRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.time = requestDto.getTime();

@@ -1,5 +1,7 @@
 package com.zzw.zzw_final.Dto.Entity;
 
+import com.zzw.zzw_final.Dto.Request.CommentRequestDto;
+import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +21,17 @@ public class Comment extends Timestamped{
     @Column
     private String comment;
 
+    @JoinColumn(name = "member_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
+
     @JoinColumn(name = "post_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
+
+    public Comment(CommentRequestDto requestDto, Post post, Member member){
+        this.comment = requestDto.getComment();
+        this.post = post;
+        this.member = member;
+    }
 }
