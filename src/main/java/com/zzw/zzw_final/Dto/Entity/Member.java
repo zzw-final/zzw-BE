@@ -2,6 +2,7 @@ package com.zzw.zzw_final.Dto.Entity;
 
 import com.zzw.zzw_final.Dto.GoogleLoginDto;
 import com.zzw.zzw_final.Dto.OauthUserDto;
+import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -61,6 +62,14 @@ public class Member {
         this.oauth = "googleUser";
         this.grade = "준비중";
         this.profile = "https://postimagestorage.s3.amazonaws.com/mini_project/zzw.-removebg-preview.png";
+    }
+
+    public Member(SignupRequestDto requestDto){
+        this.nickname = requestDto.getNickname();
+        this.email = requestDto.getEmail();
+        this.oauth = "통합";
+        this.grade = "사이트의 개발자";
+        this.profile = "https://zzwimage.s3.ap-northeast-2.amazonaws.com/zzw.-removebg-preview.png";
     }
 
     public void update(String nickname) {

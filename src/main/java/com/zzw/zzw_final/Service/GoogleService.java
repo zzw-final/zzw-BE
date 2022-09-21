@@ -38,20 +38,19 @@ public class GoogleService {
 
         //authCode를 가지고 구글 유저 가져오기
         GoogleLoginDto googleUser = FindGoogleUser(authCode);
-        Member member;
+
         if (!isUser(googleUser.getEmail())){
-            member = register(googleUser);
+            OAuthResponseDto responseDto = new OAuthResponseDto(googleUser.getEmail());
+            return ResponseDto.success(responseDto);
         }else{
-            member = memberRepository.findMemberByEmail(googleUser.getEmail());
+            Member member = memberRepository.findMemberByEmail(googleUser.getEmail());
+            TokenDto tokenDto = tokenProvider.generateTokenDto(member);
+            response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
+            response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+
+            OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto);
+            return ResponseDto.success(responseDto);
         }
-
-        TokenDto tokenDto = tokenProvider.generateTokenDto(member);
-        response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
-        response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
-
-        OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, "준비중");
-
-        return ResponseDto.success(responseDto);
     }
 
     private Member register(GoogleLoginDto googleUser) {

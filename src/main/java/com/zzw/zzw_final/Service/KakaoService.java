@@ -52,17 +52,20 @@ public class KakaoService {
         // 2. 토큰으로 카카오 API 호출
         OauthUserDto kakaoUserInfo = getKakaoUserInfo(kakaoToken);
 
-        // 3. 필요시에 회원가입
-        Member kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
+        Member member = memberRepository.findMemberByEmail(kakaoUserInfo.getEmail());
 
-        TokenDto tokenDto = jwtTokenProvider.generateTokenDto(kakaoUser);
 
-        response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
-        response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+        if (member == null){
+            OAuthResponseDto responseDto = new OAuthResponseDto(kakaoUserInfo.getEmail());
+            return ResponseDto.success(responseDto);
+        }else{
+            TokenDto tokenDto = jwtTokenProvider.generateTokenDto(member);
+            OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto);
+            response.addHeader("Authorization", tokenDto.getAccessToken());
+            response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+            return ResponseDto.success(responseDto);
+        }
 
-        OAuthResponseDto responseDto = new OAuthResponseDto(kakaoUser, tokenDto, kakaoToken);
-
-        return ResponseDto.success(responseDto);
     }
 
 

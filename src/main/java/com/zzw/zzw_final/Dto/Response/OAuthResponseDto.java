@@ -9,21 +9,28 @@ import lombok.Setter;
 @Setter
 public class OAuthResponseDto {
     private String email;
+    private Boolean isFirst;
+    private String nickname;
+    private String grade;
+    private Long userId;
+    private String profile;
     private String accessToken;
     private String refreshToken;
-    private String kakaoToken;
-    private Long userId;
-    private String nickname;
-    private String profile;
 
-    public OAuthResponseDto(Member member, TokenDto tokenDto, String oauthToken) {
+    public OAuthResponseDto(String email) {
+        this.email = email;
+        this.isFirst = true;
+    }
+
+    public OAuthResponseDto(Member member, TokenDto tokenDto){
         this.email = member.getEmail();
+        this.isFirst = false;
+        this.nickname = member.getNickname();
+        this.grade = member.getGrade();
+        this.userId = member.getId();
+        this.profile = member.getProfile();
         this.accessToken = tokenDto.getAccessToken();
         this.refreshToken = tokenDto.getRefreshToken();
-        this.kakaoToken = oauthToken;
-        this.userId = member.getId();
-        this.nickname = member.getNickname();
-        this.profile = member.getProfile();
     }
 
 }

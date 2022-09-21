@@ -31,9 +31,9 @@ public class MemberController {
         return kakaoService.kakaoLogin(code, response);
     }
 
-    @PutMapping("/api/auth/member/signup")
-    public ResponseDto<?> postUserNickname(HttpServletRequest request, @RequestBody SignupRequestDto requestDto){
-        return memberService.postUserNickname(request, requestDto);
+    @PostMapping("/api/member/signup")
+    public ResponseDto<?> postUserNickname(HttpServletResponse response, @RequestBody SignupRequestDto requestDto){
+        return memberService.postUserNickname(response, requestDto);
     }
 
     @GetMapping("/api/member/kakao/logout")
