@@ -15,3 +15,10 @@ GET http://localhost:8080/api/auth/mypage/myposts
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2MzgwODUwN30.mRvX1WrKBsdJzy7MEgbAATYRrczAEw1LXsE_xTA5GMc
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQzMjY5MDd9.lb4VrR5UdzFoQbRdrmKnkfIokwWruBq-lMTa0lwdPUE
+
+###모든 페이지 - 레시피 좋아요
+POST http://localhost:8080/api/auth/post/3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2MzgwODUwN30.mRvX1WrKBsdJzy7MEgbAATYRrczAEw1LXsE_xTA5GMc
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQzMjY5MDd9.lb4VrR5UdzFoQbRdrmKnkfIokwWruBq-lMTa0lwdPUE
+

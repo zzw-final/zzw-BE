@@ -43,6 +43,9 @@ public class Post extends Timestamped{
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TagList> tagLists;
 
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostLike> postLikes;
+
     public Post(PostRecipeRequestDto requestDto, Member member){
         this.title = requestDto.getTitle();
         this.time = requestDto.getTime();

@@ -29,7 +29,7 @@ public class PostService {
 
     private final MemberRepository memberRepository;
 
-    private final TokenProvider tokenProvider;
+    private final PostLikeRepository postLikeRepository;
 
     @Transactional
     public ResponseDto<?> postRecipe(PostRecipeRequestDto requestDto, HttpServletRequest request, MultipartFile multipartFile) {
@@ -329,6 +329,34 @@ public class PostService {
             return true;
         else
             return false;
+    }
+
+    public ResponseDto<?> postLike(Long post_id, HttpServletRequest request) {
+        //로그인 토큰 유효성 검증하기
+        ResponseDto<?> result = memberService.checkMember(request);
+        Member member = (Member) result.getData();
+
+        Post post = postRepository.findPostById(post_id);
+
+        PostLike postLike = postLikeRepository.findPostLikesByPostAndMember(post, member);
+
+        if(postLike == null){
+            PostLike userLike = new PostLike(member, post);
+            postLikeRepository.save(userLike);
+
+            List<PostLike> postLikes = postLikeRepository.findPostLikesByPost(post);
+            post.setLikeNum(postLikes.size());
+            postRepository.save(post);
+
+            return ResponseDto.success("post like success");
+        }else{
+            postLikeRepository.delete(postLike);
+            List<PostLike> postLikes = postLikeRepository.findPostLikesByPost(post);
+            post.setLikeNum(postLikes.size());
+            postRepository.save(post);
+
+            return ResponseDto.success("post like delete success");
+        }
     }
 }
 

@@ -41,6 +41,9 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Grade> grades;
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostLike> postLikes;
+
     public Member(String email, String kakao) {
         this.email = email;
         this.nickname = kakao;

@@ -76,4 +76,10 @@ public class PostController {
     public ResponseDto<?> getAllTag(){
         return postService.getAllTag();
     }
+
+    //모든 페이지 - 게시글 좋아요
+    @PostMapping("/api/auth/post/{post_id}")
+    public ResponseDto<?> postLike(@PathVariable Long post_id, HttpServletRequest request){
+        return postService.postLike(post_id, request);
+    }
 }
