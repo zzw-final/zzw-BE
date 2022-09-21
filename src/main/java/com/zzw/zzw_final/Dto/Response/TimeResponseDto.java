@@ -20,7 +20,9 @@ public class TimeResponseDto {
     private String createAt;
     private String foodImg;
 
-    public TimeResponseDto(Post post, Content content, List<IngredientResponseDto> responseDtos){
+    private List<CommentResponseDto> commentList;
+
+    public TimeResponseDto(Post post, Content content, List<IngredientResponseDto> responseDtos, List<CommentResponseDto> commentList){
         this.postId = post.getId();
         this.title = post.getTitle();
         this.createAt = post.getCreatedAt().toString();
@@ -30,5 +32,6 @@ public class TimeResponseDto {
         this.ingredient = responseDtos;
         this.time = post.getTime();
         this.content = content.getContent();
+        this.commentList = commentList;
     }
 }

@@ -34,6 +34,7 @@ public class PostService {
 
     private final PostLikeRepository postLikeRepository;
 
+    private final CommentRepository commentRepository;
     @Transactional
     public ResponseDto<?> postRecipe(PostRecipeRequestDto requestDto, HttpServletRequest request, MultipartFile multipartFile) {
 
@@ -263,11 +264,17 @@ public class PostService {
         //Dto 생성자를 만들어서 1번에서 가져온 Post 정보 넣어주기
         List<TagList> tagLists = tagListRepository.findAllByPost(post);   //API 명세서에 있는 Response 대로 Dto 생성하기
         List<IngredientResponseDto> responseDtos = new ArrayList<>();
-            for(TagList tagList : tagLists){
-                responseDtos.add(new IngredientResponseDto(tagList));
-            }
 
-        TimeResponseDto timeResponseDto = new TimeResponseDto(post, content, responseDtos);
+        for(TagList tagList : tagLists){
+            responseDtos.add(new IngredientResponseDto(tagList));
+        }
+
+        List<Comment> commentList = commentRepository.findAllByPost(post);
+        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+        for (Comment comment : commentList)
+            commentResponseDtos.add(new CommentResponseDto(comment));
+
+        TimeResponseDto timeResponseDto = new TimeResponseDto(post, content, responseDtos, commentResponseDtos);
 
         return ResponseDto.success(timeResponseDto);
     }
