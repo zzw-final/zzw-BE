@@ -18,13 +18,21 @@ public class MyPageController {
 
     private final MypageService mypageService;
 
+    //유저에게 칭호 POST
+    @PostMapping("/api/auth/grade/{grade_id}")
+    public ResponseDto<?> postGrade(HttpServletRequest request, @PathVariable Long grade_id){
+        return mypageService.postGrade(request, grade_id);
+    }
+
+    //마이페이지 유저정보 GET
     @GetMapping("/api/auth/mypage")
     public ResponseDto<?> getUserInfo(HttpServletRequest request){
         return mypageService.getUserInfo(request);
     }
 
-    @PostMapping("/api/auth/grade/{grade_id}")
-    public ResponseDto<?> postGrade(HttpServletRequest request, @PathVariable Long grade_id){
-        return mypageService.postGrade(request, grade_id);
+    //마이페이지 유저가 쓴 글 GET
+    @GetMapping("/api/auth/mypage/myposts")
+    public ResponseDto<?> getUserPosts(HttpServletRequest request){
+        return mypageService.getUserPost(request);
     }
 }

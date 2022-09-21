@@ -1,15 +1,8 @@
 package com.zzw.zzw_final.Service;
 
-import com.zzw.zzw_final.Dto.Entity.Follow;
-import com.zzw.zzw_final.Dto.Entity.Grade;
-import com.zzw.zzw_final.Dto.Entity.GradeList;
-import com.zzw.zzw_final.Dto.Entity.Member;
-import com.zzw.zzw_final.Dto.Response.GradeListResponseDto;
-import com.zzw.zzw_final.Dto.Response.MypageUserInfoResponseDto;
-import com.zzw.zzw_final.Dto.Response.ResponseDto;
-import com.zzw.zzw_final.Repository.FollowRepository;
-import com.zzw.zzw_final.Repository.GradeListRepository;
-import com.zzw.zzw_final.Repository.GradeRepository;
+import com.zzw.zzw_final.Dto.Entity.*;
+import com.zzw.zzw_final.Dto.Response.*;
+import com.zzw.zzw_final.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +18,9 @@ public class MypageService {
     private final GradeListRepository gradeListRepository;
     private final GradeRepository gradeRepository;
     private final FollowRepository followRepository;
+    private final PostRepository postRepository;
+    private final ContentRepository contentRepository;
+    private final PostService postService;
     public ResponseDto<?> getUserInfo(HttpServletRequest request) {
 
         ResponseDto<?> result = memberService.checkMember(request);
@@ -56,5 +52,20 @@ public class MypageService {
 
         gradeRepository.save(userGrade);
         return ResponseDto.success("post grade success !");
+    }
+
+    public ResponseDto<?> getUserPost(HttpServletRequest request) {
+        ResponseDto<?> result = memberService.checkMember(request);
+        Member member = (Member) result.getData();
+
+        List<Post> posts = postRepository.findAllByMember(member);
+        List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
+
+        for(Post post : posts){
+            Content content = contentRepository.findContentByPost(post);
+            List<IngredientResponseDto> ingredientResponseDtos = postService.getIngredientByPost(post);
+            userPostResponseDtos.add(new PostResponseDto(post, content, ingredientResponseDtos));
+        }
+        return ResponseDto.success(userPostResponseDtos);
     }
 }
