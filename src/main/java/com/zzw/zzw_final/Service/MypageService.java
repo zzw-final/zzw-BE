@@ -21,6 +21,7 @@ public class MypageService {
     private final PostRepository postRepository;
     private final ContentRepository contentRepository;
     private final PostService postService;
+    private final PostLikeRepository postLikeRepository;
     public ResponseDto<?> getUserInfo(HttpServletRequest request) {
 
         ResponseDto<?> result = memberService.checkMember(request);
@@ -66,6 +67,28 @@ public class MypageService {
             List<IngredientResponseDto> ingredientResponseDtos = postService.getIngredientByPost(post);
             userPostResponseDtos.add(new PostResponseDto(post, content, ingredientResponseDtos));
         }
+        return ResponseDto.success(userPostResponseDtos);
+    }
+
+    public ResponseDto<?> getUserLikePosts(HttpServletRequest request) {
+        ResponseDto<?> result = memberService.checkMember(request);
+        Member member = (Member) result.getData();
+
+        List<PostLike> postLikes = postLikeRepository.findPostLikesByMember(member);
+        List<Post> posts = new ArrayList<>();
+
+        for (PostLike postLike : postLikes){
+            posts.add(postRepository.findPostById(postLike.getPost().getId()));
+        }
+
+        List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
+
+        for(Post post : posts){
+            Content content = contentRepository.findContentByPost(post);
+            List<IngredientResponseDto> ingredientResponseDtos = postService.getIngredientByPost(post);
+            userPostResponseDtos.add(new PostResponseDto(post, content, ingredientResponseDtos));
+        }
+
         return ResponseDto.success(userPostResponseDtos);
     }
 }

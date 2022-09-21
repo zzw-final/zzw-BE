@@ -8,6 +8,8 @@ import com.zzw.zzw_final.Dto.ErrorCode;
 import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -347,6 +350,8 @@ public class PostService {
             List<PostLike> postLikes = postLikeRepository.findPostLikesByPost(post);
             post.setLikeNum(postLikes.size());
             postRepository.save(post);
+            member.setPostLikes(postLikes);
+            memberRepository.save(member);
 
             return ResponseDto.success("post like success");
         }else{
@@ -354,9 +359,35 @@ public class PostService {
             List<PostLike> postLikes = postLikeRepository.findPostLikesByPost(post);
             post.setLikeNum(postLikes.size());
             postRepository.save(post);
+            member.setPostLikes(postLikes);
+            memberRepository.save(member);
 
             return ResponseDto.success("post like delete success");
         }
     }
+
+    /*
+
+    private boolean verifiedMember(HttpServletRequest request, Member member) {
+        String token = request.getHeader("Authorization").substring((7));
+        if (token == null || !tokenProvider.validateToken(token)){
+            return false;
+        }
+        Authentication authentication = tokenProvider.getAuthentication(token);
+        String memberId = authentication.getName(); //member Id
+        if (Long.valueOf(memberId)!= member.getId()){
+            return false;
+        }
+        return true;
+    }
+
+    @Transactional
+    public Member getMemberfromContext() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<Member> member = memberRepository.findById(Long.valueOf(userId));  //Long.valueOf(userId)
+        return member.get();
+    }
+
+     */
 }
 

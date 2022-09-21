@@ -35,4 +35,10 @@ public class MyPageController {
     public ResponseDto<?> getUserPosts(HttpServletRequest request){
         return mypageService.getUserPost(request);
     }
+
+    //마이페이지 유저가 좋아요 한 글 GET
+    @GetMapping("/api/auth/mypage/likeposts")
+    public ResponseDto<?> getUserLikePosts(HttpServletRequest request){
+        return mypageService.getUserLikePosts(request);
+    }
 }
