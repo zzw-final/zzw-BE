@@ -16,8 +16,9 @@ public class Grade {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column
-    private int gradeId;
+    @JoinColumn(name = "gradeList_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private GradeList gradeList;
 
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
