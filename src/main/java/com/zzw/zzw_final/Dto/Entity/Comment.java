@@ -21,6 +21,9 @@ public class Comment extends Timestamped{
     @Column
     private String comment;
 
+    @Column
+    private String useremail;
+
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
@@ -33,5 +36,11 @@ public class Comment extends Timestamped{
         this.comment = requestDto.getComment();
         this.post = post;
         this.member = member;
+        this.useremail = member.getEmail();         //수정
+    }
+
+    public void update(CommentRequestDto requestDto) {
+        this.comment = requestDto.getComment();
+
     }
 }
