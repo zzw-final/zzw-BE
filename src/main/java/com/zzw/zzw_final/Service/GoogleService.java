@@ -40,7 +40,7 @@ public class GoogleService {
         GoogleLoginDto googleUser = FindGoogleUser(authCode);
 
         if (!isUser(googleUser.getEmail())){
-            OAuthResponseDto responseDto = new OAuthResponseDto(googleUser.getEmail());
+            OAuthResponseDto responseDto = new OAuthResponseDto(googleUser.getEmail(), "googleToken");
             return ResponseDto.success(responseDto);
         }else{
             Member member = memberRepository.findMemberByEmail(googleUser.getEmail());
@@ -48,7 +48,7 @@ public class GoogleService {
             response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
             response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
 
-            OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto);
+            OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, "googleToken");
             return ResponseDto.success(responseDto);
         }
     }

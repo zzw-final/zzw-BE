@@ -16,13 +16,15 @@ public class OAuthResponseDto {
     private String profile;
     private String accessToken;
     private String refreshToken;
+    private String oauthToken;
 
-    public OAuthResponseDto(String email) {
+    public OAuthResponseDto(String email, String oauthToken) {
         this.email = email;
+        this.oauthToken = oauthToken;
         this.isFirst = true;
     }
 
-    public OAuthResponseDto(Member member, TokenDto tokenDto){
+    public OAuthResponseDto(Member member, TokenDto tokenDto, String oauthToken){
         this.email = member.getEmail();
         this.isFirst = false;
         this.nickname = member.getNickname();
@@ -31,6 +33,7 @@ public class OAuthResponseDto {
         this.profile = member.getProfile();
         this.accessToken = tokenDto.getAccessToken();
         this.refreshToken = tokenDto.getRefreshToken();
+        this.oauthToken = oauthToken;
     }
 
 }

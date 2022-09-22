@@ -17,16 +17,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsI
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQzMjY5MDd9.lb4VrR5UdzFoQbRdrmKnkfIokwWruBq-lMTa0lwdPUE
 
 ###모든 페이지 - 레시피 좋아요
-POST http://localhost:8080/api/auth/post/13
+POST http://localhost:8080/api/auth/post/3
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2MzgwODUwN30.mRvX1WrKBsdJzy7MEgbAATYRrczAEw1LXsE_xTA5GMc
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQzMjY5MDd9.lb4VrR5UdzFoQbRdrmKnkfIokwWruBq-lMTa0lwdPUE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2MzkxNjcwNH0._qWbmpD0nawqfFnpcZLuXQ6sYxaKkvH1q5xDj2g3H9U
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ0MzUxMDR9.yrHBnLJppQOn5PZ4xxs_ZB0GJAnQfvetS7UeLEdsVig
 
 ###마이페이지 - 내가 좋아요한 레시피 GET
 GET http://localhost:8080/api/auth/mypage/likeposts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2MzgwODUwN30.mRvX1WrKBsdJzy7MEgbAATYRrczAEw1LXsE_xTA5GMc
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQzMjY5MDd9.lb4VrR5UdzFoQbRdrmKnkfIokwWruBq-lMTa0lwdPUE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2MzkxNjcwNH0._qWbmpD0nawqfFnpcZLuXQ6sYxaKkvH1q5xDj2g3H9U
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ0MzUxMDR9.yrHBnLJppQOn5PZ4xxs_ZB0GJAnQfvetS7UeLEdsVig
 
 ### 상세페이지 - 게시글 내용 GET
 GET http://localhost:8080/api/post/3

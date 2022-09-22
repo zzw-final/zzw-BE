@@ -10,5 +10,5 @@ import java.util.List;
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
     PostLike findPostLikesByPostAndMember(Post post, Member member);
     List<PostLike> findPostLikesByPost(Post post);
-    List<PostLike> findPostLikesByMember(Member member);
+    List<PostLike> findAllByMember(Member member);
 }

@@ -78,7 +78,7 @@ public class MypageService {
         ResponseDto<?> result = memberService.checkMember(request);
         Member member = (Member) result.getData();
 
-        List<PostLike> postLikes = postLikeRepository.findPostLikesByMember(member);
+        List<PostLike> postLikes = postLikeRepository.findAllByMember(member);
         List<Post> posts = new ArrayList<>();
 
         for (PostLike postLike : postLikes){

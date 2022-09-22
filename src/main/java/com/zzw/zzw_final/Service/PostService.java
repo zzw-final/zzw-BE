@@ -36,14 +36,12 @@ public class PostService {
 
     private final CommentRepository commentRepository;
     @Transactional
-    public ResponseDto<?> postRecipe(PostRecipeRequestDto requestDto, HttpServletRequest request, MultipartFile multipartFile) {
+    public ResponseDto<?> postRecipe(PostRecipeRequestDto requestDto, HttpServletRequest request) {
 
         //로그인 토큰 유효성 검증하기
         ResponseDto<?> result = memberService.checkMember(request);
         Member member = (Member) result.getData();
 
-        //파일 -> 이미지 Url로 변경
-        String url = fileUploaderService.uploadImage(multipartFile);
 
         Post post = new Post(requestDto, member);
         postRepository.save(post);
@@ -95,7 +93,7 @@ public class PostService {
         }
 
         //게시글 내용과 이미지를 Content 데이터베이스에 담기
-        Content content = new Content(url, requestDto.getContent(), post);
+        Content content = new Content(requestDto.getImageUrl(), requestDto.getContent(), post);
         contentRepository.save(content);
 
         return ResponseDto.success("success post");
@@ -348,8 +346,6 @@ public class PostService {
             List<PostLike> postLikes = postLikeRepository.findPostLikesByPost(post);
             post.setLikeNum(postLikes.size());
             postRepository.save(post);
-            member.setPostLikes(postLikes);
-            memberRepository.save(member);
 
             return ResponseDto.success("post like success");
         }else{
@@ -362,6 +358,12 @@ public class PostService {
 
             return ResponseDto.success("post like delete success");
         }
+    }
+
+    public ResponseDto<?> postImage(MultipartFile multipartFile) {
+        //파일 -> 이미지 Url로 변경
+        String url = fileUploaderService.uploadImage(multipartFile);
+        return ResponseDto.success(new ImageUrlResponseDto(url));
     }
 
     /*

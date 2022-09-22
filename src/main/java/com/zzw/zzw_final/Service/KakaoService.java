@@ -56,11 +56,11 @@ public class KakaoService {
 
 
         if (member == null){
-            OAuthResponseDto responseDto = new OAuthResponseDto(kakaoUserInfo.getEmail());
+            OAuthResponseDto responseDto = new OAuthResponseDto(kakaoUserInfo.getEmail(), kakaoToken);
             return ResponseDto.success(responseDto);
         }else{
             TokenDto tokenDto = jwtTokenProvider.generateTokenDto(member);
-            OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto);
+            OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, kakaoToken);
             response.addHeader("Authorization", tokenDto.getAccessToken());
             response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
             return ResponseDto.success(responseDto);

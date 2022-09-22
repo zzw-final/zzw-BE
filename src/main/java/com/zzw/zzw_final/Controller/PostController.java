@@ -55,9 +55,8 @@ public class PostController {
 
     //상세페이지 -> 레시피 등록 POST
     @PostMapping("/api/auth/post")
-    public ResponseDto<?> postRecipe(@RequestPart(value = "data") PostRecipeRequestDto requestDto, HttpServletRequest request,
-                                     @RequestPart(value = "file") MultipartFile multipartFile){
-        return postService.postRecipe(requestDto, request, multipartFile);
+    public ResponseDto<?> postRecipe(@RequestBody PostRecipeRequestDto requestDto, HttpServletRequest request){
+        return postService.postRecipe(requestDto, request);
     }
 
     @PutMapping("/api/auth/post/{post_id}")
@@ -65,6 +64,12 @@ public class PostController {
                                      @RequestPart(value = "file", required = false) MultipartFile multipartFile, @PathVariable Long post_id){
         return postService.putRecipe(requestDto, request, multipartFile, post_id);
     }
+
+    @GetMapping("/api/auth/post/image")
+    public ResponseDto<?> postImage(@RequestPart(value = "file", required = false) MultipartFile multipartFile){
+        return postService.postImage(multipartFile);
+    }
+
 
     @DeleteMapping("/api/auth/post/{post_id}")
     public ResponseDto<?> deleteRecipe(HttpServletRequest request, @PathVariable Long post_id){
