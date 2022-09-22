@@ -113,4 +113,19 @@ public class MypageService {
 
         return ResponseDto.success(responseDto);
     }
+
+    public ResponseDto<?> getOtherUserPosts(Long user_id) {
+
+        Member member = memberRepository.findMemberById(user_id);
+
+        List<Post> posts = postRepository.findAllByMember(member);
+        List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
+
+        for(Post post : posts){
+            Content content = contentRepository.findContentByPost(post);
+            List<IngredientResponseDto> ingredientResponseDtos = postService.getIngredientByPost(post);
+            userPostResponseDtos.add(new PostResponseDto(post, content, ingredientResponseDtos));
+        }
+        return ResponseDto.success(userPostResponseDtos);
+    }
 }

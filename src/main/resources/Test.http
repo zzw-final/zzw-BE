@@ -49,3 +49,8 @@ Content-Type: application/json
 ### 마이페이지 - 다른 유저의 정보 GET
 GET http://localhost:8080/api/mypage/57
 Content-Type: application/json
+
+### 마이페이지 - 해당 유저가 쓴 글 GET
+GET http://localhost:8080/api/mypage/1/myposts
+Content-Type: application/json
+
