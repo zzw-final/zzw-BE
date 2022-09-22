@@ -41,3 +41,7 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQzMjY5MDd9.lb4VrR5UdzFoQbRdrmK
 {
   "comment" : "이거보고 따라해봤는데 계란국 존맛 ,, 진짜 쉬워요 !!!"
 }
+
+### 특정 유저에게 칭호 POST
+POST http://localhost:8080/api/grade/50/58
+Content-Type: application/json

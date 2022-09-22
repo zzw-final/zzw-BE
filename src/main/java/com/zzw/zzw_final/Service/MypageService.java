@@ -22,6 +22,8 @@ public class MypageService {
     private final ContentRepository contentRepository;
     private final PostService postService;
     private final PostLikeRepository postLikeRepository;
+    private final MemberRepository memberRepository;
+
     public ResponseDto<?> getUserInfo(HttpServletRequest request) {
 
         ResponseDto<?> result = memberService.checkMember(request);
@@ -43,10 +45,12 @@ public class MypageService {
     }
 
 
-    public ResponseDto<?> postGrade(HttpServletRequest request, Long grade_id) {
+    public ResponseDto<?> postGrade(HttpServletRequest request, Long grade_id, Long user_id) {
 
-        ResponseDto<?> result = memberService.checkMember(request);
-        Member member = (Member) result.getData();
+//        ResponseDto<?> result = memberService.checkMember(request);
+//        Member member = (Member) result.getData();
+
+        Member member = memberRepository.findMemberById(user_id);
 
         GradeList gradeList = gradeListRepository.findGradeListById(grade_id);
         Grade userGrade = new Grade(member, gradeList);
