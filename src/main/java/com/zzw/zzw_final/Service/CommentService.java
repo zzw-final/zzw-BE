@@ -5,6 +5,7 @@ import com.zzw.zzw_final.Dto.Entity.Member;
 import com.zzw.zzw_final.Dto.Entity.Post;
 import com.zzw.zzw_final.Dto.ErrorCode;
 import com.zzw.zzw_final.Dto.Request.CommentRequestDto;
+import com.zzw.zzw_final.Dto.Response.CommentResponseDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Repository.CommentRepository;
 import com.zzw.zzw_final.Repository.MemberRepository;
@@ -40,7 +41,9 @@ public class CommentService {
         Comment comment = new Comment(requestDto, post, member);
         commentRepository.save(comment);
 
-        return ResponseDto.success("success post comment");
+        CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
+
+        return ResponseDto.success(commentResponseDto);
     }
 
     @Transactional

@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 public class CommentResponseDto {
     private Long userId;
+    private Long commentId;
     private String nickname;
     private String comment;
     private String grade;
@@ -20,6 +21,7 @@ public class CommentResponseDto {
 
     public CommentResponseDto(Comment comment){
         this.userId = comment.getMember().getId();
+        this.commentId = comment.getId();
         this.comment = comment.getComment();
         this.nickname = comment.getMember().getNickname();
         this.grade = comment.getMember().getGrade();
