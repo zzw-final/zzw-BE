@@ -95,4 +95,22 @@ public class MypageService {
 
         return ResponseDto.success(userPostResponseDtos);
     }
+
+    public ResponseDto<?> getOtherUserInfo(Long user_id) {
+        Member member = memberRepository.findMemberById(user_id);
+
+        List<Follow> followerlist = followRepository.findAllByFollowerId(member.getId());
+        List<Follow> followList = followRepository.findAllByMember(member);
+
+        List<GradeListResponseDto> responseDtos = new ArrayList<>();
+        List<Grade> grades = gradeRepository.findAllByMember(member);
+        for(Grade grade : grades){
+            responseDtos.add(new GradeListResponseDto(grade.getGradeList()));
+        }
+
+        MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
+                followList.size(), followerlist.size(), responseDtos);
+
+        return ResponseDto.success(responseDto);
+    }
 }

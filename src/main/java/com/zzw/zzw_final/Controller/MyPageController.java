@@ -42,4 +42,10 @@ public class MyPageController {
     public ResponseDto<?> getUserLikePosts(HttpServletRequest request){
         return mypageService.getUserLikePosts(request);
     }
+
+    //마이페이지 다른 유저의 정보 GET
+    @GetMapping("/api/mypage/{user_id}")
+    public ResponseDto<?> getOtherUserInfo(@PathVariable Long user_id){
+        return mypageService.getOtherUserInfo(user_id);
+    }
 }
