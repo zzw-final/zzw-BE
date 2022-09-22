@@ -143,7 +143,7 @@ public class PostService {
                 TagList newTagList  = new TagList(foodname, post, tag1, true);
                 tagListRepository.save(newTagList);
             }
-            //아전에 있었던 태그라면
+            //이전에 있었던 태그라면
             else{
                 TagList newTagList  = new TagList(foodname, post, tag, true);
                 tagListRepository.save(newTagList);
