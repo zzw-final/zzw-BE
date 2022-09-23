@@ -17,9 +17,9 @@ public class Follow {
     private Long id;
 
     @Column
-    private Long followerId;
+    private Long followerId;   // -> 팔로워
 
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    private Member member;   // 팔로우 하는 주인공
 }

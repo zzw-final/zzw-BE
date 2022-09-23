@@ -57,5 +57,9 @@ public class Post extends Timestamped{
     public void update(PostRecipeRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.time = requestDto.getTime();
-        }
     }
+
+    public void update(int likeNum) {
+        this.likeNum = likeNum;
+    }
+}

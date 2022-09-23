@@ -337,24 +337,28 @@ public class PostService {
 
         Post post = postRepository.findPostById(post_id);
 
+        //이전에 해당 게시글에 좋아요를 한 적이 있는지 판단
         PostLike postLike = postLikeRepository.findPostLikesByPostAndMember(post, member);
 
+        // 이전에 이 게시물에 좋아요를 한 적이 없음 -> 좋아요 수락
         if(postLike == null){
             PostLike userLike = new PostLike(member, post);
             postLikeRepository.save(userLike);
 
             List<PostLike> postLikes = postLikeRepository.findPostLikesByPost(post);
-            post.setLikeNum(postLikes.size());
-            postRepository.save(post);
+            //post.setLikeNum(postLikes.size());  // -> likeNum 업데이트
+            post.update(postLikes.size());
+            //postRepository.save(post);
 
             return ResponseDto.success("post like success");
-        }else{
+        }
+        // 이전에 이 게시물에 좋아요를 한 적이 있음 -> 좋아요 취소
+        else{
             postLikeRepository.delete(postLike);
+
             List<PostLike> postLikes = postLikeRepository.findPostLikesByPost(post);
-            post.setLikeNum(postLikes.size());
+            post.setLikeNum(postLikes.size()); // -> likeNum 업데이트
             postRepository.save(post);
-            member.setPostLikes(postLikes);
-            memberRepository.save(member);
 
             return ResponseDto.success("post like delete success");
         }
