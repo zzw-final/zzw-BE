@@ -267,7 +267,7 @@ public class PostService {
             responseDtos.add(new IngredientResponseDto(tagList));
         }
 
-        List<Comment> commentList = commentRepository.findAllByPost(post);
+        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
         for (Comment comment : commentList)
             commentResponseDtos.add(new CommentResponseDto(comment));
