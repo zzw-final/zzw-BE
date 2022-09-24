@@ -346,10 +346,12 @@ public class PostService {
             postLikeRepository.save(userLike);
 
             List<PostLike> postLikes = postLikeRepository.findPostLikesByPost(post);
-            //post.setLikeNum(postLikes.size());  // -> likeNum 업데이트
-            post.update(postLikes.size());
-            //postRepository.save(post);
+            post.setLikeNum(postLikes.size());  // -> likeNum 업데이트
+            //post.update(postLikes.size());
+            postRepository.save(post);
 
+            //member.setPostLikes(postLikes);
+            member.getPostLikes().add(userLike);
             return ResponseDto.success("post like success");
         }
         // 이전에 이 게시물에 좋아요를 한 적이 있음 -> 좋아요 취소
@@ -366,6 +368,10 @@ public class PostService {
 
     public ResponseDto<?> postImage(MultipartFile multipartFile) {
         //파일 -> 이미지 Url로 변경
+        if (multipartFile == null){
+            //System.out.println(multipartFile);
+            return ResponseDto.success("파일 값이 null임");
+        }
         String url = fileUploaderService.uploadImage(multipartFile);
         return ResponseDto.success(new ImageUrlResponseDto(url));
     }

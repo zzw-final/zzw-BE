@@ -17,10 +17,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsI
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ0MzUxMDR9.yrHBnLJppQOn5PZ4xxs_ZB0GJAnQfvetS7UeLEdsVig
 
 ###모든 페이지 - 레시피 좋아요
-POST http://localhost:8080/api/auth/post/3
+POST http://localhost:8080/api/auth/post/266
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2MzkxNjcwNH0._qWbmpD0nawqfFnpcZLuXQ6sYxaKkvH1q5xDj2g3H9U
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ0MzUxMDR9.yrHBnLJppQOn5PZ4xxs_ZB0GJAnQfvetS7UeLEdsVig
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDA3ODIwNX0.f-Z8kmpmFYLKP1r1OsCDdcHI5XWEE7Ae70pPHnkMYcI
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ1OTY2MDV9.EXqZk7MyTIIMOEAN063CBHstKbZovadcrzQzJGExR4M
 
 ###마이페이지 - 내가 좋아요한 레시피 GET
 GET http://localhost:8080/api/auth/mypage/likeposts
@@ -41,6 +41,18 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ0MzUxMDR9.yrHBnLJppQOn5PZ4xxs
 {
   "comment" : "이거보고 따라해봤는데 간계밥 존맛 ,, 진짜 쉬워요 !!!"
 }
+
+### ㄷ댓글 수정
+PUT http://localhost:8080/api/auth/post/comment/72
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDA3ODIwNX0.f-Z8kmpmFYLKP1r1OsCDdcHI5XWEE7Ae70pPHnkMYcI
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ1OTY2MDV9.EXqZk7MyTIIMOEAN063CBHstKbZovadcrzQzJGExR4M
+
+{
+  "comment" : "하하"
+}
+
+
 
 ### 특정 유저에게 칭호 POST
 POST http://localhost:8080/api/grade/50/58

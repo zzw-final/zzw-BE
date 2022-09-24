@@ -65,8 +65,8 @@ public class PostController {
         return postService.putRecipe(requestDto, request, multipartFile, post_id);
     }
 
-    @GetMapping("/api/auth/post/image")
-    public ResponseDto<?> postImage(@RequestPart(value = "file", required = false) MultipartFile multipartFile){
+    @PostMapping("/api/post/image")
+    public ResponseDto<?> postImage(@RequestPart(value = "file") MultipartFile multipartFile){
         return postService.postImage(multipartFile);
     }
 
