@@ -69,7 +69,7 @@ public class MypageService {
         for(Post post : posts){
             Content content = contentRepository.findContentByPost(post);
             List<IngredientResponseDto> ingredientResponseDtos = postService.getIngredientByPost(post);
-            userPostResponseDtos.add(new PostResponseDto(post, content, ingredientResponseDtos));
+            userPostResponseDtos.add(postService.getResponsePostUserLike(member, post, content, ingredientResponseDtos));
         }
         return ResponseDto.success(userPostResponseDtos);
     }
@@ -90,7 +90,7 @@ public class MypageService {
         for(Post post : posts){
             Content content = contentRepository.findContentByPost(post);
             List<IngredientResponseDto> ingredientResponseDtos = postService.getIngredientByPost(post);
-            userPostResponseDtos.add(new PostResponseDto(post, content, ingredientResponseDtos));
+            userPostResponseDtos.add(postService.getResponsePostUserLike(member, post, content, ingredientResponseDtos));
         }
 
         return ResponseDto.success(userPostResponseDtos);
