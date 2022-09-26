@@ -23,10 +23,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsI
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ0MzUxMDR9.yrHBnLJppQOn5PZ4xxs_ZB0GJAnQfvetS7UeLEdsVig
 
 ###모든 페이지 - 레시피 좋아요
-POST http://localhost:8080/api/auth/post/266
+POST http://localhost:8080/api/auth/post/25
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDA3ODIwNX0.f-Z8kmpmFYLKP1r1OsCDdcHI5XWEE7Ae70pPHnkMYcI
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ1OTY2MDV9.EXqZk7MyTIIMOEAN063CBHstKbZovadcrzQzJGExR4M
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDI0MDU3Nn0.IgpJqWsjUwxn_WeAIh7wo1pBvw1FtVLtaa_D7vUpTK4
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ3NTg5NzZ9.rgMAhZNhA0OeDSoKSjP-Cbwzqwik6lSypKOvb_BPqDI
 
 ###마이페이지 - 내가 좋아요한 레시피 GET
 GET http://localhost:8080/api/auth/mypage/likeposts
@@ -68,7 +68,7 @@ POST http://localhost:8080/api/grade/50/58
 Content-Type: application/json
 
 ### 마이페이지 - 다른 유저의 정보 GET
-GET http://localhost:8080/api/mypage/57
+GET http://localhost:8080/api/mypage/145
 Content-Type: application/json
 
 ### 마이페이지 - 해당 유저가 쓴 글 GET

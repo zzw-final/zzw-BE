@@ -32,7 +32,10 @@ public enum ErrorCode {
 
     //소셜로그인 관련 오류
     NOTFOUND_LOGIN_TYPE("NOTFOUND_LOGIN_TYPE", "해당하는 소셜로그인 종류가 없습니다."),
-    NOT_GOOGLE("NOT_GOOGLE","구글 로그인이 안됐음");
+    NOT_GOOGLE("NOT_GOOGLE","구글 로그인이 안됐음"),
+
+    //레시피 관련 오류
+    NOTFOUND_POST_ID("NOTFOUND_POST_ID", "해당하는 레시피 id가 없음");
 
 
     private final String code;
