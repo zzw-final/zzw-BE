@@ -48,8 +48,8 @@ public class PostController {
 
     //상세페이지 -> GET
     @GetMapping("/api/post/{post_id}")
-    public ResponseDto<?> getRecipe(@PathVariable Long post_id){
-        return postService.getRecipe(post_id);
+    public ResponseDto<?> getRecipe(@PathVariable Long post_id, HttpServletRequest request){
+        return postService.getRecipe(post_id, request);
     }
 
 

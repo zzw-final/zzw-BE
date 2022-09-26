@@ -15,6 +15,7 @@ public class TimeResponseDto {
     private String title;
     private String nickname;
     private int likeNum;
+    private Boolean isLike;
     private String time;
     private String content;
     private List<IngredientResponseDto> ingredient;
@@ -23,9 +24,11 @@ public class TimeResponseDto {
 
     private List<CommentResponseDto> commentList;
 
-    public TimeResponseDto(Post post, Content content, List<IngredientResponseDto> responseDtos, List<CommentResponseDto> commentList){
+    public TimeResponseDto(Post post, Content content, List<IngredientResponseDto> responseDtos,
+                           List<CommentResponseDto> commentList, Boolean isLike){
         this.postId = post.getId();
         this.title = post.getTitle();
+        this.isLike = isLike;
         this.createAt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(post.getModifiedAt());
         this.nickname = post.getMember().getNickname();
         this.likeNum = post.getLikeNum();

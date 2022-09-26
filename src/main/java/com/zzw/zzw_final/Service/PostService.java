@@ -315,7 +315,9 @@ public class PostService {
         return ResponseDto.success(responseDtos);
     }
 
-    public ResponseDto<?> getRecipe(Long post_id) {
+    public ResponseDto<?> getRecipe(Long post_id, HttpServletRequest request) {
+
+        Member member = memberService.getEmail(request);
 
         // post_id로 이에 맞는 Post 가져오기
         Post post = postRepository.findPostById(post_id);
@@ -335,9 +337,20 @@ public class PostService {
         for (Comment comment : commentList)
             commentResponseDtos.add(new CommentResponseDto(comment));
 
-        TimeResponseDto timeResponseDto = new TimeResponseDto(post, content, responseDtos, commentResponseDtos);
-
-        return ResponseDto.success(timeResponseDto);
+        if (member == null){
+            TimeResponseDto timeResponseDto = new TimeResponseDto(post, content, responseDtos, commentResponseDtos, false);
+            return ResponseDto.success(timeResponseDto);
+        }
+        else {
+            PostLike postLikes = postLikeRepository.findPostLikesByPostAndMember(post, member);
+            if (postLikes == null){
+                TimeResponseDto timeResponseDto = new TimeResponseDto(post, content, responseDtos, commentResponseDtos, false);
+                return ResponseDto.success(timeResponseDto);
+            }else{
+                TimeResponseDto timeResponseDto = new TimeResponseDto(post, content, responseDtos, commentResponseDtos, true);
+                return ResponseDto.success(timeResponseDto);
+            }
+        }
     }
 
     public ResponseDto<?> getAllTag() {
