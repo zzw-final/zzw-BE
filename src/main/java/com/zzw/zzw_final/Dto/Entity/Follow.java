@@ -19,7 +19,23 @@ public class Follow {
     @Column
     private Long followerId;   // -> 팔로워
 
+    @Column
+    private String followNickname;
+
+    @Column
+    private String followerNickname;
+
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;   // 팔로우 하는 주인공
+
+
+
+    public Follow(Member followerMember ,Member followMember) {
+        this.followerId = followerMember.getId();
+        this.member = followMember ;
+        this.followNickname = followMember.getNickname();
+        this.followerNickname = followerMember.getNickname();
+    }
+
 }
