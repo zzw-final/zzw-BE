@@ -1,6 +1,5 @@
 package com.zzw.zzw_final.Service;
 
-import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.*;
 import com.zzw.zzw_final.Dto.Request.*;
 
@@ -8,8 +7,6 @@ import com.zzw.zzw_final.Dto.ErrorCode;
 import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -179,7 +175,7 @@ public class PostService {
 
     public ResponseDto<?> getBestRecipe(HttpServletRequest request) {
 
-        Member member = memberService.getEmail(request);
+        Member member = memberService.getMember(request);
 
         //베스트만 보여주기 (팔로우, 팔로워 X)
         if (member == null){
@@ -317,7 +313,7 @@ public class PostService {
 
     public ResponseDto<?> getRecipe(Long post_id, HttpServletRequest request) {
 
-        Member member = memberService.getEmail(request);
+        Member member = memberService.getMember(request);
 
         // post_id로 이에 맞는 Post 가져오기
         Post post = postRepository.findPostById(post_id);

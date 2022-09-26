@@ -51,7 +51,7 @@ public class MyPageController {
 
     //마이페이지 해당 유저의 쓴 글 GET
     @GetMapping("/api/mypage/{user_id}/myposts")
-    public ResponseDto<?> getOtherUserPosts(@PathVariable Long user_id){
-        return mypageService.getOtherUserPosts(user_id);
+    public ResponseDto<?> getOtherUserPosts(@PathVariable Long user_id, HttpServletRequest request){
+        return mypageService.getOtherUserPosts(user_id, request);
     }
 }

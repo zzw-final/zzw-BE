@@ -114,17 +114,18 @@ public class MypageService {
         return ResponseDto.success(responseDto);
     }
 
-    public ResponseDto<?> getOtherUserPosts(Long user_id) {
+    public ResponseDto<?> getOtherUserPosts(Long user_id, HttpServletRequest request) {
+        Member loginMember = memberService.getMember(request);
 
-        Member member = memberRepository.findMemberById(user_id);
+        Member postMember = memberRepository.findMemberById(user_id);
 
-        List<Post> posts = postRepository.findAllByMember(member);
+        List<Post> posts = postRepository.findAllByMember(postMember);
         List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
 
         for(Post post : posts){
             Content content = contentRepository.findContentByPost(post);
             List<IngredientResponseDto> ingredientResponseDtos = postService.getIngredientByPost(post);
-            userPostResponseDtos.add(new PostResponseDto(post, content, ingredientResponseDtos));
+            userPostResponseDtos.add(postService.getResponsePostUserLike(loginMember, post, content, ingredientResponseDtos));
         }
         return ResponseDto.success(userPostResponseDtos);
     }
