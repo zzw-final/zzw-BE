@@ -62,4 +62,15 @@ public class MemberService {
         return ResponseDto.success("success signup");
     }
 
+    public Member getEmail(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        if (token != null){
+            String email = tokenProvider.getUserEmail(token.substring(7));
+            Member member = memberRepository.findMemberByEmail(email);
+            return member;
+        }
+
+        return null;
+    }
+
 }

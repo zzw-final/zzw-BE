@@ -24,8 +24,8 @@ public class PostController {
 
     //메인페이지 -> 베스트 게시물 보여주기
     @GetMapping("/api/post")
-    public ResponseDto<?> getBestRecipe(){
-        return postService.getBestRecipe();
+    public ResponseDto<?> getBestRecipe(HttpServletRequest request){
+        return postService.getBestRecipe(request);
     }
 
 

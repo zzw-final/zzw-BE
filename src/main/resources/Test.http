@@ -4,6 +4,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsI
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQzMjY5MDd9.lb4VrR5UdzFoQbRdrmKnkfIokwWruBq-lMTa0lwdPUE
 
 
+### 메인페이지 - 베스트, 최신, 팔로우 레시피 GET
+GET http://localhost:8080/api/post
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDI0MDU3Nn0.IgpJqWsjUwxn_WeAIh7wo1pBvw1FtVLtaa_D7vUpTK4
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ3NTg5NzZ9.rgMAhZNhA0OeDSoKSjP-Cbwzqwik6lSypKOvb_BPqDI
+
 ### 마이페이지 유저 정보 GET
 GET http://localhost:8080/api/auth/mypage
 Content-Type: application/json
@@ -42,7 +48,7 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ0MzUxMDR9.yrHBnLJppQOn5PZ4xxs
   "comment" : "이거보고 따라해봤는데 간계밥 존맛 ,, 진짜 쉬워요 !!!"
 }
 
-### ㄷ댓글 수정
+### 댓글 수정
 PUT http://localhost:8080/api/auth/post/comment/72
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDA3ODIwNX0.f-Z8kmpmFYLKP1r1OsCDdcHI5XWEE7Ae70pPHnkMYcI

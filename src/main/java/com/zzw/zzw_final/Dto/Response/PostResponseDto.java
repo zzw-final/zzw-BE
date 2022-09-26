@@ -13,6 +13,7 @@ public class PostResponseDto {
     private Long postId;
     private String title;
     private String nickname;
+    private Boolean isLike;
     private int likeNum;
     private List<IngredientResponseDto> ingredient;
     private String createAt;
@@ -21,6 +22,19 @@ public class PostResponseDto {
     public PostResponseDto(Post post, Content content, List<IngredientResponseDto> responseDtos){
         this.postId = post.getId();
         this.title = post.getTitle();
+        this.isLike = false;
+        this.createAt = post.getCreatedAt().toString();
+        this.nickname = post.getMember().getNickname();
+        this.likeNum = post.getLikeNum();
+        this.foodImg = content.getImage();
+        this.ingredient = responseDtos;
+    }
+
+    public PostResponseDto(Post post, Content content, List<IngredientResponseDto> responseDtos,
+                           Boolean isLike){
+        this.postId = post.getId();
+        this.title = post.getTitle();
+        this.isLike = true;
         this.createAt = post.getCreatedAt().toString();
         this.nickname = post.getMember().getNickname();
         this.likeNum = post.getLikeNum();

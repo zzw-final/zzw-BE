@@ -12,7 +12,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByOrderByLikeNumDesc();
     List<Post> findAllByTitleContaining(String title);
     List<Post> findAllByMember(Member member);
-
+    List<Post> findAllByMemberOrderByCreatedAtDesc(Member member);
     Post findPostById(Long id);
 
 }
