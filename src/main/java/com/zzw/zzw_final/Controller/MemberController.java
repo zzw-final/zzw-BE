@@ -69,7 +69,7 @@ public class MemberController {
     //네이버 소셜로그인
     @GetMapping(value = "/api/member/login/naver")
     public ResponseDto<?> redirectNaverLogin(@RequestParam(value = "code") String authCode,
-                                             HttpServletResponse response){
-        return naverService.naverLogin(authCode, response);
+                                             HttpServletResponse response, @RequestParam(value = "state", required = false) String state) throws JsonProcessingException {
+        return naverService.naverLogin(authCode, response, state);
     }
 }
