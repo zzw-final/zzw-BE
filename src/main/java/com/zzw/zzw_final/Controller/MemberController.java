@@ -7,6 +7,7 @@ import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Service.GoogleService;
 import com.zzw.zzw_final.Service.KakaoService;
 import com.zzw.zzw_final.Service.MemberService;
+import com.zzw.zzw_final.Service.NaverService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ public class MemberController {
     private final MemberService memberService;
     private final GoogleLoginConfiguration configUtils;
     private final GoogleService googleService;
+    private final NaverService naverService;
 
     // 카카오 소셜로그인
     @GetMapping("/api/member/login/kakao")
@@ -57,9 +59,17 @@ public class MemberController {
         return ResponseEntity.badRequest().build();
     }
 
+    //구글 소셜로그인
     @GetMapping(value = "/api/member/login/google")
     public ResponseDto<?> redirectGoogleLogin(@RequestParam(value = "code") String authCode,
                                               HttpServletResponse response) {
         return googleService.googleLogin(authCode, response);
+    }
+
+    //네이버 소셜로그인
+    @GetMapping(value = "/api/member/login/naver")
+    public ResponseDto<?> redirectNaverLogin(@RequestParam(value = "code") String authCode,
+                                             HttpServletResponse response){
+        return naverService.naverLogin(authCode, response);
     }
 }
