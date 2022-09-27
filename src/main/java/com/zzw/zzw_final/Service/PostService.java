@@ -189,21 +189,36 @@ public class PostService {
             //제일 좋아요 많은 순으로 레시피 리스트에 담기
             List<Post> best_posts = postRepository.findAllByOrderByLikeNumDesc();
             List<PostResponseDto> best_postResponseDtos = new ArrayList<>();
-
-            for(Post post : best_posts){
-                Content content = contentRepository.findContentByPost(post);
-                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-                best_postResponseDtos.add(new PostResponseDto(post, content, ingredientResponseDtos));
+            if (best_posts.size() < 10) {
+                for(int i=0; i < best_posts.size(); i++){
+                    Content content = contentRepository.findContentByPost(best_posts.get(i));
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
+                    best_postResponseDtos.add(new PostResponseDto(best_posts.get(i), content, ingredientResponseDtos));
+                }
+            }else{
+                for(int i=0; i < 10; i++){
+                    Content content = contentRepository.findContentByPost(best_posts.get(i));
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
+                    best_postResponseDtos.add(new PostResponseDto(best_posts.get(i), content, ingredientResponseDtos));
+                }
             }
 
             //제일 최신 순으로 레시피 리스트에 담기
             List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
             List<PostResponseDto> recent_postResponseDtos = new ArrayList<>();
 
-            for(Post post : recent_posts){
-                Content content = contentRepository.findContentByPost(post);
-                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-                recent_postResponseDtos.add(new PostResponseDto(post, content, ingredientResponseDtos));
+            if (recent_posts.size() < 10){
+                for(int i = 0; i < recent_posts.size(); i++){
+                    Content content = contentRepository.findContentByPost(recent_posts.get(i));
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
+                    recent_postResponseDtos.add(new PostResponseDto(recent_posts.get(i), content, ingredientResponseDtos));
+                }
+            }else{
+                for(int i = 0; i < 10; i++){
+                    Content content = contentRepository.findContentByPost(recent_posts.get(i));
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
+                    recent_postResponseDtos.add(new PostResponseDto(recent_posts.get(i), content, ingredientResponseDtos));
+                }
             }
 
             MainPostResponseDto mainPostResponseDto = new MainPostResponseDto(tagResponseDtos, best_postResponseDtos, recent_postResponseDtos);
@@ -220,20 +235,36 @@ public class PostService {
             List<Post> best_posts = postRepository.findAllByOrderByLikeNumDesc();
             List<PostResponseDto> best_postResponseDtos = new ArrayList<>();
 
-            for(Post post : best_posts){
-                Content content = contentRepository.findContentByPost(post);
-                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-                best_postResponseDtos.add(getResponsePostUserLike(member, post, content, ingredientResponseDtos));
+            if (best_posts.size() < 10) {
+                for(int i=0; i < best_posts.size(); i++){
+                    Content content = contentRepository.findContentByPost(best_posts.get(i));
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
+                    best_postResponseDtos.add(new PostResponseDto(best_posts.get(i), content, ingredientResponseDtos));
+                }
+            }else{
+                for(int i=0; i < 10; i++){
+                    Content content = contentRepository.findContentByPost(best_posts.get(i));
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
+                    best_postResponseDtos.add(new PostResponseDto(best_posts.get(i), content, ingredientResponseDtos));
+                }
             }
 
             //제일 최신 순으로 레시피 리스트에 담기
             List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
             List<PostResponseDto> recent_postResponseDtos = new ArrayList<>();
 
-            for(Post post : recent_posts){
-                Content content = contentRepository.findContentByPost(post);
-                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-                recent_postResponseDtos.add(getResponsePostUserLike(member, post, content, ingredientResponseDtos));
+            if (recent_posts.size() < 10){
+                for(int i = 0; i < recent_posts.size(); i++){
+                    Content content = contentRepository.findContentByPost(recent_posts.get(i));
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
+                    recent_postResponseDtos.add(new PostResponseDto(recent_posts.get(i), content, ingredientResponseDtos));
+                }
+            }else{
+                for(int i = 0; i < 10; i++){
+                    Content content = contentRepository.findContentByPost(recent_posts.get(i));
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
+                    recent_postResponseDtos.add(new PostResponseDto(recent_posts.get(i), content, ingredientResponseDtos));
+                }
             }
 
             //팔로우 레시피 리스트 팔로우 당 1개씩 보내기
