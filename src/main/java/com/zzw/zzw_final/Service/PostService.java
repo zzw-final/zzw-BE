@@ -241,8 +241,12 @@ public class PostService {
             List<Post> followPost = new ArrayList<>();
 
             for (Follow follow : follows){
-                List<Post> userPost = postRepository.findAllByMemberOrderByCreatedAtDesc(follow.getMember());
-                followPost.add(userPost.get(0));
+                Long followId = follow.getMember().getId();
+                Member followmember = memberRepository.findMemberById(follow.getMember().getId());
+                List<Post> userPost = postRepository.findAllByMemberOrderByCreatedAtDesc(followmember);
+                if (userPost.size() != 0){
+                    followPost.add(userPost.get(0));
+                }
             }
 
             List<PostResponseDto> follow_postResponseDtos = new ArrayList<>();
@@ -253,7 +257,8 @@ public class PostService {
                 follow_postResponseDtos.add(getResponsePostUserLike(member, post, content, ingredientResponseDtos));
             }
 
-            MainPostResponseDto mainPostResponseDto = new MainPostResponseDto(tagResponseDtos, best_postResponseDtos, recent_postResponseDtos);
+            MainPostResponseDto mainPostResponseDto = new MainPostResponseDto(tagResponseDtos, best_postResponseDtos,
+                    recent_postResponseDtos, follow_postResponseDtos);
             return ResponseDto.success(mainPostResponseDto);
         }
 
