@@ -35,8 +35,10 @@ public enum ErrorCode {
     NOT_GOOGLE("NOT_GOOGLE","구글 로그인이 안됐음"),
 
     //레시피 관련 오류
-    NOTFOUND_POST_ID("NOTFOUND_POST_ID", "해당하는 레시피 id가 없음");
+    NOTFOUND_POST_ID("NOTFOUND_POST_ID", "해당하는 레시피 id가 없음"),
 
+    //팔로우 관련 오류
+    SAME_PERSON("SAME_PERSON","같은 사용자입니다.");
 
     private final String code;
     private final String message;

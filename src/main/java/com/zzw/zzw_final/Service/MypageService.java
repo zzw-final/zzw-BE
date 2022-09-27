@@ -8,9 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Criteria;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.zzw.zzw_final.Dto.ErrorCode.SAME_PERSON;
 
 @Service
 @RequiredArgsConstructor
@@ -113,7 +116,8 @@ public class MypageService {
         }
 
         MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
-                followList.size(), followerlist.size(), responseDtos);
+                followerlist.size(), followList.size(), responseDtos);
+
 
         return ResponseDto.success(responseDto);
     }
@@ -141,6 +145,9 @@ public class MypageService {
         Member member = (Member) result.getData();
 
         Member followMember = memberRepository.findMemberById(member_id);
+        if(member.getId() == followMember.getId()){
+            return ResponseDto.fail(SAME_PERSON);              //예외처리
+        }
 
         Follow follow = followRepository.findFollowByFollowerIdAndMember(member.getId(), followMember);
 
@@ -200,6 +207,49 @@ public class MypageService {
 
         return ResponseDto.success(followResponseDtos);
 
+    }
+
+    public ResponseDto<?> getOthersFollow(Long user_id) {
+
+        Member member = memberRepository.findMemberById(user_id);
+
+        List<Follow> followList = followRepository.findAllByFollowerIdOrderByFollowNicknameAsc(member.getId());
+        List<Member> members = new ArrayList<>();
+        List<FollowResponseDto> followResponseDtos = new ArrayList<>();
+
+        for(Follow follow : followList){
+            Member member1 = memberRepository.findMemberById(follow.getMember().getId());
+            members.add(member1);
+        }
+
+        for(Member member1 : members){
+            FollowResponseDto followResponseDto = new FollowResponseDto(member1);
+            followResponseDtos.add(followResponseDto);
+        }
+
+        return ResponseDto.success(followResponseDtos);
+
+        }
+
+    public ResponseDto<?> getOthersFollower(Long user_id) {
+
+        Member member = memberRepository.findMemberById(user_id);
+
+        List<Follow> followerlist = followRepository.findAllByMemberOrderByFollowerNicknameAsc(member);
+        List<Member> members = new ArrayList<>();
+        List<FollowResponseDto> followerResponseDtos = new ArrayList<>();
+
+        for(Follow follower : followerlist){
+            Member member2 = memberRepository.findMemberById(follower.getFollowerId());
+            members.add(member2);
+        }
+
+        for(Member member2 : members){
+            FollowResponseDto followerResponseDto = new FollowResponseDto(member2);
+            followerResponseDtos.add(followerResponseDto);
+        }
+
+        return ResponseDto.success(followerResponseDtos);
     }
 }
 

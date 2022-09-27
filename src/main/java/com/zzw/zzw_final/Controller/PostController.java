@@ -87,4 +87,6 @@ public class PostController {
     public ResponseDto<?> postLike(@PathVariable Long post_id, HttpServletRequest request){
         return postService.postLike(post_id, request);
     }
+
+
 }
