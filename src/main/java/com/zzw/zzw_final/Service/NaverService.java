@@ -45,17 +45,19 @@ public class NaverService {
         // 2. 토큰으로 네이버 API 호출
         OauthUserDto naverUserDto = getNaverUserInfo(accessToken);
 
-        // 3. 필요시에 회원가입
-        Member naverUsers = registerNaverUserIfNeeded(naverUserDto);
+        // 3. DB에 등록된 유저인지 판별
+        Member naverUsers = memberRepository.findMemberByEmail(naverUserDto.getEmail());
 
-        TokenDto tokenDto = tokenProvider.generateTokenDto(naverUsers);
-
-        response.addHeader("Access-Token", tokenDto.getAccessToken());
-        response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
-
-        OAuthResponseDto oAuthResponseDto = new OAuthResponseDto(naverUsers, tokenDto, accessToken);
-
-        return ResponseDto.success(oAuthResponseDto);
+        if (naverUsers == null){
+            OAuthResponseDto responseDto = new OAuthResponseDto(naverUserDto.getEmail(), accessToken);
+            return ResponseDto.success(responseDto);
+        }else{
+            TokenDto tokenDto = tokenProvider.generateTokenDto(naverUsers);
+            OAuthResponseDto responseDto = new OAuthResponseDto(naverUsers, tokenDto, accessToken);
+            response.addHeader("Authorization", tokenDto.getAccessToken());
+            response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+            return ResponseDto.success(responseDto);
+        }
     }
 
     public String getAccessToken(String code, String state) throws JsonProcessingException {
@@ -114,17 +116,9 @@ public class NaverService {
     }
 
     private Member registerNaverUserIfNeeded(OauthUserDto naverDto) {
-        // DB 에 중복된 naver email 가 있는지 확인
-        String email = naverDto.getEmail();
-        Member naverUser = memberRepository.findMemberByEmail(email);
-
-        if (naverUser == null) {
-
-            // 신규 회원가입
-            naverUser = new Member(naverDto);
-            memberRepository.save(naverUser);
-            forceLogin(naverUser);
-        }
+        Member naverUser = new Member(naverDto);
+        memberRepository.save(naverUser);
+        forceLogin(naverUser);
         return naverUser;
     }
 
