@@ -13,6 +13,7 @@ public class FollowResponseDto {
     private String nickname;
     private String grade;
     private String profile;
+    private Boolean isFollow;
 
 
     public FollowResponseDto(Member member1) {
@@ -20,7 +21,15 @@ public class FollowResponseDto {
         this.nickname = member1.getNickname();
         this.grade = member1.getGrade();
         this.profile = member1.getProfile();
+        this.isFollow = false;
     }
 
 
+    public FollowResponseDto(Member member2, boolean isFollow) {
+        this.userId = member2.getId();
+        this.nickname = member2.getNickname();
+        this.grade = member2.getGrade();
+        this.profile = member2.getProfile();
+        this.isFollow = isFollow;
+    }
 }

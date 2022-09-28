@@ -56,6 +56,7 @@ public class MemberService {
         return ResponseDto.success("success signup");
     }
 
+    // 토큰을 보내줬는지 안보내줬는지 확인하는 함수
     public Member getMember(HttpServletRequest request){
         String token = request.getHeader("Authorization");
         if (token != null){

@@ -78,14 +78,14 @@ public class MyPageController {
 
     //다른 유저 마이페이지에서 팔로우 보기
     @GetMapping("/api/mypage/{user_id}/follow")
-    public ResponseDto<?> getOthersFollow(@PathVariable Long user_id){
-        return mypageService.getOthersFollow(user_id);
+    public ResponseDto<?> getOthersFollow(@PathVariable Long user_id,HttpServletRequest request){
+        return mypageService.getOthersFollow(user_id, request);
     }
 
 
     @GetMapping("/api/mypage/{user_id}/follower")
-    public ResponseDto<?> getOthersFollower(@PathVariable Long user_id){
-        return mypageService.getOthersFollower(user_id);
+    public ResponseDto<?> getOthersFollower(@PathVariable Long user_id, HttpServletRequest request){
+        return mypageService.getOthersFollower(user_id, request);
     }
 
 }
