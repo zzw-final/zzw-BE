@@ -239,13 +239,13 @@ public class PostService {
                 for(int i=0; i < best_posts.size(); i++){
                     Content content = contentRepository.findContentByPost(best_posts.get(i));
                     List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
-                    best_postResponseDtos.add(new PostResponseDto(best_posts.get(i), content, ingredientResponseDtos));
+                    best_postResponseDtos.add(getResponsePostUserLike(member, best_posts.get(i), content, ingredientResponseDtos));
                 }
             }else{
                 for(int i=0; i < 10; i++){
                     Content content = contentRepository.findContentByPost(best_posts.get(i));
                     List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
-                    best_postResponseDtos.add(new PostResponseDto(best_posts.get(i), content, ingredientResponseDtos));
+                    best_postResponseDtos.add(getResponsePostUserLike(member, best_posts.get(i), content, ingredientResponseDtos));
                 }
             }
 
@@ -257,13 +257,13 @@ public class PostService {
                 for(int i = 0; i < recent_posts.size(); i++){
                     Content content = contentRepository.findContentByPost(recent_posts.get(i));
                     List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
-                    recent_postResponseDtos.add(new PostResponseDto(recent_posts.get(i), content, ingredientResponseDtos));
+                    recent_postResponseDtos.add(getResponsePostUserLike(member, recent_posts.get(i), content, ingredientResponseDtos));
                 }
             }else{
                 for(int i = 0; i < 10; i++){
                     Content content = contentRepository.findContentByPost(recent_posts.get(i));
                     List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
-                    recent_postResponseDtos.add(new PostResponseDto(recent_posts.get(i), content, ingredientResponseDtos));
+                    recent_postResponseDtos.add(getResponsePostUserLike(member, recent_posts.get(i), content, ingredientResponseDtos));
                 }
             }
 
