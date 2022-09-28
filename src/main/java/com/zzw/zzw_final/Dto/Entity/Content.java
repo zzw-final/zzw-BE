@@ -33,8 +33,8 @@ public class Content {
         this.post = post;
     }
 
-    public void update(PostRecipeRequestDto requestDto, String url) {
+    public void update(PostRecipeRequestDto requestDto) {
         this.content= requestDto.getContent();
-        this.image = url;
+        this.image = requestDto.getImageUrl();
     }
 }

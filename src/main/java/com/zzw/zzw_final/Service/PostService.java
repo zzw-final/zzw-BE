@@ -97,7 +97,7 @@ public class PostService {
 
     //게시글 수정
     public ResponseDto<?> putRecipe(PostRecipeRequestDto requestDto, HttpServletRequest request,
-                                    MultipartFile multipartFile, Long post_id) {
+                                    Long post_id) {
         //1. HttpServletRequest로 헤더에 있는 유저 확인
 
         //로그인 토큰 유효성 검증하기
@@ -111,38 +111,58 @@ public class PostService {
 
         //3. multipartFile가 null인지 아닌지 확인 후 -> null이면 url 변경 X, null이 아니면 update (Content -> image)
 
-        if(multipartFile != null){
-            //제목, 시간 수정
-            String url = fileUploaderService.uploadImage(multipartFile);
-            post.update(requestDto);
+        //제목, 시간 수정
+        post.update(requestDto);
 
-            //내용, 사진 수정
-            Content content = contentRepository.findContentByPost(post);
-            content.update(requestDto, url);
+        //내용, 사진 수정
+        Content content = contentRepository.findContentByPost(post);
+        content.update(requestDto);
 
-            //태그 수정
-            List<TagList> tagList = tagListRepository.findAllByPost(post);
-            for (TagList tagList1: tagList){
-                tagListRepository.delete(tagList1);
-            }
+        //태그 수정
+        List<TagList> tagLists = tagListRepository.findAllByPost(post);
+        for (TagList tagList1: tagLists){
+            tagListRepository.delete(tagList1);
+        }
 
-            String foodname = requestDto.getFoodName();
-            Tag tag = tagRepository.findTagByName(foodname);   // 이전에 음식 이름이 태그가 된 적이 있는가
+        String foodname = requestDto.getFoodName();
+        Tag tag = tagRepository.findTagByName(foodname);   // 이전에 음식 이름이 태그가 된 적이 있는가
+
+        //이전에 없었던 새로운 태그라면
+        if (tag == null){
+            Tag tag1 = new Tag(foodname);
+            tagRepository.save(tag1);
+            TagList newTagList  = new TagList(foodname, post, tag1, true);
+            tagListRepository.save(newTagList);
+        }
+        //이전에 있었던 태그라면
+        else{
+            TagList newTagList  = new TagList(foodname, post, tag, true);
+            tagListRepository.save(newTagList);
+
+            tag.setCount(tagListRepository.countAllByName(foodname).intValue());
+        }
+
+        //음식 재료 -> 프론트로부터 받은 태그를 Tag, TagList에 저장 및 업데이트
+        List<IngredientRequestDto> ingredients = requestDto.getIngredient();
+
+        for(IngredientRequestDto responseDto : ingredients){
+            String ingredient = responseDto.getIngredientName();
+
+            Tag tag2 = tagRepository.findTagByName(ingredient);
 
             //이전에 없었던 새로운 태그라면
-            if (tag == null){
-                Tag tag1 = new Tag(foodname);
+            if (tag2 == null){
+                Tag tag1 = new Tag(ingredient);
                 tagRepository.save(tag1);
-                TagList newTagList  = new TagList(foodname, post, tag1, true);
-                tagListRepository.save(newTagList);
+                TagList tagList  = new TagList(ingredient, post, tag1, false);
+                tagListRepository.save(tagList);
             }
             //이전에 있었던 태그라면
             else{
-                TagList newTagList  = new TagList(foodname, post, tag, true);
-                tagListRepository.save(newTagList);
+                TagList tagList  = new TagList(ingredient, post, tag2, false);
+                tagListRepository.save(tagList);
 
-                List<TagList> tagLists = tagListRepository.findAllByName(foodname);
-                tag.setCount(tagLists.size());
+                tag2.setCount(tagListRepository.countAllByName(ingredient).intValue());
             }
 
         }

@@ -10,4 +10,6 @@ public interface TagListRepository extends JpaRepository<TagList, Long> {
     List<TagList> findAllByName(String name);
     List<TagList> findAllByPost(Post post);
 
+    Long countAllByName(String name);
+
 }
