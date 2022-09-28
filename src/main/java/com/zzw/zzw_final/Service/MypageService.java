@@ -43,7 +43,7 @@ public class MypageService {
         }
 
         MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
-                followList.size(), followerlist.size(), responseDtos, true);
+                followerlist.size(), followList.size(), responseDtos, true);
 
         return ResponseDto.success(responseDto);
     }
