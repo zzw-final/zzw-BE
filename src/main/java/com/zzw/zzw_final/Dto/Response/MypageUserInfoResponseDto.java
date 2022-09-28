@@ -15,13 +15,16 @@ public class MypageUserInfoResponseDto {
     private int follow;
     private int follower;
     private String profile;
+    private Boolean isFollow;
 
-    public MypageUserInfoResponseDto(Member member, int follow, int follower, List<GradeListResponseDto> gradeList){
+    public MypageUserInfoResponseDto(Member member, int follow, int follower,
+                                     List<GradeListResponseDto> gradeList, Boolean isFollow){
         this.nickname = member.getNickname();
         this.grade = member.getGrade();
         this.profile = member.getProfile();
         this.follow = follow;
         this.follower = follower;
         this.gradeList = gradeList;
+        this.isFollow = isFollow;
     }
 }

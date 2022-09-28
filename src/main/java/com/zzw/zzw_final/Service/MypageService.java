@@ -4,6 +4,7 @@ import com.zzw.zzw_final.Dto.Entity.*;
 import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Repository.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.protocol.HTTP;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +43,7 @@ public class MypageService {
         }
 
         MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
-                followList.size(), followerlist.size(), responseDtos);
+                followList.size(), followerlist.size(), responseDtos, true);
 
         return ResponseDto.success(responseDto);
     }
@@ -100,7 +101,9 @@ public class MypageService {
     }
 
 
-    public ResponseDto<?> getOtherUserInfo(Long user_id) {
+    public ResponseDto<?> getOtherUserInfo(Long user_id, HttpServletRequest request) {
+
+        Member loginMember = memberService.getMember(request);
         Member member = memberRepository.findMemberById(user_id);
 
         List<Follow> followerlist = followRepository.findAllByFollowerId(member.getId());
@@ -112,11 +115,28 @@ public class MypageService {
             responseDtos.add(new GradeListResponseDto(grade.getGradeList()));
         }
 
-        MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
-                followerlist.size(), followList.size(), responseDtos);
+        if(loginMember ==null){
+            MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
+                    followerlist.size(), followList.size(), responseDtos, false);
 
+            return ResponseDto.success(responseDto);
+        }else{
+            Follow follow = followRepository.findFollowByFollowerIdAndMember(loginMember.getId(), member);
 
-        return ResponseDto.success(responseDto);
+            if (follow == null) {
+                MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
+                        followerlist.size(), followList.size(), responseDtos,false);
+
+                return ResponseDto.success(responseDto);
+
+            } else {
+                MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
+                        followerlist.size(), followList.size(), responseDtos,true);
+
+                return ResponseDto.success(responseDto);
+            }
+        }
+
     }
 
     public ResponseDto<?> getOtherUserPosts(Long user_id, HttpServletRequest request) {

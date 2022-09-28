@@ -45,8 +45,8 @@ public class MyPageController {
 
     //마이페이지 다른 유저의 정보 GET
     @GetMapping("/api/mypage/{user_id}")
-    public ResponseDto<?> getOtherUserInfo(@PathVariable Long user_id){
-        return mypageService.getOtherUserInfo(user_id);
+    public ResponseDto<?> getOtherUserInfo(@PathVariable Long user_id, HttpServletRequest request){
+        return mypageService.getOtherUserInfo(user_id, request);
     }
 
     //마이페이지 해당 유저의 쓴 글 GET
