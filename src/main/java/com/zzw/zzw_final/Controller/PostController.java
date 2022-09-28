@@ -30,18 +30,18 @@ public class PostController {
 
 
     //메인페이지 - 검색 (제목)
-    @GetMapping("/api/post/filter/title")
+    @PostMapping("/api/post/filter/title")
     public ResponseDto<?> filterPostTitle(@RequestBody FilterPostByTitleRequestDto requestDto){
         return postService.filterPostTitle(requestDto);
     }
 
     //메인페이지 - 검색 (닉네임)
-    @GetMapping("/api/post/filter/nickname")
+    @PostMapping("/api/post/filter/nickname")
     public ResponseDto<?> filterPostNickname(@RequestBody FilterPostByNicknameRequestDto requestDto){
         return postService.filterPostNickname(requestDto);
     }
 
-    @GetMapping("/api/post/filter/tag")
+    @PostMapping("/api/post/filter/tag")
     public ResponseDto<?> filterPostTag(@RequestBody FilterTagListRequestDto requestDto){
         return postService.filterPostTag(requestDto);
     }
