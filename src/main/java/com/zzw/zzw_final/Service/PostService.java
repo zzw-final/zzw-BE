@@ -335,8 +335,7 @@ public class PostService {
         return ingredientResponseDtos;
     }
 
-    public ResponseDto<?> filterPostTitle(FilterPostByTitleRequestDto requestDto) {
-        String title = requestDto.getTitle();
+    public ResponseDto<?> filterPostTitle(String  title) {
 
         List<Post> posts = postRepository.findAllByTitleContaining(title);
         List<PostResponseDto> Posts = new ArrayList<>();
@@ -350,8 +349,7 @@ public class PostService {
         return ResponseDto.success(Posts);
     }
 
-    public ResponseDto<?> filterPostNickname(FilterPostByNicknameRequestDto requestDto) {
-        String nickname = requestDto.getNickname();
+    public ResponseDto<?> filterPostNickname(String nickname) {
 
         List<Member> members = memberRepository.findAllByNicknameContaining(nickname);
         List<PostResponseDto> responseDtos = new ArrayList<>();
@@ -421,12 +419,14 @@ public class PostService {
         return ResponseDto.success(tagResponseDtos);
     }
 
-    public ResponseDto<?> filterPostTag(FilterTagListRequestDto requestDto) {
+    public ResponseDto<?> filterPostTag(String tag) {
         List<Post> response_posts = new ArrayList<>();
         List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
 
+        String[] tag_list = tag.split(",");
+
         for(Post post : posts){
-            if (isPostinTag(post, requestDto)){
+            if (isPostinTag(post, tag_list)){
                 response_posts.add(post);
             }
         }
@@ -440,19 +440,19 @@ public class PostService {
 
         return ResponseDto.success(responseDtos);
     }
-    public Boolean isPostinTag(Post post, FilterTagListRequestDto requestDto){
+    public Boolean isPostinTag(Post post, String[] tagList){
         int count = 0;
 
-        for(int i=0; i<requestDto.getTagList().size(); i++){
-            String tag = requestDto.getTagList().get(i).getTagName();
+        for(int i=0; i<tagList.length; i++){
+            String tag = tagList[i];
 
-            for (TagList tagList : post.getTagLists()) {
-                if (tagList.getName().equals(tag)) {
+            for (TagList postTag : post.getTagLists()) {
+                if (postTag.getName().equals(tag)) {
                     count ++;
                 }
             }
         }
-        if (count >= requestDto.getTagList().size())
+        if (count >= tagList.length)
             return true;
         else
             return false;
