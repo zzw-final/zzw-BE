@@ -9,8 +9,8 @@ import java.util.List;
 public class PostRecipeRequestDto {
     private String title;
     private String foodName;
-    private String content;
     private String time;
-    private String imageUrl;
-    private List<IngredientRequestDto> ingredient;
+    private String imageUrl; // 대표이미지
+    private List<String> ingredient;
+    private List<PostRecipeDetailRequestDto> pageList;
 }

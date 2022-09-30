@@ -31,7 +31,7 @@ public class PostService {
 
     private final CommentRepository commentRepository;
     @Transactional
-    public ResponseDto<?> postRecipe(PostRecipeRequestDto requestDto, HttpServletRequest request) {
+    public ResponseDto<?> postRecipe(PostRecipeRequestDto requestDto,HttpServletRequest request) {
 
         //로그인 토큰 유효성 검증하기
         ResponseDto<?> result = memberService.checkMember(request);
@@ -62,10 +62,10 @@ public class PostService {
         }
 
         //음식 재료 -> 프론트로부터 받은 태그를 Tag, TagList에 저장 및 업데이트
-        List<IngredientRequestDto> ingredients = requestDto.getIngredient();
+        List<String> ingredients = requestDto.getIngredient();
 
-        for(IngredientRequestDto responseDto : ingredients){
-            String ingredient = responseDto.getIngredientName();
+        for(String ingredientName : ingredients){
+            String ingredient = ingredientName;
 
             Tag tag2 = tagRepository.findTagByName(ingredient);
 
@@ -88,8 +88,10 @@ public class PostService {
         }
 
         //게시글 내용과 이미지를 Content 데이터베이스에 담기
-        Content content = new Content(requestDto.getImageUrl(), requestDto.getContent(), post);
-        contentRepository.save(content);
+        for(PostRecipeDetailRequestDto postRecipeDetailRequestDto : requestDto.getPageList()){
+            Content content = new Content(postRecipeDetailRequestDto, post);
+            contentRepository.save(content);
+        }
 
         return ResponseDto.success("success post");
     }
@@ -143,10 +145,10 @@ public class PostService {
         }
 
         //음식 재료 -> 프론트로부터 받은 태그를 Tag, TagList에 저장 및 업데이트
-        List<IngredientRequestDto> ingredients = requestDto.getIngredient();
+        List<String> ingredients = requestDto.getIngredient();
 
-        for(IngredientRequestDto responseDto : ingredients){
-            String ingredient = responseDto.getIngredientName();
+        for(String responseDto : ingredients){
+            String ingredient = responseDto;
 
             Tag tag2 = tagRepository.findTagByName(ingredient);
 

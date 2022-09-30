@@ -25,6 +25,9 @@ public class Post extends Timestamped{
     private String useremail;
 
     @Column
+    private String thumbnail;
+
+    @Column
     private int likeNum;
 
     @Column
@@ -49,6 +52,7 @@ public class Post extends Timestamped{
     public Post(PostRecipeRequestDto requestDto, Member member){
         this.title = requestDto.getTitle();
         this.time = requestDto.getTime();
+        this.thumbnail = requestDto.getImageUrl();
         this.likeNum = 0;
         this.member = member;
         this.useremail = member.getEmail();
