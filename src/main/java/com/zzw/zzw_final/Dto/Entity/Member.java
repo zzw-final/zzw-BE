@@ -72,6 +72,14 @@ public class Member {
         this.profile = "https://zzwimage.s3.ap-northeast-2.amazonaws.com/zzw.-removebg-preview.png";
     }
 
+    public Member(OauthUserDto oauthUserDto){
+        this.nickname = "naver";
+        this.email = oauthUserDto.getEmail();
+        this.grade = "준비중";
+        this.profile = "https://postimagestorage.s3.amazonaws.com/mini_project/zzw.-removebg-preview.png";
+        this.oauth = "naverUser";
+    }
+
     public void update(String nickname) {
         this.nickname = nickname;
     }
