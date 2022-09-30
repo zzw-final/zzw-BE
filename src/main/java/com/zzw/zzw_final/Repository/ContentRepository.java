@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ContentRepository extends JpaRepository<Content, Long> {
     Content findContentByPost(Post post);
+    Content findContentByPostAndPage(Post post, int page);
 
 }

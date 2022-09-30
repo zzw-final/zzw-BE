@@ -71,9 +71,8 @@ public class MypageService {
         List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
 
         for (Post post : posts) {
-            Content content = contentRepository.findContentByPost(post);
             List<IngredientResponseDto> ingredientResponseDtos = postService.getIngredientByPost(post);
-            userPostResponseDtos.add(postService.getResponsePostUserLike(member, post, content, ingredientResponseDtos));
+            userPostResponseDtos.add(postService.getResponsePostUserLike(member, post, ingredientResponseDtos));
         }
         return ResponseDto.success(userPostResponseDtos);
     }
@@ -92,9 +91,8 @@ public class MypageService {
         List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
 
         for (Post post : posts) {
-            Content content = contentRepository.findContentByPost(post);
             List<IngredientResponseDto> ingredientResponseDtos = postService.getIngredientByPost(post);
-            userPostResponseDtos.add(postService.getResponsePostUserLike(member, post, content, ingredientResponseDtos));
+            userPostResponseDtos.add(postService.getResponsePostUserLike(member, post, ingredientResponseDtos));
         }
 
         return ResponseDto.success(userPostResponseDtos);
@@ -148,9 +146,8 @@ public class MypageService {
         List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
 
         for (Post post : posts) {
-            Content content = contentRepository.findContentByPost(post);
             List<IngredientResponseDto> ingredientResponseDtos = postService.getIngredientByPost(post);
-            userPostResponseDtos.add(postService.getResponsePostUserLike(loginMember, post, content, ingredientResponseDtos));
+            userPostResponseDtos.add(postService.getResponsePostUserLike(loginMember, post, ingredientResponseDtos));
         }
         return ResponseDto.success(userPostResponseDtos);
     }

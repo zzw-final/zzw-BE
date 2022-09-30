@@ -49,6 +49,18 @@ public class PostController {
         return postService.getRecipe(post_id, request);
     }
 
+    //상세페이지 -> 해당 게시글 댓글 GET
+    @GetMapping("/api/post/{post_id}/comment")
+    public ResponseDto<?> getRecipeComment(@PathVariable Long post_id){
+        return postService.getRecipeComment(post_id);
+    }
+
+
+    //상세페이지 -> 페이지 별로 데이터 GET
+    @GetMapping("/api/post/{post_id}/{page}")
+    public ResponseDto<?> getRecipeByPage(@PathVariable Long post_id, @PathVariable int page){
+        return postService.getRecipeByPage(post_id, page);
+    }
 
     //상세페이지 -> 레시피 등록 POST
     @PostMapping("/api/auth/post")
