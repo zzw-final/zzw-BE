@@ -2,16 +2,20 @@ package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.Member;
+import com.zzw.zzw_final.Dto.Entity.RefreshToken;
 import com.zzw.zzw_final.Dto.Request.IntegrationMemberRequestDto;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Dto.TokenDto;
 import com.zzw.zzw_final.Repository.MemberRepository;
+import com.zzw.zzw_final.Repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.Optional;
 
 import static com.zzw.zzw_final.Dto.ErrorCode.INVALID_TOKEN;
 import static com.zzw.zzw_final.Dto.ErrorCode.NULL_TOKEN;
@@ -22,6 +26,7 @@ public class MemberService {
 
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public ResponseDto<?> checkMember(HttpServletRequest request){
 
@@ -71,6 +76,10 @@ public class MemberService {
 
     public ResponseDto<?> resignMember(Long member_id) {
         Member member = memberRepository.findMemberById(member_id);
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByMember(member);
+        if (refreshToken != null){
+            refreshTokenRepository.delete(refreshToken.get());
+        }
         memberRepository.delete(member);
 
         return ResponseDto.success("success member delete!");
