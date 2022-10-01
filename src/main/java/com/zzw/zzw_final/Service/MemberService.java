@@ -1,12 +1,14 @@
 package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
+import com.zzw.zzw_final.Dto.Entity.Follow;
 import com.zzw.zzw_final.Dto.Entity.Member;
 import com.zzw.zzw_final.Dto.Entity.RefreshToken;
 import com.zzw.zzw_final.Dto.Request.IntegrationMemberRequestDto;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Dto.TokenDto;
+import com.zzw.zzw_final.Repository.FollowRepository;
 import com.zzw.zzw_final.Repository.MemberRepository;
 import com.zzw.zzw_final.Repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.zzw.zzw_final.Dto.ErrorCode.INVALID_TOKEN;
@@ -27,6 +30,7 @@ public class MemberService {
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final FollowRepository followRepository;
 
     public ResponseDto<?> checkMember(HttpServletRequest request){
 
@@ -79,6 +83,10 @@ public class MemberService {
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findByMember(member);
         if (refreshToken != null){
             refreshTokenRepository.delete(refreshToken.get());
+        }
+        List<Follow> followList = followRepository.findAllByFollowerId(member_id);
+        for (Follow follow : followList){
+            followRepository.delete(follow);
         }
         memberRepository.delete(member);
 
