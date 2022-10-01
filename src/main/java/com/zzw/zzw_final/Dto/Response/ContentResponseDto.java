@@ -7,9 +7,11 @@ import lombok.Getter;
 public class ContentResponseDto {
     private String imageUrl;
     private String content;
+    private int page;
 
     public ContentResponseDto(Content content){
         this.imageUrl = content.getImage();
         this.content = content.getContent();
+        this.page = content.getPage();
     }
 }

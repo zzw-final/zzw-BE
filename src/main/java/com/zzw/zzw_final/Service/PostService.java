@@ -329,21 +329,26 @@ public class PostService {
         return ingredientResponseDtos;
     }
 
-    public ResponseDto<?> filterPostTitle(String  title) {
+    public ResponseDto<?> filterPostTitle(String  title, HttpServletRequest request) {
+
+        Member member = memberService.getMember(request);
 
         List<Post> posts = postRepository.findAllByTitleContaining(title);
         List<PostResponseDto> Posts = new ArrayList<>();
 
         for(Post post : posts){
-            Content content = contentRepository.findContentByPost(post);
             List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-            Posts.add(new PostResponseDto(post, ingredientResponseDtos));
+            if (member != null)
+                Posts.add(getResponsePostUserLike(member, post, ingredientResponseDtos));
+            else
+                Posts.add(new PostResponseDto(post, ingredientResponseDtos, false));
         }
 
         return ResponseDto.success(Posts);
     }
 
-    public ResponseDto<?> filterPostNickname(String nickname) {
+    public ResponseDto<?> filterPostNickname(String nickname, HttpServletRequest request) {
+        Member loginMember = memberService.getMember(request);
 
         List<Member> members = memberRepository.findAllByNicknameContaining(nickname);
         List<PostResponseDto> responseDtos = new ArrayList<>();
@@ -351,9 +356,11 @@ public class PostService {
         for (Member member : members){
             List<Post> posts = postRepository.findAllByMember(member);
             for(Post post : posts){
-                Content content = contentRepository.findContentByPost(post);
                 List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-                responseDtos.add(new PostResponseDto(post, ingredientResponseDtos));
+                if (loginMember != null)
+                    responseDtos.add(getResponsePostUserLike(loginMember, post, ingredientResponseDtos));
+                else
+                    responseDtos.add(new PostResponseDto(post, ingredientResponseDtos));
             }
         }
         return ResponseDto.success(responseDtos);
@@ -375,22 +382,31 @@ public class PostService {
             responseDtos.add(new IngredientResponseDto(tagList));
         }
 
+        //레시피 별 페이지 내용 가져오기
+        List<ContentResponseDto> contentResponseDtos = new ArrayList<>();
+        List<Content> contentList = contentRepository.findAllByPostOrderByPage(post);
+        for (Content content : contentList){
+            contentResponseDtos.add(new ContentResponseDto(content));
+        }
+
+        //댓글 가져오기
         List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
         for (Comment comment : commentList)
             commentResponseDtos.add(new CommentResponseDto(comment));
 
+
         if (member == null){
-            TimeResponseDto timeResponseDto = new TimeResponseDto(post, responseDtos, false);
+            TimeResponseDto timeResponseDto = new TimeResponseDto(post, responseDtos, false, contentResponseDtos);
             return ResponseDto.success(timeResponseDto);
         }
         else {
             PostLike postLikes = postLikeRepository.findPostLikesByPostAndMember(post, member);
             if (postLikes == null){
-                TimeResponseDto timeResponseDto = new TimeResponseDto(post, responseDtos, false);
+                TimeResponseDto timeResponseDto = new TimeResponseDto(post, responseDtos, false, contentResponseDtos);
                 return ResponseDto.success(timeResponseDto);
             }else{
-                TimeResponseDto timeResponseDto = new TimeResponseDto(post, responseDtos, true);
+                TimeResponseDto timeResponseDto = new TimeResponseDto(post, responseDtos, true, contentResponseDtos);
                 return ResponseDto.success(timeResponseDto);
             }
         }
@@ -412,7 +428,9 @@ public class PostService {
         return ResponseDto.success(tagResponseDtos);
     }
 
-    public ResponseDto<?> filterPostTag(String tag) {
+    public ResponseDto<?> filterPostTag(String tag, HttpServletRequest request) {
+        Member loginMember = memberService.getMember(request);
+
         List<Post> response_posts = new ArrayList<>();
         List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
 
@@ -426,9 +444,11 @@ public class PostService {
 
         List<PostResponseDto> responseDtos = new ArrayList<>();
         for(Post post : response_posts){
-            Content content = contentRepository.findContentByPost(post);
             List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-            responseDtos.add(new PostResponseDto(post, ingredientResponseDtos));
+            if (loginMember != null)
+                responseDtos.add(getResponsePostUserLike(loginMember, post, ingredientResponseDtos));
+            else
+                responseDtos.add(new PostResponseDto(post, ingredientResponseDtos));
         }
 
         return ResponseDto.success(responseDtos);
