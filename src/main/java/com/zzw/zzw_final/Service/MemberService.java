@@ -68,4 +68,10 @@ public class MemberService {
         return null;
     }
 
+    public ResponseDto<?> resignMember(Long member_id) {
+        Member member = memberRepository.findMemberById(member_id);
+        memberRepository.delete(member);
+
+        return ResponseDto.success("success member delete!");
+    }
 }
