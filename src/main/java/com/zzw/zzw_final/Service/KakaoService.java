@@ -54,16 +54,21 @@ public class KakaoService {
 
         Member member = memberRepository.findMemberByEmail(kakaoUserInfo.getEmail());
 
-
         if (member == null){
-            OAuthResponseDto responseDto = new OAuthResponseDto(kakaoUserInfo.getEmail(), kakaoToken);
+            OAuthResponseDto responseDto = new OAuthResponseDto(kakaoUserInfo.getEmail(), kakaoToken, "kakao", false);
             return ResponseDto.success(responseDto);
-        }else{
-            TokenDto tokenDto = jwtTokenProvider.generateTokenDto(member);
-            OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, kakaoToken);
-            response.addHeader("Authorization", tokenDto.getAccessToken());
-            response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
-            return ResponseDto.success(responseDto);
+        } else{
+            String oauth = member.getOauth();
+            if (!oauth.contains("kakao")){
+                OAuthResponseDto responseDto = new OAuthResponseDto(kakaoUserInfo.getEmail(), kakaoToken, "kakao", true);
+                return ResponseDto.success(responseDto);
+            }else{
+                TokenDto tokenDto = jwtTokenProvider.generateTokenDto(member);
+                OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, kakaoToken);
+                response.addHeader("Authorization", tokenDto.getAccessToken());
+                response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+                return ResponseDto.success(responseDto);
+            }
         }
 
     }

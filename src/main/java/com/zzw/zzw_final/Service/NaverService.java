@@ -49,14 +49,20 @@ public class NaverService {
         Member naverUsers = memberRepository.findMemberByEmail(naverUserDto.getEmail());
 
         if (naverUsers == null){
-            OAuthResponseDto responseDto = new OAuthResponseDto(naverUserDto.getEmail(), accessToken);
+            OAuthResponseDto responseDto = new OAuthResponseDto(naverUserDto.getEmail(), accessToken, "naver", false);
             return ResponseDto.success(responseDto);
         }else{
-            TokenDto tokenDto = tokenProvider.generateTokenDto(naverUsers);
-            OAuthResponseDto responseDto = new OAuthResponseDto(naverUsers, tokenDto, accessToken);
-            response.addHeader("Authorization", tokenDto.getAccessToken());
-            response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
-            return ResponseDto.success(responseDto);
+            String oauth = naverUsers.getOauth();
+            if (!oauth.contains("naver")){
+                OAuthResponseDto responseDto = new OAuthResponseDto(naverUserDto.getEmail(), accessToken, "naver", true);
+                return ResponseDto.success(responseDto);
+            }else{
+                TokenDto tokenDto = tokenProvider.generateTokenDto(naverUsers);
+                OAuthResponseDto responseDto = new OAuthResponseDto(naverUsers, tokenDto, accessToken);
+                response.addHeader("Authorization", tokenDto.getAccessToken());
+                response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+                return ResponseDto.success(responseDto);
+            }
         }
     }
 

@@ -38,18 +38,25 @@ public class GoogleService {
 
         //authCode를 가지고 구글 유저 가져오기
         GoogleLoginDto googleUser = FindGoogleUser(authCode);
+        Member googleMember = memberRepository.findMemberByEmail(googleUser.getEmail());
 
         if (!isUser(googleUser.getEmail())){
-            OAuthResponseDto responseDto = new OAuthResponseDto(googleUser.getEmail(), "googleToken");
+            OAuthResponseDto responseDto = new OAuthResponseDto(googleUser.getEmail(), "googleToken", "google", false);
             return ResponseDto.success(responseDto);
         }else{
-            Member member = memberRepository.findMemberByEmail(googleUser.getEmail());
-            TokenDto tokenDto = tokenProvider.generateTokenDto(member);
-            response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
-            response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+            String oauth = googleMember.getOauth();
+            if (!oauth.contains("google")){
+                OAuthResponseDto responseDto = new OAuthResponseDto(googleUser.getEmail(), "googleToken", "google", true);
+                return ResponseDto.success(responseDto);
+            }else{
+                Member member = memberRepository.findMemberByEmail(googleUser.getEmail());
+                TokenDto tokenDto = tokenProvider.generateTokenDto(member);
+                response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
+                response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
 
-            OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, "googleToken");
-            return ResponseDto.success(responseDto);
+                OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, "googleToken");
+                return ResponseDto.success(responseDto);
+            }
         }
     }
 

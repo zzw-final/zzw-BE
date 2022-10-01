@@ -2,6 +2,7 @@ package com.zzw.zzw_final.Controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zzw.zzw_final.Config.GoogleLoginConfiguration;
+import com.zzw.zzw_final.Dto.Request.IntegrationMemberRequestDto;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Service.GoogleService;
@@ -76,5 +77,10 @@ public class MemberController {
     public ResponseDto<?> redirectNaverLogin(@RequestParam(value = "code") String authCode,
                                              HttpServletResponse response, @RequestParam(value = "state", required = false) String state) throws JsonProcessingException {
         return naverService.naverLogin(authCode, response, state);
+    }
+
+    @PutMapping("/api/member/integration")
+    public ResponseDto<?> integrationMember(@RequestBody IntegrationMemberRequestDto requestDto){
+        return memberService.integrationMember(requestDto);
     }
 }

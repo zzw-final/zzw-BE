@@ -67,7 +67,7 @@ public class Member {
     public Member(SignupRequestDto requestDto){
         this.nickname = requestDto.getNickname();
         this.email = requestDto.getEmail();
-        this.oauth = "통합";
+        this.oauth = requestDto.getOauth();
         this.grade = "사이트의 개발자";
         this.profile = "https://zzwimage.s3.ap-northeast-2.amazonaws.com/zzw.-removebg-preview.png";
     }
@@ -80,7 +80,7 @@ public class Member {
         this.oauth = "naverUser";
     }
 
-    public void update(String nickname) {
-        this.nickname = nickname;
+    public void updateOauth(String new_oauth) {
+        this.oauth = new_oauth;
     }
 }

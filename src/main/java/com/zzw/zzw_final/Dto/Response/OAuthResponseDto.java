@@ -10,6 +10,7 @@ import lombok.Setter;
 public class OAuthResponseDto {
     private String email;
     private Boolean isFirst;
+    private Boolean isDuplicate;
     private String nickname;
     private String grade;
     private Long userId;
@@ -17,11 +18,21 @@ public class OAuthResponseDto {
     private String accessToken;
     private String refreshToken;
     private String oauthToken;
+    private String oauth;
 
-    public OAuthResponseDto(String email, String oauthToken) {
+    public OAuthResponseDto(String email, String oauthToken, String oauth) {
         this.email = email;
         this.oauthToken = oauthToken;
+        this.oauth = oauth;
         this.isFirst = true;
+    }
+
+    public OAuthResponseDto(String email, String oauthToken, String oauth, Boolean isDuplicate) {
+        this.email = email;
+        this.oauthToken = oauthToken;
+        this.oauth = oauth;
+        this.isFirst = true;
+        this.isDuplicate = isDuplicate;
     }
 
     public OAuthResponseDto(Member member, TokenDto tokenDto, String oauthToken){

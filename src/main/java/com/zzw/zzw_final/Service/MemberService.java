@@ -2,6 +2,7 @@ package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.Member;
+import com.zzw.zzw_final.Dto.Request.IntegrationMemberRequestDto;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Dto.TokenDto;
@@ -73,5 +74,16 @@ public class MemberService {
         memberRepository.delete(member);
 
         return ResponseDto.success("success member delete!");
+    }
+
+    public ResponseDto<?> integrationMember(IntegrationMemberRequestDto requestDto) {
+        Member member = memberRepository.findMemberByEmail(requestDto.getEmail());
+        String oauth = member.getOauth();
+        String new_oauth = oauth + "," + requestDto.getOauth();
+
+        member.updateOauth(new_oauth);
+        memberRepository.save(member);
+
+        return ResponseDto.success("success integration");
     }
 }
