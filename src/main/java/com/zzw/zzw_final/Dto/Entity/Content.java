@@ -48,4 +48,10 @@ public class Content {
         //this.content= requestDto.getContent();
         this.image = requestDto.getImageUrl();
     }
+
+    public void update(PostRecipeDetailRequestDto postRecipeDetailRequestDto) {
+        this.image = postRecipeDetailRequestDto.getImageUrl();
+        this.content = postRecipeDetailRequestDto.getContent();
+        this.page = postRecipeDetailRequestDto.getPage();
+    }
 }

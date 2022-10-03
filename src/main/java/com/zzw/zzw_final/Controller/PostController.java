@@ -58,7 +58,6 @@ public class PostController {
         return postService.getRecipeComment(post_id);
     }
 
-
     //상세페이지 -> 페이지 별로 데이터 GET
     @GetMapping("/api/post/{post_id}/{page}")
     public ResponseDto<?> getRecipeByPage(@PathVariable Long post_id, @PathVariable int page){
@@ -71,17 +70,20 @@ public class PostController {
         return postService.postRecipe(requestDto, request);
     }
 
+
+
     @PutMapping("/api/auth/post/{post_id}")
     public ResponseDto<?> putRecipe(@RequestBody PostRecipeRequestDto requestDto, HttpServletRequest request,
                                     @PathVariable Long post_id){
         return postService.putRecipe(requestDto, request, post_id);
     }
 
+
+
     @PostMapping("/api/post/image")
     public ResponseDto<?> postImage(@RequestPart(value = "file") MultipartFile multipartFile){
         return postService.postImage(multipartFile);
     }
-
 
     @DeleteMapping("/api/auth/post/{post_id}")
     public ResponseDto<?> deleteRecipe(HttpServletRequest request, @PathVariable Long post_id){

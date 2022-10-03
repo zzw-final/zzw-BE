@@ -61,6 +61,7 @@ public class Post extends Timestamped{
     public void update(PostRecipeRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.time = requestDto.getTime();
+        this.thumbnail = requestDto.getImageUrl();
     }
 
     public void update(int likeNum) {

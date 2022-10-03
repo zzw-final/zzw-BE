@@ -10,5 +10,6 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     Content findContentByPost(Post post);
     Content findContentByPostAndPage(Post post, int page);
     List<Content> findAllByPostOrderByPage(Post post);
+    Content deleteContentByPostAndPage(Post post, int page);
 
 }
