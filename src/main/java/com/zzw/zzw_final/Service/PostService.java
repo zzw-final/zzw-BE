@@ -204,7 +204,7 @@ public class PostService {
             return ResponseDto.success("success delete");
     }
 
-    public ResponseDto<?> getBestRecipe (HttpServletRequest request){
+    public ResponseDto<?> getBestRecipe(HttpServletRequest request){
 
         Member member = memberService.getMember(request);
 
@@ -269,7 +269,6 @@ public class PostService {
                 }
             } else {
                 for (int i = 0; i < 10; i++) {
-                    Content content = contentRepository.findContentByPost(best_posts.get(i));
                     List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
                     best_postResponseDtos.add(getResponsePostUserLike(member, best_posts.get(i), ingredientResponseDtos));
                 }
