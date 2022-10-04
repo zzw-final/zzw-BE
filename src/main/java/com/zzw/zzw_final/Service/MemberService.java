@@ -6,6 +6,7 @@ import com.zzw.zzw_final.Dto.Entity.Member;
 import com.zzw.zzw_final.Dto.Entity.RefreshToken;
 import com.zzw.zzw_final.Dto.Request.IntegrationMemberRequestDto;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
+import com.zzw.zzw_final.Dto.Response.IntegrationResponseDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Dto.TokenDto;
 import com.zzw.zzw_final.Repository.FollowRepository;
@@ -101,6 +102,9 @@ public class MemberService {
         member.updateOauth(new_oauth);
         memberRepository.save(member);
 
-        return ResponseDto.success("success integration");
+        TokenDto tokenDto = tokenProvider.generateTokenDto(member);
+        IntegrationResponseDto responseDto = new IntegrationResponseDto(member, tokenDto);
+
+        return ResponseDto.success(responseDto);
     }
 }
