@@ -46,23 +46,24 @@ public class NaverService {
         OauthUserDto naverUserDto = getNaverUserInfo(accessToken);
 
         // 3. DB에 등록된 유저인지 판별
-        Member naverUsers = memberRepository.findMemberByEmail(naverUserDto.getEmail());
+        List<Member> members = memberRepository.findAllByEmail(naverUserDto.getEmail());
 
-        if (naverUsers == null){
+        if (members.size() == 0){
             OAuthResponseDto responseDto = new OAuthResponseDto(naverUserDto.getEmail(), accessToken, "naver", false);
             return ResponseDto.success(responseDto);
         }else{
-            String oauth = naverUsers.getOauth();
-            if (!oauth.contains("naver")){
-                OAuthResponseDto responseDto = new OAuthResponseDto(naverUserDto.getEmail(), accessToken, "naver", true);
-                return ResponseDto.success(responseDto);
-            }else{
-                TokenDto tokenDto = tokenProvider.generateTokenDto(naverUsers);
-                OAuthResponseDto responseDto = new OAuthResponseDto(naverUsers, tokenDto, accessToken);
-                response.addHeader("Authorization", tokenDto.getAccessToken());
-                response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
-                return ResponseDto.success(responseDto);
+            for(Member member : members){
+                String oauth = member.getOauth();
+                if (oauth.contains("naver")){
+                    TokenDto tokenDto = tokenProvider.generateTokenDto(member);
+                    OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, accessToken, "naver");
+                    response.addHeader("Authorization", tokenDto.getAccessToken());
+                    response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+                    return ResponseDto.success(responseDto);
+                }
             }
+            OAuthResponseDto responseDto = new OAuthResponseDto(naverUserDto.getEmail(), accessToken, "naver", true);
+            return ResponseDto.success(responseDto);
         }
     }
 

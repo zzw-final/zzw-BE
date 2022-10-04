@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 @Service
@@ -38,32 +39,26 @@ public class GoogleService {
 
         //authCode를 가지고 구글 유저 가져오기
         GoogleLoginDto googleUser = FindGoogleUser(authCode);
-        Member googleMember = memberRepository.findMemberByEmail(googleUser.getEmail());
+        List<Member> members = memberRepository.findAllByEmail(googleUser.getEmail());
 
-        if (!isUser(googleUser.getEmail())){
+        if (members.size() == 0){
             OAuthResponseDto responseDto = new OAuthResponseDto(googleUser.getEmail(), "googleToken", "google", false);
             return ResponseDto.success(responseDto);
         }else{
-            String oauth = googleMember.getOauth();
-            if (!oauth.contains("google")){
-                OAuthResponseDto responseDto = new OAuthResponseDto(googleUser.getEmail(), "googleToken", "google", true);
-                return ResponseDto.success(responseDto);
-            }else{
-                Member member = memberRepository.findMemberByEmail(googleUser.getEmail());
-                TokenDto tokenDto = tokenProvider.generateTokenDto(member);
-                response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
-                response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+            for(Member member : members){
+                String oauth = member.getOauth();
+                if (oauth.contains("google")){
+                    TokenDto tokenDto = tokenProvider.generateTokenDto(member);
+                    response.addHeader("Authorization", tokenDto.getAccessToken());
+                    response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
 
-                OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, "googleToken");
-                return ResponseDto.success(responseDto);
+                    OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, "googleToken", "google");
+                    return ResponseDto.success(responseDto);
+                }
             }
+            OAuthResponseDto responseDto = new OAuthResponseDto(googleUser.getEmail(), "googleToken", "google", true);
+            return ResponseDto.success(responseDto);
         }
-    }
-
-    private Member register(GoogleLoginDto googleUser) {
-        Member member = new Member(googleUser);
-        memberRepository.save(member);
-        return member;
     }
 
     public GoogleLoginDto FindGoogleUser(String code){
@@ -112,13 +107,5 @@ public class GoogleService {
         }
 
         return null;
-    }
-
-    public Boolean isUser(String email){
-        Member member = memberRepository.findMemberByEmail(email);
-        if (member == null)
-            return false;
-        else
-            return true;
     }
 }

@@ -202,351 +202,351 @@ public class PostService {
             }
 
             return ResponseDto.success("success delete");
-        }
+    }
 
-        public ResponseDto<?> getBestRecipe (HttpServletRequest request){
+    public ResponseDto<?> getBestRecipe (HttpServletRequest request){
 
-            Member member = memberService.getMember(request);
+        Member member = memberService.getMember(request);
 
-            //베스트만 보여주기 (팔로우, 팔로워 X)
-            if (member == null) {
-                //제일 등록된 태그 상위 5개 리스트에 담기
-                List<Tag> tags = tagRepository.findAllByOrderByCountDesc();
-                List<BestTagResponseDto> tagResponseDtos = new ArrayList<>();
-
-                for (int i = 0; i < 5; i++)
-                    tagResponseDtos.add(new BestTagResponseDto(tags.get(i)));
-
-                //제일 좋아요 많은 순으로 레시피 리스트에 담기
-                List<Post> best_posts = postRepository.findAllByOrderByLikeNumDesc();
-                List<PostResponseDto> best_postResponseDtos = new ArrayList<>();
-                if (best_posts.size() < 10) {
-                    for (int i = 0; i < best_posts.size(); i++) {
-                        List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
-                        best_postResponseDtos.add(new PostResponseDto(best_posts.get(i), ingredientResponseDtos));
-                    }
-                } else {
-                    for (int i = 0; i < 10; i++) {
-                        List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
-                        best_postResponseDtos.add(new PostResponseDto(best_posts.get(i), ingredientResponseDtos));
-                    }
-                }
-
-                //제일 최신 순으로 레시피 리스트에 담기
-                List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
-                List<PostResponseDto> recent_postResponseDtos = new ArrayList<>();
-
-                if (recent_posts.size() < 10) {
-                    for (int i = 0; i < recent_posts.size(); i++) {
-                        List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
-                        recent_postResponseDtos.add(new PostResponseDto(recent_posts.get(i), ingredientResponseDtos));
-                    }
-                } else {
-                    for (int i = 0; i < 10; i++) {
-                        List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
-                        recent_postResponseDtos.add(new PostResponseDto(recent_posts.get(i), ingredientResponseDtos));
-                    }
-                }
-
-                MainPostResponseDto mainPostResponseDto = new MainPostResponseDto(tagResponseDtos, best_postResponseDtos, recent_postResponseDtos);
-                return ResponseDto.success(mainPostResponseDto);
-            } else {
-                //제일 등록된 태그 상위 5개 리스트에 담기
-                List<Tag> tags = tagRepository.findAllByOrderByCountDesc();
-                List<BestTagResponseDto> tagResponseDtos = new ArrayList<>();
-
-                for (int i = 0; i < 5; i++)
-                    tagResponseDtos.add(new BestTagResponseDto(tags.get(i)));
-
-                //제일 좋아요 많은 순으로 레시피 리스트에 담기
-                List<Post> best_posts = postRepository.findAllByOrderByLikeNumDesc();
-                List<PostResponseDto> best_postResponseDtos = new ArrayList<>();
-
-                if (best_posts.size() < 10) {
-                    for (int i = 0; i < best_posts.size(); i++) {
-                        List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
-                        best_postResponseDtos.add(getResponsePostUserLike(member, best_posts.get(i), ingredientResponseDtos));
-                    }
-                } else {
-                    for (int i = 0; i < 10; i++) {
-                        Content content = contentRepository.findContentByPost(best_posts.get(i));
-                        List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
-                        best_postResponseDtos.add(getResponsePostUserLike(member, best_posts.get(i), ingredientResponseDtos));
-                    }
-                }
-
-                //제일 최신 순으로 레시피 리스트에 담기
-                List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
-                List<PostResponseDto> recent_postResponseDtos = new ArrayList<>();
-
-                if (recent_posts.size() < 10) {
-                    for (int i = 0; i < recent_posts.size(); i++) {
-                        List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
-                        recent_postResponseDtos.add(getResponsePostUserLike(member, recent_posts.get(i), ingredientResponseDtos));
-                    }
-                } else {
-                    for (int i = 0; i < 10; i++) {
-                        List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
-                        recent_postResponseDtos.add(getResponsePostUserLike(member, recent_posts.get(i), ingredientResponseDtos));
-                    }
-                }
-
-                //팔로우 레시피 리스트 팔로우 당 1개씩 보내기
-                List<Follow> follows = followRepository.findAllByFollowerId(member.getId());
-                List<Post> followPost = new ArrayList<>();
-
-                for (Follow follow : follows) {
-                    Long followId = follow.getMember().getId();
-                    Member followmember = memberRepository.findMemberById(follow.getMember().getId());
-                    List<Post> userPost = postRepository.findAllByMemberOrderByCreatedAtDesc(followmember);
-                    if (userPost.size() != 0) {
-                        followPost.add(userPost.get(0));
-                    }
-                }
-
-                List<PostResponseDto> follow_postResponseDtos = new ArrayList<>();
-
-                for (Post post : followPost) {
-                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-                    follow_postResponseDtos.add(getResponsePostUserLike(member, post, ingredientResponseDtos));
-                }
-
-                MainPostResponseDto mainPostResponseDto = new MainPostResponseDto(tagResponseDtos, best_postResponseDtos,
-                        recent_postResponseDtos, follow_postResponseDtos);
-                return ResponseDto.success(mainPostResponseDto);
-            }
-        }
-
-        // 유저가 해당 게시물에 좋아요 했는지 여부를 판단해서 Dto로 반환하는 함수
-        public PostResponseDto getResponsePostUserLike (Member member, Post
-        post, List < IngredientResponseDto > ingredientResponseDtos){
-            PostLike postLike = postLikeRepository.findPostLikesByPostAndMember(post, member);
-            if (postLike == null) {
-                return new PostResponseDto(post, ingredientResponseDtos);
-            } else {
-                return new PostResponseDto(post, ingredientResponseDtos, true);
-            }
-        }
-
-        public List<IngredientResponseDto> getIngredientByPost (Post post){
-            List<TagList> tagLists = tagListRepository.findAllByPost(post);
-            List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
-            for (TagList tagList : tagLists)
-                ingredientResponseDtos.add(new IngredientResponseDto(tagList));
-
-            return ingredientResponseDtos;
-        }
-
-        public ResponseDto<?> filterPostTitle (String title, HttpServletRequest request){
-
-            Member member = memberService.getMember(request);
-
-            List<Post> posts = postRepository.findAllByTitleContaining(title);
-            List<PostResponseDto> Posts = new ArrayList<>();
-
-            for (Post post : posts) {
-                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-                if (member != null)
-                    Posts.add(getResponsePostUserLike(member, post, ingredientResponseDtos));
-                else
-                    Posts.add(new PostResponseDto(post, ingredientResponseDtos, false));
-            }
-
-            return ResponseDto.success(Posts);
-        }
-
-        public ResponseDto<?> filterPostNickname (String nickname, HttpServletRequest request){
-            Member loginMember = memberService.getMember(request);
-
-            List<Member> members = memberRepository.findAllByNicknameContaining(nickname);
-            List<PostResponseDto> responseDtos = new ArrayList<>();
-
-            for (Member member : members) {
-                List<Post> posts = postRepository.findAllByMember(member);
-                for (Post post : posts) {
-                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-                    if (loginMember != null)
-                        responseDtos.add(getResponsePostUserLike(loginMember, post, ingredientResponseDtos));
-                    else
-                        responseDtos.add(new PostResponseDto(post, ingredientResponseDtos));
-                }
-            }
-            return ResponseDto.success(responseDtos);
-        }
-
-        public ResponseDto<?> getRecipe (Long post_id, HttpServletRequest request){
-
-            Member member = memberService.getMember(request);
-
-            // post_id로 이에 맞는 Post 가져오기
-            Post post = postRepository.findPostById(post_id);
-
-
-            //Dto 생성자를 만들어서 1번에서 가져온 Post 정보 넣어주기
-            List<TagList> tagLists = tagListRepository.findAllByPost(post);   //API 명세서에 있는 Response 대로 Dto 생성하기
-            List<IngredientResponseDto> responseDtos = new ArrayList<>();
-
-            for (TagList tagList : tagLists) {
-                responseDtos.add(new IngredientResponseDto(tagList));
-            }
-
-            //레시피 별 페이지 내용 가져오기
-            List<ContentResponseDto> contentResponseDtos = new ArrayList<>();
-            List<Content> contentList = contentRepository.findAllByPostOrderByPage(post);
-            for (Content content : contentList) {
-                contentResponseDtos.add(new ContentResponseDto(content));
-            }
-
-            //댓글 가져오기
-            List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
-            List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
-            for (Comment comment : commentList)
-                commentResponseDtos.add(new CommentResponseDto(comment));
-
-
-            if (member == null) {
-                TimeResponseDto timeResponseDto = new TimeResponseDto(post, responseDtos, false, contentResponseDtos);
-                return ResponseDto.success(timeResponseDto);
-            } else {
-                PostLike postLikes = postLikeRepository.findPostLikesByPostAndMember(post, member);
-                if (postLikes == null) {
-                    TimeResponseDto timeResponseDto = new TimeResponseDto(post, responseDtos, false, contentResponseDtos);
-                    return ResponseDto.success(timeResponseDto);
-                } else {
-                    TimeResponseDto timeResponseDto = new TimeResponseDto(post, responseDtos, true, contentResponseDtos);
-                    return ResponseDto.success(timeResponseDto);
-                }
-            }
-        }
-
-        public ResponseDto<?> getAllTag () {
-
+        //베스트만 보여주기 (팔로우, 팔로워 X)
+        if (member == null) {
+            //제일 등록된 태그 상위 5개 리스트에 담기
             List<Tag> tags = tagRepository.findAllByOrderByCountDesc();
             List<BestTagResponseDto> tagResponseDtos = new ArrayList<>();
-            if (tags.size() < 100) {
-                for (Tag tag : tags) {
-                    tagResponseDtos.add(new BestTagResponseDto(tag));
+
+            for (int i = 0; i < 5; i++)
+                tagResponseDtos.add(new BestTagResponseDto(tags.get(i)));
+
+            //제일 좋아요 많은 순으로 레시피 리스트에 담기
+            List<Post> best_posts = postRepository.findAllByOrderByLikeNumDesc();
+            List<PostResponseDto> best_postResponseDtos = new ArrayList<>();
+            if (best_posts.size() < 10) {
+                for (int i = 0; i < best_posts.size(); i++) {
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
+                    best_postResponseDtos.add(new PostResponseDto(best_posts.get(i), ingredientResponseDtos));
                 }
             } else {
-                for (int i = 0; i < 100; i++) {
-                    tagResponseDtos.add(new BestTagResponseDto(tags.get(i)));
+                for (int i = 0; i < 10; i++) {
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
+                    best_postResponseDtos.add(new PostResponseDto(best_posts.get(i), ingredientResponseDtos));
                 }
             }
-            return ResponseDto.success(tagResponseDtos);
+
+            //제일 최신 순으로 레시피 리스트에 담기
+            List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
+            List<PostResponseDto> recent_postResponseDtos = new ArrayList<>();
+
+            if (recent_posts.size() < 10) {
+                for (int i = 0; i < recent_posts.size(); i++) {
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
+                    recent_postResponseDtos.add(new PostResponseDto(recent_posts.get(i), ingredientResponseDtos));
+                }
+            } else {
+                for (int i = 0; i < 10; i++) {
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
+                    recent_postResponseDtos.add(new PostResponseDto(recent_posts.get(i), ingredientResponseDtos));
+                }
+            }
+
+            MainPostResponseDto mainPostResponseDto = new MainPostResponseDto(tagResponseDtos, best_postResponseDtos, recent_postResponseDtos);
+            return ResponseDto.success(mainPostResponseDto);
+        } else {
+            //제일 등록된 태그 상위 5개 리스트에 담기
+            List<Tag> tags = tagRepository.findAllByOrderByCountDesc();
+            List<BestTagResponseDto> tagResponseDtos = new ArrayList<>();
+
+            for (int i = 0; i < 5; i++)
+                tagResponseDtos.add(new BestTagResponseDto(tags.get(i)));
+
+            //제일 좋아요 많은 순으로 레시피 리스트에 담기
+            List<Post> best_posts = postRepository.findAllByOrderByLikeNumDesc();
+            List<PostResponseDto> best_postResponseDtos = new ArrayList<>();
+
+            if (best_posts.size() < 10) {
+                for (int i = 0; i < best_posts.size(); i++) {
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
+                    best_postResponseDtos.add(getResponsePostUserLike(member, best_posts.get(i), ingredientResponseDtos));
+                }
+            } else {
+                for (int i = 0; i < 10; i++) {
+                    Content content = contentRepository.findContentByPost(best_posts.get(i));
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(best_posts.get(i));
+                    best_postResponseDtos.add(getResponsePostUserLike(member, best_posts.get(i), ingredientResponseDtos));
+                }
+            }
+
+            //제일 최신 순으로 레시피 리스트에 담기
+            List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
+            List<PostResponseDto> recent_postResponseDtos = new ArrayList<>();
+
+            if (recent_posts.size() < 10) {
+                for (int i = 0; i < recent_posts.size(); i++) {
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
+                    recent_postResponseDtos.add(getResponsePostUserLike(member, recent_posts.get(i), ingredientResponseDtos));
+                }
+            } else {
+                for (int i = 0; i < 10; i++) {
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
+                    recent_postResponseDtos.add(getResponsePostUserLike(member, recent_posts.get(i), ingredientResponseDtos));
+                }
+            }
+
+            //팔로우 레시피 리스트 팔로우 당 1개씩 보내기
+            List<Follow> follows = followRepository.findAllByFollowerId(member.getId());
+            List<Post> followPost = new ArrayList<>();
+
+            for (Follow follow : follows) {
+                Long followId = follow.getMember().getId();
+                Member followmember = memberRepository.findMemberById(follow.getMember().getId());
+                List<Post> userPost = postRepository.findAllByMemberOrderByCreatedAtDesc(followmember);
+                if (userPost.size() != 0) {
+                    followPost.add(userPost.get(0));
+                }
+            }
+
+            List<PostResponseDto> follow_postResponseDtos = new ArrayList<>();
+
+            for (Post post : followPost) {
+                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+                follow_postResponseDtos.add(getResponsePostUserLike(member, post, ingredientResponseDtos));
+            }
+
+            MainPostResponseDto mainPostResponseDto = new MainPostResponseDto(tagResponseDtos, best_postResponseDtos,
+                    recent_postResponseDtos, follow_postResponseDtos);
+            return ResponseDto.success(mainPostResponseDto);
+        }
+    }
+
+    // 유저가 해당 게시물에 좋아요 했는지 여부를 판단해서 Dto로 반환하는 함수
+    public PostResponseDto getResponsePostUserLike (Member member, Post
+            post, List < IngredientResponseDto > ingredientResponseDtos){
+        PostLike postLike = postLikeRepository.findPostLikesByPostAndMember(post, member);
+        if (postLike == null) {
+            return new PostResponseDto(post, ingredientResponseDtos);
+        } else {
+            return new PostResponseDto(post, ingredientResponseDtos, true);
+        }
+    }
+
+    public List<IngredientResponseDto> getIngredientByPost (Post post){
+        List<TagList> tagLists = tagListRepository.findAllByPost(post);
+        List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
+        for (TagList tagList : tagLists)
+            ingredientResponseDtos.add(new IngredientResponseDto(tagList));
+
+        return ingredientResponseDtos;
+    }
+
+    public ResponseDto<?> filterPostTitle (String title, HttpServletRequest request){
+
+        Member member = memberService.getMember(request);
+
+        List<Post> posts = postRepository.findAllByTitleContaining(title);
+        List<PostResponseDto> Posts = new ArrayList<>();
+
+        for (Post post : posts) {
+            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+            if (member != null)
+                Posts.add(getResponsePostUserLike(member, post, ingredientResponseDtos));
+            else
+                Posts.add(new PostResponseDto(post, ingredientResponseDtos, false));
         }
 
-        public ResponseDto<?> filterPostTag (String tag, HttpServletRequest request){
-            Member loginMember = memberService.getMember(request);
+        return ResponseDto.success(Posts);
+    }
 
-            List<Post> response_posts = new ArrayList<>();
-            List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
+    public ResponseDto<?> filterPostNickname (String nickname, HttpServletRequest request){
+        Member loginMember = memberService.getMember(request);
 
-            String[] tag_list = tag.split(",");
+        List<Member> members = memberRepository.findAllByNicknameContaining(nickname);
+        List<PostResponseDto> responseDtos = new ArrayList<>();
 
+        for (Member member : members) {
+            List<Post> posts = postRepository.findAllByMember(member);
             for (Post post : posts) {
-                if (isPostinTag(post, tag_list)) {
-                    response_posts.add(post);
-                }
-            }
-
-            List<PostResponseDto> responseDtos = new ArrayList<>();
-            for (Post post : response_posts) {
                 List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
                 if (loginMember != null)
                     responseDtos.add(getResponsePostUserLike(loginMember, post, ingredientResponseDtos));
                 else
                     responseDtos.add(new PostResponseDto(post, ingredientResponseDtos));
             }
-
-            return ResponseDto.success(responseDtos);
         }
-        public Boolean isPostinTag (Post post, String[]tagList){
-            int count = 0;
+        return ResponseDto.success(responseDtos);
+    }
 
-            for (int i = 0; i < tagList.length; i++) {
-                String tag = tagList[i];
+    public ResponseDto<?> getRecipe (Long post_id, HttpServletRequest request){
 
-                for (TagList postTag : post.getTagLists()) {
-                    if (postTag.getName().equals(tag)) {
-                        count++;
-                    }
+        Member member = memberService.getMember(request);
+
+        // post_id로 이에 맞는 Post 가져오기
+        Post post = postRepository.findPostById(post_id);
+
+
+        //Dto 생성자를 만들어서 1번에서 가져온 Post 정보 넣어주기
+        List<TagList> tagLists = tagListRepository.findAllByPost(post);   //API 명세서에 있는 Response 대로 Dto 생성하기
+        List<IngredientResponseDto> responseDtos = new ArrayList<>();
+
+        for (TagList tagList : tagLists) {
+            responseDtos.add(new IngredientResponseDto(tagList));
+        }
+
+        //레시피 별 페이지 내용 가져오기
+        List<ContentResponseDto> contentResponseDtos = new ArrayList<>();
+        List<Content> contentList = contentRepository.findAllByPostOrderByPage(post);
+        for (Content content : contentList) {
+            contentResponseDtos.add(new ContentResponseDto(content));
+        }
+
+        //댓글 가져오기
+        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
+        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+        for (Comment comment : commentList)
+            commentResponseDtos.add(new CommentResponseDto(comment));
+
+
+        if (member == null) {
+            TimeResponseDto timeResponseDto = new TimeResponseDto(post, responseDtos, false, contentResponseDtos);
+            return ResponseDto.success(timeResponseDto);
+        } else {
+            PostLike postLikes = postLikeRepository.findPostLikesByPostAndMember(post, member);
+            if (postLikes == null) {
+                TimeResponseDto timeResponseDto = new TimeResponseDto(post, responseDtos, false, contentResponseDtos);
+                return ResponseDto.success(timeResponseDto);
+            } else {
+                TimeResponseDto timeResponseDto = new TimeResponseDto(post, responseDtos, true, contentResponseDtos);
+                return ResponseDto.success(timeResponseDto);
+            }
+        }
+    }
+
+    public ResponseDto<?> getAllTag () {
+
+        List<Tag> tags = tagRepository.findAllByOrderByCountDesc();
+        List<BestTagResponseDto> tagResponseDtos = new ArrayList<>();
+        if (tags.size() < 100) {
+            for (Tag tag : tags) {
+                tagResponseDtos.add(new BestTagResponseDto(tag));
+            }
+        } else {
+            for (int i = 0; i < 100; i++) {
+                tagResponseDtos.add(new BestTagResponseDto(tags.get(i)));
+            }
+        }
+        return ResponseDto.success(tagResponseDtos);
+    }
+
+    public ResponseDto<?> filterPostTag (String tag, HttpServletRequest request){
+        Member loginMember = memberService.getMember(request);
+
+        List<Post> response_posts = new ArrayList<>();
+        List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
+
+        String[] tag_list = tag.split(",");
+
+        for (Post post : posts) {
+            if (isPostinTag(post, tag_list)) {
+                response_posts.add(post);
+            }
+        }
+
+        List<PostResponseDto> responseDtos = new ArrayList<>();
+        for (Post post : response_posts) {
+            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+            if (loginMember != null)
+                responseDtos.add(getResponsePostUserLike(loginMember, post, ingredientResponseDtos));
+            else
+                responseDtos.add(new PostResponseDto(post, ingredientResponseDtos));
+        }
+
+        return ResponseDto.success(responseDtos);
+    }
+    public Boolean isPostinTag (Post post, String[]tagList){
+        int count = 0;
+
+        for (int i = 0; i < tagList.length; i++) {
+            String tag = tagList[i];
+
+            for (TagList postTag : post.getTagLists()) {
+                if (postTag.getName().equals(tag)) {
+                    count++;
                 }
             }
-            if (count >= tagList.length)
-                return true;
-            else
-                return false;
+        }
+        if (count >= tagList.length)
+            return true;
+        else
+            return false;
+    }
+
+    public ResponseDto<?> postLike (Long post_id, HttpServletRequest request){
+        //로그인 토큰 유효성 검증하기
+        ResponseDto<?> result = memberService.checkMember(request);
+        Member member = (Member) result.getData();
+
+        Post post = postRepository.findPostById(post_id);
+
+        if (post == null) {
+            return ResponseDto.fail(ErrorCode.NOTFOUND_POST_ID);
         }
 
-        public ResponseDto<?> postLike (Long post_id, HttpServletRequest request){
-            //로그인 토큰 유효성 검증하기
-            ResponseDto<?> result = memberService.checkMember(request);
-            Member member = (Member) result.getData();
+        //이전에 해당 게시글에 좋아요를 한 적이 있는지 판단
+        PostLike postLike = postLikeRepository.findPostLikesByPostAndMember(post, member);
 
-            Post post = postRepository.findPostById(post_id);
+        // 이전에 이 게시물에 좋아요를 한 적이 없음 -> 좋아요 수락
+        if (postLike == null) {
+            PostLike userLike = new PostLike(member, post);
+            postLikeRepository.save(userLike);
 
-            if (post == null) {
-                return ResponseDto.fail(ErrorCode.NOTFOUND_POST_ID);
-            }
+            post.setLikeNum(postLikeRepository.countAllByPost(post).intValue());  // -> likeNum 업데이트
+            postRepository.save(post);
 
-            //이전에 해당 게시글에 좋아요를 한 적이 있는지 판단
-            PostLike postLike = postLikeRepository.findPostLikesByPostAndMember(post, member);
+            return ResponseDto.success("post like success");
+        }
+        // 이전에 이 게시물에 좋아요를 한 적이 있음 -> 좋아요 취소
+        else {
+            postLikeRepository.delete(postLike);
 
-            // 이전에 이 게시물에 좋아요를 한 적이 없음 -> 좋아요 수락
-            if (postLike == null) {
-                PostLike userLike = new PostLike(member, post);
-                postLikeRepository.save(userLike);
+            post.setLikeNum(postLikeRepository.countAllByPost(post).intValue());  // -> likeNum 업데이트
+            postRepository.save(post);
 
-                post.setLikeNum(postLikeRepository.countAllByPost(post).intValue());  // -> likeNum 업데이트
-                postRepository.save(post);
+            return ResponseDto.success("post like delete success");
+        }
+    }
 
-                return ResponseDto.success("post like success");
-            }
-            // 이전에 이 게시물에 좋아요를 한 적이 있음 -> 좋아요 취소
-            else {
-                postLikeRepository.delete(postLike);
+    public ResponseDto<?> postImage (MultipartFile multipartFile){
+        //파일 -> 이미지 Url로 변경
+        if (multipartFile == null) {
+            //System.out.println(multipartFile);
+            return ResponseDto.success("파일 값이 null임");
+        }
+        String url = fileUploaderService.uploadImage(multipartFile);
+        return ResponseDto.success(new ImageUrlResponseDto(url));
+    }
 
-                post.setLikeNum(postLikeRepository.countAllByPost(post).intValue());  // -> likeNum 업데이트
-                postRepository.save(post);
+    public ResponseDto<?> getRecipeComment (Long post_id){
+        Post post = postRepository.findPostById(post_id);
 
-                return ResponseDto.success("post like delete success");
-            }
+        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
+
+        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+
+        for (Comment comment : commentList) {
+            CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
+            commentResponseDtos.add(commentResponseDto);
         }
 
-        public ResponseDto<?> postImage (MultipartFile multipartFile){
-            //파일 -> 이미지 Url로 변경
-            if (multipartFile == null) {
-                //System.out.println(multipartFile);
-                return ResponseDto.success("파일 값이 null임");
-            }
-            String url = fileUploaderService.uploadImage(multipartFile);
-            return ResponseDto.success(new ImageUrlResponseDto(url));
-        }
+        return ResponseDto.success(commentResponseDtos);
+    }
 
-        public ResponseDto<?> getRecipeComment (Long post_id){
-            Post post = postRepository.findPostById(post_id);
+    public ResponseDto<?> getRecipeByPage (Long post_id,int page){
+        Post post = postRepository.findPostById(post_id);
 
-            List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
+        Content content = contentRepository.findContentByPostAndPage(post, page);
 
-            List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+        ContentResponseDto contentResponseDto = new ContentResponseDto(content);
 
-            for (Comment comment : commentList) {
-                CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
-                commentResponseDtos.add(commentResponseDto);
-            }
-
-            return ResponseDto.success(commentResponseDtos);
-        }
-
-        public ResponseDto<?> getRecipeByPage (Long post_id,int page){
-            Post post = postRepository.findPostById(post_id);
-
-            Content content = contentRepository.findContentByPostAndPage(post, page);
-
-            ContentResponseDto contentResponseDto = new ContentResponseDto(content);
-
-            return ResponseDto.success(contentResponseDto);
-        }
+        return ResponseDto.success(contentResponseDto);
+    }
 
 
     /*

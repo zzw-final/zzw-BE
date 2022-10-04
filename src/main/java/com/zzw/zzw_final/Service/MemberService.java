@@ -21,8 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
-import static com.zzw.zzw_final.Dto.ErrorCode.INVALID_TOKEN;
-import static com.zzw.zzw_final.Dto.ErrorCode.NULL_TOKEN;
+import static com.zzw.zzw_final.Dto.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +48,10 @@ public class MemberService {
         if(!tokenProvider.validateToken(request.getHeader("Refresh-Token")))
             return ResponseDto.fail(INVALID_TOKEN);
 
+        if(null == request.getHeader("oauth")){
+            return ResponseDto.fail(NULL_OAUTH);
+        }
+
         //헤더에 정상적으로 토큰이 전달 됐을 경우
         Member member = tokenProvider.getMemberFromAuthentication();
 
@@ -63,16 +66,18 @@ public class MemberService {
         TokenDto tokenDto = tokenProvider.generateTokenDto(member);
         response.addHeader("Authorization", tokenDto.getAccessToken());
         response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+        IntegrationResponseDto responseDto = new IntegrationResponseDto(member, tokenDto);
 
-        return ResponseDto.success("success signup");
+        return ResponseDto.success(responseDto);
     }
 
     // 토큰을 보내줬는지 안보내줬는지 확인하는 함수
     public Member getMember(HttpServletRequest request){
         String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
         if (token != null){
             String email = tokenProvider.getUserEmail(token.substring(7));
-            Member member = memberRepository.findMemberByEmail(email);
+            Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
             return member;
         }
 
@@ -94,8 +99,8 @@ public class MemberService {
         return ResponseDto.success("success member delete!");
     }
 
-    public ResponseDto<?> integrationMember(IntegrationMemberRequestDto requestDto) {
-        Member member = memberRepository.findMemberByEmail(requestDto.getEmail());
+    public ResponseDto<?> integrationMember(IntegrationMemberRequestDto requestDto, HttpServletResponse response) {
+        Member member = memberRepository.findMemberByEmailAndOauth(requestDto.getEmail(), requestDto.getOauth());
         String oauth = member.getOauth();
         String new_oauth = oauth + "," + requestDto.getOauth();
 
@@ -103,6 +108,10 @@ public class MemberService {
         memberRepository.save(member);
 
         TokenDto tokenDto = tokenProvider.generateTokenDto(member);
+
+        response.addHeader("Authorization", tokenDto.getAccessToken());
+        response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+
         IntegrationResponseDto responseDto = new IntegrationResponseDto(member, tokenDto);
 
         return ResponseDto.success(responseDto);

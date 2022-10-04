@@ -35,8 +35,9 @@ public class OAuthResponseDto {
         this.isDuplicate = isDuplicate;
     }
 
-    public OAuthResponseDto(Member member, TokenDto tokenDto, String oauthToken){
+    public OAuthResponseDto(Member member, TokenDto tokenDto, String oauthToken, String oauth){
         this.email = member.getEmail();
+        this.oauth = oauth;
         this.isFirst = false;
         this.nickname = member.getNickname();
         this.grade = member.getGrade();

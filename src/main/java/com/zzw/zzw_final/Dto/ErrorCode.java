@@ -11,6 +11,7 @@ public enum ErrorCode {
     //로그인(토큰) 관련 오류
     NULL_TOKEN("NULL_TOKEN", "로그인이 필요합니다."),
     INVALID_TOKEN("INVALID_TOKEN", "토큰의 유효기간이 지났습니다."),
+    NULL_OAUTH("NULL_OAUTH", "헤더에 oauth 값이 없음"),
 
     MEMBER_NOT_FOUND("MEMBER_NOT_FOUND", "해당하는 유저가 없습니다."),
     INVALID_MEMBER("INVALID_MEMBER", "비밀번호가 일치하지 않습니다."),

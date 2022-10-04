@@ -73,7 +73,9 @@ public class JwtFilter extends OncePerRequestFilter {
                             .collect(Collectors.toList());
 
             // UserDetails 객체를 만들어서 authentication 리턴
-            UserDetails principal = userDetailsService.loadUserByUsername(subject);
+            String oauth = request.getHeader("oauth");
+            String findUser = subject + "," + oauth;
+            UserDetails principal = userDetailsService.loadUserByUsername(findUser);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(principal, jwt, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);

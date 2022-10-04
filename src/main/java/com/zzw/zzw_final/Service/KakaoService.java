@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -52,23 +53,24 @@ public class KakaoService {
         // 2. 토큰으로 카카오 API 호출
         OauthUserDto kakaoUserInfo = getKakaoUserInfo(kakaoToken);
 
-        Member member = memberRepository.findMemberByEmail(kakaoUserInfo.getEmail());
+        List<Member> members = memberRepository.findAllByEmail(kakaoUserInfo.getEmail());
 
-        if (member == null){
+        if (members.size() == 0){
             OAuthResponseDto responseDto = new OAuthResponseDto(kakaoUserInfo.getEmail(), kakaoToken, "kakao", false);
             return ResponseDto.success(responseDto);
         } else{
-            String oauth = member.getOauth();
-            if (!oauth.contains("kakao")){
-                OAuthResponseDto responseDto = new OAuthResponseDto(kakaoUserInfo.getEmail(), kakaoToken, "kakao", true);
-                return ResponseDto.success(responseDto);
-            }else{
-                TokenDto tokenDto = jwtTokenProvider.generateTokenDto(member);
-                OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, kakaoToken);
-                response.addHeader("Authorization", tokenDto.getAccessToken());
-                response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
-                return ResponseDto.success(responseDto);
+            for(Member member : members){
+                String oauth = member.getOauth();
+                if(oauth.contains("kakao")){
+                    TokenDto tokenDto = jwtTokenProvider.generateTokenDto(member);
+                    OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, kakaoToken, "kakao");
+                    response.addHeader("Authorization", tokenDto.getAccessToken());
+                    response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+                    return ResponseDto.success(responseDto);
+                }
             }
+            OAuthResponseDto responseDto = new OAuthResponseDto(kakaoUserInfo.getEmail(), kakaoToken, "kakao", true);
+            return ResponseDto.success(responseDto);
         }
 
     }
@@ -130,34 +132,6 @@ public class KakaoService {
 
         System.out.println("카카오 사용자 정보: " + id + ", "  + email);
         return new OauthUserDto(id, email);
-    }
-
-    private Member registerKakaoUserIfNeeded(OauthUserDto kakaoUserInfo) {
-        // DB 에 중복된 Kakao Id 가 있는지 확인
-        Long kakaoId = kakaoUserInfo.getId();
-        String email = kakaoUserInfo.getEmail();
-
-        Member kakaoUser = memberRepository.findMemberByEmail(email);
-        if (kakaoUser == null) {
-            // 카카오 사용자 이메일과 동일한 이메일을 가진 회원이 있는지 확인
-            String kakaoEmail = kakaoUserInfo.getEmail();
-            Member sameEmailUser = memberRepository.findMemberByEmail(kakaoEmail);
-            if (sameEmailUser != null) {
-                kakaoUser = sameEmailUser;
-                // 기존 회원정보에 카카오 Id 추가
-                kakaoUser.setId(kakaoId);
-            } else {
-                // email: kakao email
-                //String email = kakaoUserInfo.getEmail();
-
-                kakaoUser = new Member(email, "kakao");
-
-                forceLogin(kakaoUser);
-            }
-
-            memberRepository.save(kakaoUser);
-        }
-        return kakaoUser;
     }
 
     private void forceLogin(Member kakaoUser) {

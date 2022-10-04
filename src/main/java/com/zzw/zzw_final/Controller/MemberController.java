@@ -80,7 +80,7 @@ public class MemberController {
     }
 
     @PutMapping("/api/member/integration")
-    public ResponseDto<?> integrationMember(@RequestBody IntegrationMemberRequestDto requestDto){
-        return memberService.integrationMember(requestDto);
+    public ResponseDto<?> integrationMember(@RequestBody IntegrationMemberRequestDto requestDto, HttpServletResponse response){
+        return memberService.integrationMember(requestDto, response);
     }
 }
