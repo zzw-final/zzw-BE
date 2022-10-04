@@ -17,19 +17,12 @@ public class ChatMessageDetailDto {
     private String writer;
     private String message;
 
-    public static ChatMessageDetailDto toChatMessageDetailDTO(ChatMessage chatMessage){
-        ChatMessageDetailDto chatMessageDetailDTO = new ChatMessageDetailDto();
-
-        chatMessageDetailDTO.setChatId(chatMessage.getId());
-
-        chatMessageDetailDTO.setChatRoomId(chatMessage.getChatRoom().getId());
-        chatMessageDetailDTO.setRoomId(chatMessage.getChatRoom().getRoomId());
-
-        chatMessageDetailDTO.setWriter(chatMessage.getWriter());
-        chatMessageDetailDTO.setMessage(chatMessage.getMessage());
-
-        return chatMessageDetailDTO;
-
+    public ChatMessageDetailDto(ChatMessage chatMessage) {
+        this.chatId = chatMessage.getId();
+        this.chatRoomId = chatMessage.getChatRoom().getId();
+        this.roomId = chatMessage.getChatRoom().getRoomId();
+        this.writer = chatMessage.getWriter();
+        this.message = chatMessage.getMessage();
     }
 
 }
