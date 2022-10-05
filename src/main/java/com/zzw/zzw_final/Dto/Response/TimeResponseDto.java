@@ -17,6 +17,7 @@ public class TimeResponseDto {
     private String nickname;
     private String grade;
     private int likeNum;
+    private String profile;
     private Boolean isLike;
     private String time;
     private List<IngredientResponseDto> ingredient;
@@ -31,6 +32,7 @@ public class TimeResponseDto {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.isLike = isLike;
+        this.profile = post.getMember().getProfile();
         this.createAt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(post.getModifiedAt());
         this.nickname = post.getMember().getNickname();
         this.authorId = post.getMember().getId();
