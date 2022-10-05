@@ -14,7 +14,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stomp/chat")
-                .setAllowedOrigins("*")
+                .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
 
@@ -22,8 +22,8 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // Client 에서 SEND 요청을 처리
-        //Spring docs 에서는 /topic, /queue로 나오나 편의상 /pub, /sub로 변경
         registry.setApplicationDestinationPrefixes("/pub");
+
         //해당 경로로 SimpleBroker를 등록.
         // SimpleBroker는 해당하는 경로를 SUBSCRIBE하는 Client에게 메세지를 전달하는 간단한 작업을 수행
         registry.enableSimpleBroker("/sub");
