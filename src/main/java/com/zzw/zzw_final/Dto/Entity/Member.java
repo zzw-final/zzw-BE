@@ -1,6 +1,7 @@
 package com.zzw.zzw_final.Dto.Entity;
 
 import com.sun.istack.NotNull;
+import com.zzw.zzw_final.Dto.Chat.ChatMessage;
 import com.zzw.zzw_final.Dto.GoogleLoginDto;
 import com.zzw.zzw_final.Dto.OauthUserDto;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
@@ -51,6 +52,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostLike> postLikes;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChatMessage> chatMessages;
 
     public Member(String email, String kakao) {
         this.email = email;
