@@ -198,7 +198,21 @@ public class PostService {
 
                 //3. 만약 작성인이 맞으면 delete !
             else {
+                List<TagList> tagLists = tagListRepository.findAllByPost(post);
+                for (TagList tagList : tagLists){
+                    String name = tagList.getName();
+                    Tag tag = tagRepository.findTagByName(name);
+                    if (tag.getCount() == 1){
+                        tagRepository.delete(tag);
+                    }else{
+                        tag.countUpdate(tag.getCount()-1);
+                    }
+
+                    tagListRepository.delete(tagList);
+                }
+
                 postRepository.deleteById(post_id);
+
             }
 
             return ResponseDto.success("success delete");

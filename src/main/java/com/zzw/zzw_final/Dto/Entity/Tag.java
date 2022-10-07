@@ -30,4 +30,8 @@ public class Tag {
         this.name = ingredient;
         this.count = 1;
     }
+
+    public void countUpdate(int count) {
+        this.count = count;
+    }
 }

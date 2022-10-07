@@ -142,15 +142,16 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUyMjMzNTJ9.lEIErp-PyYdGGoOHxH2
 ### 상세페이지 - 레시피 생성
 POST http://localhost:8080/api/auth/post
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDg3OTk3N30.itGDMXwMc-3VJX_iw1bbm2Va4nKu5zjFXlrMBXjX7iM
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUzOTgzNzd9.-YQcK1pyvF3K6oe1zJRAffYMkpWCbE00GpgjyzrsK7s
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTIwMTUxOX0.ys1SYCxJfjxpvraVT9L8Vi9zC1aCQydMdR2m6_HENPg
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU3MTk5MTl9.E5N3bzfJo2AlB7xJ_mPJictEaOfQluBC5817_OVF_Jo
+oauth: kakao
 
 {
   "title" : "test222",
   "foodName": "테스트음식이름2222",
   "time": "15분",
   "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/772f17bb-63a8-459b-8196-e9ab0e16c24b.png",
-  "ingredient": ["당근", "마늘", "감자", "계란"],
+  "ingredient": ["게시글삭제"],
   "pageList" : [{
     "page": 1,
     "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/772f17bb-63a8-459b-8196-e9ab0e16c24b.png",
@@ -162,6 +163,12 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUzOTgzNzd9.-YQcK1pyvF3K6oe1zJR
   }]
 }
 
+### 상세페이지 게시글 삭제
+DELETE http://localhost:8080/api/auth/post/2548
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTIwMTUxOX0.ys1SYCxJfjxpvraVT9L8Vi9zC1aCQydMdR2m6_HENPg
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU3MTk5MTl9.E5N3bzfJo2AlB7xJ_mPJictEaOfQluBC5817_OVF_Jo
+oauth: kakao
 
 ###회원가입
 POST http://localhost:8080/api/member/signup
