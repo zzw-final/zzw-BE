@@ -57,38 +57,33 @@ public class ChatService {
     // 채팅방 입장
     @Transactional
     public ResponseDto<?> enterChatRoom(ChatRequestDto message, String token, String oauth) {
-        System.out.println("1111111111111111");
+
         // 토큰으로 유저찾기
         String ttoken = token.substring(7);
         String email = tokenProvider.getUserEmail(ttoken);
         Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
 
-        System.out.println("222222222222");
         ChatRoom chatRoom = chatRoomRepository.findChatRoomById(message.getRoomId());
 
         if (chatRoom == null){
             return ResponseDto.fail(NOTFOUND_ROOM);
         }
-        System.out.println("33333333333");
+
         // 이미 채팅방에 있는 멤버면 막아야함.
         ChatMember findChatMember = chatMemberRepository.findChatMemberByChatRoomAndMember(chatRoom, member);
         if (findChatMember != null){
             return ResponseDto.fail(DUPLICATE_ROOM);
         }
-        System.out.println("444444444444444444444");
+
         // 없다면 채팅방 멤버목록에 넣기
         ChatMember chatMember = new ChatMember(member, chatRoom);
         chatMemberRepository.save(chatMember);
-        System.out.println("55555555555555555555");
+
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일 - a hh:mm "));
         ChatMessageDto chatMessageDto = new ChatMessageDto(member, time);
 
         // 메세지 보내기
-        System.out.println("메시지 보내기 전임 --------------------");
-
         messageTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessageDto);
-
-        System.out.println("메시지 보내기 후 --------------------");
 
         return ResponseDto.success(member.getNickname()+" 입장 성공");
     }
