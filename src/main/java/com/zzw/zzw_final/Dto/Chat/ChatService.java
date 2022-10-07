@@ -125,7 +125,7 @@ public class ChatService {
             return ResponseDto.fail(NOTFOUND_ROOM);
         }
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일 - a hh:mm "));
-        ChatMessageDto chatMessageDto = new ChatMessageDto(member, time);
+        ChatMessageDto chatMessageDto = new ChatMessageDto(member, time, message.getMessage());
 
         // 메세지 보내기
         messageTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessageDto);
