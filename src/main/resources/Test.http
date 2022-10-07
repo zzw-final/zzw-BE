@@ -188,7 +188,7 @@ DELETE http://localhost:8080/api/member/resign/1479
 Content-Type: application/json
 
 ### 채팅방 생성
-GET http://localhost:8080/api/mypage/145/chat
+GET http://localhost:8080/api/mypage/48/chat
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTIwMTUxOX0.ys1SYCxJfjxpvraVT9L8Vi9zC1aCQydMdR2m6_HENPg
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU3MTk5MTl9.E5N3bzfJo2AlB7xJ_mPJictEaOfQluBC5817_OVF_Jo

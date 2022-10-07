@@ -186,7 +186,8 @@ public class ChatService {
             ChatRoom chatRoom = chatMember.getChatRoom();
             ChatMember isChatRoom = chatMemberRepository.findChatMemberByChatRoomAndMember(chatRoom, chatToMember);
             if (isChatRoom != null){
-                return ResponseDto.fail(DUPLICATE_ROOM);
+                ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(isChatRoom.getChatRoom().getId());
+                return ResponseDto.success(chatRoomResponseDto);
             }
         }
 
