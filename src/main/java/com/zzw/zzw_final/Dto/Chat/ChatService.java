@@ -2,6 +2,7 @@ package com.zzw.zzw_final.Dto.Chat;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.Member;
+import com.zzw.zzw_final.Dto.Response.ChatRoomResponseDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Repository.ChatMemberRepository;
 import com.zzw.zzw_final.Repository.ChatMessageRepository;
@@ -170,4 +171,35 @@ public class ChatService {
         return ResponseDto.success(chatMessageDtos);
     }
 
+    public ResponseDto<?> getChatRoom(Long user_id, HttpServletRequest request) {
+        ResponseDto<?> result = memberService.checkMember(request);
+        Member member = null;
+        if (result.isSuccess()){
+            member = (Member) result.getData();
+        }
+
+        Member chatToMember = memberRepository.findMemberById(user_id);
+
+        List<ChatMember> chatMembers = chatMemberRepository.findAllByMember(member);
+
+        for (ChatMember chatMember : chatMembers){
+            ChatRoom chatRoom = chatMember.getChatRoom();
+            ChatMember isChatRoom = chatMemberRepository.findChatMemberByChatRoomAndMember(chatRoom, chatToMember);
+            if (isChatRoom != null){
+                return ResponseDto.fail(DUPLICATE_ROOM);
+            }
+        }
+
+        ChatRoom chatRoom = new ChatRoom();
+        chatRoomRepository.save(chatRoom);
+
+        ChatMember chatMember = new ChatMember(member, chatRoom);
+        ChatMember chatMember1 = new ChatMember(chatToMember, chatRoom);
+        chatMemberRepository.save(chatMember1);
+        chatMemberRepository.save(chatMember);
+
+        ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(chatRoom.getId());
+
+        return ResponseDto.success(chatRoomResponseDto);
+    }
 }

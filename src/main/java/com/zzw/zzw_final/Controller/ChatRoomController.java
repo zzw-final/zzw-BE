@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 public class ChatRoomController {
     private final ChatService chatService;
 
-//    // 채팅방에 있는지 확인
-//    @GetMapping("/api/chat/member/{eventId}")
-//    public ResponseDto<?> getChatMember (@PathVariable Long eventId, HttpServletRequest request) {
-//        return chatService.getChatMember(eventId, request);
-//    }
+    //채팅방 생성
+    @GetMapping("/api/mypage/{user_id}/chat")
+    public ResponseDto<?> getChatRoom(@PathVariable Long user_id, HttpServletRequest request){
+        return chatService.getChatRoom(user_id, request);
+    }
 
     // 채팅메세지 불러오기
     @GetMapping ("/api/chat/message/{roomId}")

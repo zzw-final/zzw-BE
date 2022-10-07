@@ -7,8 +7,10 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQzMjY5MDd9.lb4VrR5UdzFoQbRdrmK
 ### 메인페이지 - 베스트, 최신, 팔로우 레시피 GET
 GET http://localhost:8080/api/post
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDI0MDU3Nn0.IgpJqWsjUwxn_WeAIh7wo1pBvw1FtVLtaa_D7vUpTK4
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ3NTg5NzZ9.rgMAhZNhA0OeDSoKSjP-Cbwzqwik6lSypKOvb_BPqDI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvb3N1amluOThAZ21haWwuY29tIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjY0OTM3NzE0fQ.FD6PSNjv6P3Dk-lYJTGyPsYmSbTAbPeaY2s5JoYeCXQ
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU0NTYxMTR9.DMehh2xxd5VCsgKuwiEkj9tV98YvUVbX_AfN6MJ-5Eo
+oauth: google
+
 
 ### 마이페이지 유저 정보 GET
 GET http://localhost:8080/api/auth/mypage
@@ -23,10 +25,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsI
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ0MzUxMDR9.yrHBnLJppQOn5PZ4xxs_ZB0GJAnQfvetS7UeLEdsVig
 
 ###모든 페이지 - 레시피 좋아요
-POST http://localhost:8080/api/auth/post/25
+POST http://localhost:8080/api/auth/post/1173
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDI0MDU3Nn0.IgpJqWsjUwxn_WeAIh7wo1pBvw1FtVLtaa_D7vUpTK4
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ3NTg5NzZ9.rgMAhZNhA0OeDSoKSjP-Cbwzqwik6lSypKOvb_BPqDI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDcwNDk1Mn0.Fbia4KEIZ7rtD6kcr13hu_TMXD8huTFje8ydSnZVgFQ
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUyMjMzNTJ9.lEIErp-PyYdGGoOHxH2NLch3D4l49ayN49DRIsV2dD4
 
 ###마이페이지 - 내가 좋아요한 레시피 GET
 GET http://localhost:8080/api/auth/mypage/likeposts
@@ -35,30 +37,35 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsI
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ0MzUxMDR9.yrHBnLJppQOn5PZ4xxs_ZB0GJAnQfvetS7UeLEdsVig
 
 ### 상세페이지 - 게시글 내용 GET
-GET http://localhost:8080/api/post/3
+GET http://localhost:8080/api/post/1880
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDI0MDU3Nn0.IgpJqWsjUwxn_WeAIh7wo1pBvw1FtVLtaa_D7vUpTK4
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ3NTg5NzZ9.rgMAhZNhA0OeDSoKSjP-Cbwzqwik6lSypKOvb_BPqDI
 
+### 상세 페이지 - 해당 게시물 댓글
+GET http://localhost:8080/api/post/1173/comment
+Content-Type: application/json
+
+### 상세페이지 - 해당 게시글의 해당 페이지 정보
+GET http://localhost:8080/api/post/1173/2
+Content-Type: application/json
 
 ### 상세페이지 - 댓글달기
-POST http://localhost:8080/api/auth/post/3/comment
+POST http://localhost:8080/api/auth/post/1173/comment
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2MzkxNjcwNH0._qWbmpD0nawqfFnpcZLuXQ6sYxaKkvH1q5xDj2g3H9U
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ0MzUxMDR9.yrHBnLJppQOn5PZ4xxs_ZB0GJAnQfvetS7UeLEdsVig
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDYyMzcyMn0.TKPgOMqwaft7fiDZ1SZRsnQbh7wZzFQszDwaTuIwswI
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUxNDIxMjJ9.tdywImntlsbR-nWB1y0YZZAEi6w3EgGT1d8-4KDl4IQ
 
 {
   "comment" : "이거보고 따라해봤는데 간계밥 존맛 ,, 진짜 쉬워요 !!!"
 }
 
 ### 댓글 수정
-PUT http://localhost:8080/api/auth/post/comment/72
+PUT http://localhost:8080/api/auth/post/comment/157
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDA3ODIwNX0.f-Z8kmpmFYLKP1r1OsCDdcHI5XWEE7Ae70pPHnkMYcI
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ1OTY2MDV9.EXqZk7MyTIIMOEAN063CBHstKbZovadcrzQzJGExR4M
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDI0MDU3Nn0.IgpJqWsjUwxn_WeAIh7wo1pBvw1FtVLtaa_D7vUpTK4
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ3NTg5NzZ9.rgMAhZNhA0OeDSoKSjP-Cbwzqwik6lSypKOvb_BPqDI
 
 {
-  "comment" : "하하"
+  "comment" : "하하하하하"
 }
 
 
@@ -75,3 +82,114 @@ Content-Type: application/json
 GET http://localhost:8080/api/mypage/1/myposts
 Content-Type: application/json
 
+###
+GET http://localhost:8080/api/post/filter
+Content-Type: application/json
+
+### 팔로우 하기
+POST http://localhost:8080/api/auth/mypage/follow/48
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJxa3J3bGR1czM5MjdAZ21haWwuY29tIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjY0NDEyNDM3fQ.O7SLRrJmXPKCi17sKv1sMG55IJAruEPahFUMfiIE598
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ5MzA4Mzd9.Ab2Il0YG9P7Q0qYrAb78MqbmgPpU_j4-7zZ950WjTtw
+
+### 마이페이지 - 다른 유저
+GET http://localhost:8080/api/mypage/1/myposts
+Content-Type: application/json
+
+### 마이페이지 - 로그인 한 유저
+GET http://localhost:8080/api/auth/mypage
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDQyMzc5NX0.9mGRHXkIL1ErCRq_9UzsUHsjx82WOGaoNE-rDyDL3bg
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ5NDIxOTV9.QZ5OQoqjDzhPEp8RMBcF4856GOlksEMXhIgnBUZq6TQ
+
+### 게시글 수정
+PUT http://localhost:8080/api/auth/post/19
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDQyMzc5NX0.9mGRHXkIL1ErCRq_9UzsUHsjx82WOGaoNE-rDyDL3bg
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ5NDIxOTV9.QZ5OQoqjDzhPEp8RMBcF4856GOlksEMXhIgnBUZq6TQ
+
+{
+  "title": "존존존맛 계란국",
+  "foodName" : "계란국",
+  "content" : "게시글 내용 수정중입니다 테스트중임",
+  "time" : "5분",
+  "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/55c8c12f-571a-4c46-9379-705e28da9946.JPG",
+  "ingredient" : [{
+    "ingredientName": "계란"
+  },{
+    "ingredientName" : "감자"
+  },{
+    "ingredientName" : "멸치"
+  }]
+}
+
+### 검색 필터 - 제목
+GET http://localhost:8080/api/post/filter/title?title=test
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDcwNDk1Mn0.Fbia4KEIZ7rtD6kcr13hu_TMXD8huTFje8ydSnZVgFQ
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUyMjMzNTJ9.lEIErp-PyYdGGoOHxH2NLch3D4l49ayN49DRIsV2dD4
+
+### 검색 필터 - 닉네임
+GET http://localhost:8080/api/post/filter/nickname?nickname=jeeyeon
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDcwNDk1Mn0.Fbia4KEIZ7rtD6kcr13hu_TMXD8huTFje8ydSnZVgFQ
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUyMjMzNTJ9.lEIErp-PyYdGGoOHxH2NLch3D4l49ayN49DRIsV2dD4
+
+### 검색 필터 - 태그
+GET http://localhost:8080/api/post/filter/tag?tag=파
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDcwNDk1Mn0.Fbia4KEIZ7rtD6kcr13hu_TMXD8huTFje8ydSnZVgFQ
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUyMjMzNTJ9.lEIErp-PyYdGGoOHxH2NLch3D4l49ayN49DRIsV2dD4
+
+### 상세페이지 - 레시피 생성
+POST http://localhost:8080/api/auth/post
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDg3OTk3N30.itGDMXwMc-3VJX_iw1bbm2Va4nKu5zjFXlrMBXjX7iM
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUzOTgzNzd9.-YQcK1pyvF3K6oe1zJRAffYMkpWCbE00GpgjyzrsK7s
+
+{
+  "title" : "test222",
+  "foodName": "테스트음식이름2222",
+  "time": "15분",
+  "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/772f17bb-63a8-459b-8196-e9ab0e16c24b.png",
+  "ingredient": ["당근", "마늘", "감자", "계란"],
+  "pageList" : [{
+    "page": 1,
+    "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/772f17bb-63a8-459b-8196-e9ab0e16c24b.png",
+    "content" : "test 중 1111 "
+  },{
+    "page" : 2,
+    "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/772f17bb-63a8-459b-8196-e9ab0e16c24b.png",
+    "content": "test 중 2222"
+  }]
+}
+
+
+###회원가입
+POST http://localhost:8080/api/member/signup
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDYyNjE5OX0.ZcQM7E2FW_6dCALlhWqJXoF74Nxy4v1lkmtmch5vmIo
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUxNDQ1OTl9.nK_O-hDEywyqynbmEdMZCppvWmCG7vEjpe_y3Xupe7Q
+Content-Type: application/json
+
+{
+  "nickname" : "지연",
+  "email" : "good9712@nate.com"
+}
+
+### 소셜로그인 이메일 통합 - PUT
+PUT http://localhost:8080/api/member/integration
+Content-Type: application/json
+
+{
+  "email" : "good9712@nate.com",
+  "oauth" : "kakao"
+}
+
+### 회원탈퇴
+DELETE http://localhost:8080/api/member/resign/1479
+Content-Type: application/json
+
+### 채팅방 생성
+GET http://localhost:8080/api/mypage/145/chat
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTIwMTUxOX0.ys1SYCxJfjxpvraVT9L8Vi9zC1aCQydMdR2m6_HENPg
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU3MTk5MTl9.E5N3bzfJo2AlB7xJ_mPJictEaOfQluBC5817_OVF_Jo
+oauth: kakao

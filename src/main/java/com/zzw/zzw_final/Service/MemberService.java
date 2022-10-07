@@ -53,7 +53,8 @@ public class MemberService {
         }
 
         //헤더에 정상적으로 토큰이 전달 됐을 경우
-        Member member = tokenProvider.getMemberFromAuthentication();
+        String email = tokenProvider.getUserEmail(request.getHeader("Authorization").substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, request.getHeader("oauth"));
 
         return ResponseDto.success(member);
     }
