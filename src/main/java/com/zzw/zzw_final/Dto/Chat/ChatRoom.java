@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -16,6 +15,7 @@ public class ChatRoom extends Timestamped {
 
     // 채팅방 번호
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     // 챗 멤버 객체
