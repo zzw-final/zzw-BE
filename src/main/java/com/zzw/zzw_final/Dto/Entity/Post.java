@@ -52,7 +52,11 @@ public class Post extends Timestamped{
     public Post(PostRecipeRequestDto requestDto, Member member){
         this.title = requestDto.getTitle();
         this.time = requestDto.getTime();
-        this.thumbnail = requestDto.getImageUrl();
+        if(requestDto.getImageUrl().length() == 0){
+            this.thumbnail = "https://zzwimage.s3.ap-northeast-2.amazonaws.com/Frame+3.png";
+        }else{
+            this.thumbnail = requestDto.getImageUrl();
+        }
         this.likeNum = 0;
         this.member = member;
         this.useremail = member.getEmail();
@@ -61,7 +65,11 @@ public class Post extends Timestamped{
     public void update(PostRecipeRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.time = requestDto.getTime();
-        this.thumbnail = requestDto.getImageUrl();
+        if(requestDto.getImageUrl().length() == 0){
+            this.thumbnail = "https://zzwimage.s3.ap-northeast-2.amazonaws.com/Frame+3.png";
+        }else{
+            this.thumbnail = requestDto.getImageUrl();
+        }
     }
 
     public void update(int likeNum) {
