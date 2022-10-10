@@ -1,19 +1,14 @@
 package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
-import com.zzw.zzw_final.Dto.Entity.ChatMember;
-import com.zzw.zzw_final.Dto.Entity.ChatMessage;
-import com.zzw.zzw_final.Dto.Entity.ChatRoom;
-import com.zzw.zzw_final.Dto.Entity.Member;
+import com.zzw.zzw_final.Dto.Entity.*;
 import com.zzw.zzw_final.Dto.Request.ChatRequestDto;
+import com.zzw.zzw_final.Dto.Request.CheckReadMessageRequestDto;
 import com.zzw.zzw_final.Dto.Response.ChatListResponseDto;
 import com.zzw.zzw_final.Dto.Response.ChatMessageResponseDto;
 import com.zzw.zzw_final.Dto.Response.ChatRoomResponseDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
-import com.zzw.zzw_final.Repository.ChatMemberRepository;
-import com.zzw.zzw_final.Repository.ChatMessageRepository;
-import com.zzw.zzw_final.Repository.ChatRoomRepository;
-import com.zzw.zzw_final.Repository.MemberRepository;
+import com.zzw.zzw_final.Repository.*;
 import com.zzw.zzw_final.Service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,6 +38,7 @@ public class ChatService {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final ChatMemberRepository chatMemberRepository;
+    private final ChatReadRepository chatReadRepository;
 
     // 이미 채팅방에 있는 멤버인지 확인
 //    public ResponseDto<?> getChatMember(Long eventId, HttpServletRequest request) {
@@ -226,5 +222,30 @@ public class ChatService {
         }
 
         return ResponseDto.success(chatListResponseDtos);
+    }
+
+    public ResponseDto<?> checkReadMessage(HttpServletRequest request, CheckReadMessageRequestDto checkReadMessageRequestDto) {
+        ResponseDto<?> result = memberService.checkMember(request);
+        Member member = null;
+        if (result.isSuccess()){
+            member = (Member) result.getData();
+        }
+
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomById(checkReadMessageRequestDto.getRoomId());
+        ChatRead checkChatRead = chatReadRepository.findChatReadByMemberAndChatRoom(member, chatRoom);
+        ChatMessage chatMessage = chatMessageRepository.findChatMessageByIdAndChatRoom(checkReadMessageRequestDto.getMessageId(), chatRoom);
+
+        if (chatMessage == null)
+            return ResponseDto.fail(NOTFOUND_MESSAGE);
+
+        if (checkChatRead == null){
+            ChatRead chatRead = new ChatRead(chatRoom, chatMessage, member);
+            chatReadRepository.save(chatRead);
+        }else{
+            checkChatRead.update(chatMessage);
+            chatReadRepository.save(checkChatRead);
+        }
+
+        return ResponseDto.success("메세지 읽음 처리 완료");
     }
 }

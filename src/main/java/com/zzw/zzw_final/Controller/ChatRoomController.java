@@ -1,5 +1,6 @@
 package com.zzw.zzw_final.Controller;
 
+import com.zzw.zzw_final.Dto.Request.CheckReadMessageRequestDto;
 import com.zzw.zzw_final.Service.ChatService;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +34,10 @@ public class ChatRoomController {
     @GetMapping("/api/chat")
     public ResponseDto<?> getUserChatList(HttpServletRequest request){
         return chatService.getUserChatList(request);
+    }
+
+    @PutMapping("/api/chat/newmessage")
+    public ResponseDto<?> checkReadMessage(HttpServletRequest request, @RequestBody CheckReadMessageRequestDto checkReadMessageRequestDto){
+        return chatService.checkReadMessage(request, checkReadMessageRequestDto);
     }
 }

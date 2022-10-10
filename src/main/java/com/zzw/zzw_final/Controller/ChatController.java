@@ -1,12 +1,18 @@
 package com.zzw.zzw_final.Controller;
 
 import com.zzw.zzw_final.Dto.Request.ChatRequestDto;
+import com.zzw.zzw_final.Dto.Request.CheckReadMessageRequestDto;
 import com.zzw.zzw_final.Service.ChatService;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @Controller
@@ -27,4 +33,5 @@ public class ChatController {
                                         @Header("oauth") String oauth) {
         return chatService.enterChatRoom(message, token, oauth);
     }
+
 }

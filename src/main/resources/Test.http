@@ -207,3 +207,15 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTQ3NjEyM30.lSmaKsngcsoXBzuufYgTa-5b5GnrgbEqwbnEmr3e86Y
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU5OTQ1MjN9.XpXt52a8kdoeeih8XkkspmMiKH305FGrhzHxOaDAReo
 oauth: kakao
+
+### 채팅 읽음 처리
+PUT http://localhost:8080/api/chat/newmessage
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTQ3NjEyM30.lSmaKsngcsoXBzuufYgTa-5b5GnrgbEqwbnEmr3e86Y
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU5OTQ1MjN9.XpXt52a8kdoeeih8XkkspmMiKH305FGrhzHxOaDAReo
+oauth: kakao
+
+{
+  "roomId" :2220,
+  "messageId":4
+}

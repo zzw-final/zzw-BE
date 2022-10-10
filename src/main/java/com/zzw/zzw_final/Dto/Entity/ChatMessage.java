@@ -4,6 +4,7 @@ import com.zzw.zzw_final.Dto.Request.ChatRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,6 +35,10 @@ public class ChatMessage extends Timestamped {
 
     @Column
     private String sendTime;
+
+    @OneToMany(mappedBy = "chatMessage", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChatRead> chatReads;
+
 
     public ChatMessage(Member member, ChatRoom chatRoom, ChatRequestDto message, String time) {
         this.message = message.getMessage();

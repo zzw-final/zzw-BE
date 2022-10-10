@@ -25,4 +25,18 @@ public class ChatRead {
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
+
+    @JoinColumn(name = "chatMessage_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ChatMessage chatMessage;
+
+    public ChatRead(ChatRoom chatRoom, ChatMessage chatMessage, Member member) {
+        this.chatRoom = chatRoom;
+        this.member = member;
+        this.chatMessage = chatMessage;
+    }
+
+    public void update(ChatMessage chatMessage) {
+        this.chatMessage = chatMessage;
+    }
 }
