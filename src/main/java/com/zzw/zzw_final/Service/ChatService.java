@@ -126,7 +126,7 @@ public class ChatService {
         if (chatRoom == null){
             return ResponseDto.fail(NOTFOUND_ROOM);
         }
-        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일 - a hh:mm "));
+        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         ChatMessageResponseDto chatMessageResponseDto = new ChatMessageResponseDto(member, time, message.getMessage());
 
         // 메세지 보내기
