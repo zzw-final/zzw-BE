@@ -29,4 +29,9 @@ public class ChatRoomController {
     public ResponseDto<?> exitChatRoom (@PathVariable Long roomId, HttpServletRequest request) {
         return chatService.exitChatRoom(roomId, request);
     }
+
+    @GetMapping("/api/chat")
+    public ResponseDto<?> getUserChatList(HttpServletRequest request){
+        return chatService.getUserChatList(request);
+    }
 }

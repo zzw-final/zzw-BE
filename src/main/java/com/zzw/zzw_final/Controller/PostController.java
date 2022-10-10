@@ -69,16 +69,11 @@ public class PostController {
     public ResponseDto<?> postRecipe(@RequestBody PostRecipeRequestDto requestDto, HttpServletRequest request){
         return postService.postRecipe(requestDto, request);
     }
-
-
-
     @PutMapping("/api/auth/post/{post_id}")
     public ResponseDto<?> putRecipe(@RequestBody PostRecipeRequestDto requestDto, HttpServletRequest request,
                                     @PathVariable Long post_id){
         return postService.putRecipe(requestDto, request, post_id);
     }
-
-
 
     @PostMapping("/api/post/image")
     public ResponseDto<?> postImage(@RequestPart(value = "file") MultipartFile multipartFile){

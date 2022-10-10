@@ -6,6 +6,7 @@ import com.zzw.zzw_final.Dto.Entity.ChatMessage;
 import com.zzw.zzw_final.Dto.Entity.ChatRoom;
 import com.zzw.zzw_final.Dto.Entity.Member;
 import com.zzw.zzw_final.Dto.Request.ChatRequestDto;
+import com.zzw.zzw_final.Dto.Response.ChatListResponseDto;
 import com.zzw.zzw_final.Dto.Response.ChatMessageResponseDto;
 import com.zzw.zzw_final.Dto.Response.ChatRoomResponseDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
@@ -202,5 +203,28 @@ public class ChatService {
         ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(chatRoom.getId());
 
         return ResponseDto.success(chatRoomResponseDto);
+    }
+
+    public ResponseDto<?> getUserChatList(HttpServletRequest request) {
+        ResponseDto<?> result = memberService.checkMember(request);
+        Member member = null;
+        if (result.isSuccess()){
+            member = (Member) result.getData();
+        }
+
+        List<ChatMember> chatMembers = chatMemberRepository.findAllByMember(member);
+        List<ChatListResponseDto> chatListResponseDtos = new ArrayList<>();
+
+        for(ChatMember chatMember : chatMembers){
+            ChatRoom chatRoom = chatMember.getChatRoom();
+            ChatMember chatToMember = chatMemberRepository.findChatMemberByChatRoomAndMemberNot(chatRoom, member);
+            List<ChatMessage> chatMessage = chatMessageRepository.findChatMessageByChatRoomOrderByCreatedAtDesc(chatRoom);
+            if (chatMessage.size() != 0){
+                ChatListResponseDto chatListResponseDto = new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0));
+                chatListResponseDtos.add(chatListResponseDto);
+            }
+        }
+
+        return ResponseDto.success(chatListResponseDtos);
     }
 }
