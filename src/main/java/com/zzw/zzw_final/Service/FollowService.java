@@ -66,7 +66,7 @@ public class FollowService {
         ResponseDto<?> result = memberService.checkMember(request);
         Member LoginMember = (Member) result.getData();
 
-        List<Member> members = getFollowMembers(LoginMember);
+        List<Member> members = getFollowerMembers(LoginMember);
         List<FollowResponseDto> followerResponseDtos = new ArrayList<>();
 
         for (Member member : members) {
@@ -75,13 +75,25 @@ public class FollowService {
         return ResponseDto.success(followerResponseDtos);
     }
 
-    private List<Member> getFollowMembers(Member loginMember) {
-        List<Follow> followerlist = followRepository.findAllByMemberOrderByFollowerNicknameAsc(loginMember);
+    private List<Member> getFollowerMembers(Member loginMember) {
+        List<Follow> followerlist = followRepository.findAllByMemberOrderByFollowNicknameAsc(loginMember);
 
         List<Member> members = new ArrayList<>();
 
         for (Follow follower : followerlist) {
             Member member2 = memberRepository.findMemberById(follower.getFollowerId());
+            members.add(member2);
+        }
+        return members;
+    }
+
+    private List<Member> getFollowMembers(Member loginMember) {
+        List<Follow> followerlist = followRepository.findAllByFollowerIdOrderByFollowNicknameAsc(loginMember.getId());
+
+        List<Member> members = new ArrayList<>();
+
+        for (Follow follower : followerlist) {
+            Member member2 = memberRepository.findMemberById(follower.getMember().getId());
             members.add(member2);
         }
         return members;
@@ -125,7 +137,7 @@ public class FollowService {
 
         Member member = memberRepository.findMemberById(user_id);
 
-        List<Member> members = getFollowMembers(member);
+        List<Member> members = getFollowerMembers(member);
         List<FollowResponseDto> followerResponseDtos = new ArrayList<>();
 
         for (Member member2 : members) {
