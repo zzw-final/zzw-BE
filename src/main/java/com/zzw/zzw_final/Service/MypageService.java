@@ -22,7 +22,6 @@ public class MypageService {
     private final GradeRepository gradeRepository;
     private final FollowRepository followRepository;
     private final PostRepository postRepository;
-    private final ContentRepository contentRepository;
     private final PostService postService;
     private final PostLikeRepository postLikeRepository;
     private final MemberRepository memberRepository;

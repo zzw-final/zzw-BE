@@ -1,9 +1,8 @@
 package com.zzw.zzw_final.Controller;
 
-import com.zzw.zzw_final.Dto.Chat.ChatService;
+import com.zzw.zzw_final.Service.ChatService;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
