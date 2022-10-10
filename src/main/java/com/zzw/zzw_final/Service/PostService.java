@@ -561,30 +561,6 @@ public class PostService {
         return ResponseDto.success(contentResponseDto);
     }
 
-
-    /*
-
-    private boolean verifiedMember(HttpServletRequest request, Member member) {
-        String token = request.getHeader("Authorization").substring((7));
-        if (token == null || !tokenProvider.validateToken(token)){
-            return false;
-        }
-        Authentication authentication = tokenProvider.getAuthentication(token);
-        String memberId = authentication.getName(); //member Id
-        if (Long.valueOf(memberId)!= member.getId()){
-            return false;
-        }
-        return true;
-    }
-
-    @Transactional
-    public Member getMemberfromContext() {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        Optional<Member> member = memberRepository.findById(Long.valueOf(userId));  //Long.valueOf(userId)
-        return member.get();
-    }
-
-     */
-    }
+}
 
 

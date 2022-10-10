@@ -2,12 +2,14 @@ package com.zzw.zzw_final.Dto.Response;
 
 import com.zzw.zzw_final.Dto.Entity.Member;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class MypageUserInfoResponseDto {
     private String nickname;
     private String grade;

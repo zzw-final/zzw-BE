@@ -3,6 +3,7 @@ package com.zzw.zzw_final.Controller;
 import com.zzw.zzw_final.Dto.Entity.Follow;
 import com.zzw.zzw_final.Dto.Entity.Member;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
+import com.zzw.zzw_final.Service.FollowService;
 import com.zzw.zzw_final.Service.MypageService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MyPageController {
 
     private final MypageService mypageService;
+    private final FollowService followService;
 
     //유저에게 칭호 POST
     @PostMapping("/api/grade/{grade_id}/{user_id}")
@@ -55,37 +57,34 @@ public class MyPageController {
         return mypageService.getOtherUserPosts(user_id, request);
     }
 
-    //팔로우 관련
     @PostMapping("/api/auth/mypage/follow/{member_id}")
     public ResponseDto<?> follow(HttpServletRequest request, @PathVariable Long member_id){
-        return mypageService.follow(request, member_id);
+        return followService.follow(request, member_id);
     }
 
 
     @GetMapping("/api/auth/mypage/follower")
     public ResponseDto<?> getFollower(HttpServletRequest request){
 
-        return mypageService.getFollower(request);
+        return followService.getFollower(request);
     }
 
     @GetMapping("/api/auth/mypage/follow")
     public ResponseDto<?> getFollow(HttpServletRequest request){
 
-        return mypageService.getFollow(request);
+        return followService.getFollow(request);
     }
 
 
-
-    //다른 유저 마이페이지에서 팔로우 보기
     @GetMapping("/api/mypage/{user_id}/follow")
     public ResponseDto<?> getOthersFollow(@PathVariable Long user_id,HttpServletRequest request){
-        return mypageService.getOthersFollow(user_id, request);
+        return followService.getOthersFollow(user_id, request);
     }
 
 
     @GetMapping("/api/mypage/{user_id}/follower")
     public ResponseDto<?> getOthersFollower(@PathVariable Long user_id, HttpServletRequest request){
-        return mypageService.getOthersFollower(user_id, request);
+        return followService.getOthersFollower(user_id, request);
     }
 
 }
