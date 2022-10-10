@@ -15,6 +15,7 @@ public class ChatMessageResponseDto {
 
     public ChatMessageResponseDto(Member getMember, ChatMessage chatMessage) {
         this.sender = getMember.getNickname();
+        this.profile = getMember.getProfile();
         this.message = chatMessage.getMessage();
         this.sendTime = chatMessage.getSendTime();
     }

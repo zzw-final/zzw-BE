@@ -219,3 +219,10 @@ oauth: kakao
   "roomId" :2220,
   "messageId":4
 }
+
+### 채팅방 내용 가져오기
+GET http://localhost:8080/api/chat/message/3211
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTQ3NjEyM30.lSmaKsngcsoXBzuufYgTa-5b5GnrgbEqwbnEmr3e86Y
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU5OTQ1MjN9.XpXt52a8kdoeeih8XkkspmMiKH305FGrhzHxOaDAReo
+oauth: kakao
