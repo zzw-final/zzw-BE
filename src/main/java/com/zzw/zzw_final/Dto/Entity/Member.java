@@ -1,7 +1,6 @@
 package com.zzw.zzw_final.Dto.Entity;
 
 import com.sun.istack.NotNull;
-import com.zzw.zzw_final.Dto.Chat.ChatMessage;
 import com.zzw.zzw_final.Dto.GoogleLoginDto;
 import com.zzw.zzw_final.Dto.OauthUserDto;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;

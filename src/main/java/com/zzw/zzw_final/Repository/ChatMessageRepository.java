@@ -1,7 +1,7 @@
 package com.zzw.zzw_final.Repository;
 
-import com.zzw.zzw_final.Dto.Chat.ChatMessage;
-import com.zzw.zzw_final.Dto.Chat.ChatRoom;
+import com.zzw.zzw_final.Dto.Entity.ChatMessage;
+import com.zzw.zzw_final.Dto.Entity.ChatRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

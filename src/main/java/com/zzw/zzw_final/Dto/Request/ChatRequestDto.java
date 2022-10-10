@@ -1,4 +1,4 @@
-package com.zzw.zzw_final.Dto.Chat;
+package com.zzw.zzw_final.Dto.Request;
 
 import lombok.Data;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.zzw.zzw_final.Controller;
 
-import com.zzw.zzw_final.Dto.Chat.ChatRequestDto;
-import com.zzw.zzw_final.Dto.Chat.ChatService;
+import com.zzw.zzw_final.Dto.Request.ChatRequestDto;
+import com.zzw.zzw_final.Service.ChatService;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.Header;

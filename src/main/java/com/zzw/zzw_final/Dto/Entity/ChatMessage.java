@@ -1,7 +1,6 @@
-package com.zzw.zzw_final.Dto.Chat;
+package com.zzw.zzw_final.Dto.Entity;
 
-import com.zzw.zzw_final.Dto.Entity.Member;
-import com.zzw.zzw_final.Dto.Entity.Timestamped;
+import com.zzw.zzw_final.Dto.Request.ChatRequestDto;
 import lombok.*;
 
 import javax.persistence.*;

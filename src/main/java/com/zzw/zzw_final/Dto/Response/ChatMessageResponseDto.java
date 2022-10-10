@@ -1,32 +1,30 @@
-package com.zzw.zzw_final.Dto.Chat;
+package com.zzw.zzw_final.Dto.Response;
 
+import com.zzw.zzw_final.Dto.Entity.ChatMessage;
 import com.zzw.zzw_final.Dto.Entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 @Getter
 @Setter
-public class ChatMessageDto {
+public class ChatMessageResponseDto {
     private String sender;
     private String message;
     private String sendTime;
 
-    public ChatMessageDto(Member getMember, ChatMessage chatMessage) {
+    public ChatMessageResponseDto(Member getMember, ChatMessage chatMessage) {
         this.sender = getMember.getNickname();
         this.message = chatMessage.getMessage();
         this.sendTime = chatMessage.getSendTime();
     }
 
-    public ChatMessageDto(Member member, String time) {
+    public ChatMessageResponseDto(Member member, String time) {
         this.sender = member.getNickname();
         this.message = member.getNickname() + "님이 입장하셨습니다.";
         this.sendTime = time;
     }
 
-    public ChatMessageDto(Member member, String time, String message) {
+    public ChatMessageResponseDto(Member member, String time, String message) {
         this.sender = member.getNickname();
         this.message = message;
         this.sendTime = time;

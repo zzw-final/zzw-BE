@@ -1,7 +1,12 @@
-package com.zzw.zzw_final.Dto.Chat;
+package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
+import com.zzw.zzw_final.Dto.Entity.ChatMember;
+import com.zzw.zzw_final.Dto.Entity.ChatMessage;
+import com.zzw.zzw_final.Dto.Entity.ChatRoom;
 import com.zzw.zzw_final.Dto.Entity.Member;
+import com.zzw.zzw_final.Dto.Request.ChatRequestDto;
+import com.zzw.zzw_final.Dto.Response.ChatMessageResponseDto;
 import com.zzw.zzw_final.Dto.Response.ChatRoomResponseDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Repository.ChatMemberRepository;
@@ -80,10 +85,10 @@ public class ChatService {
         chatMemberRepository.save(chatMember);
 
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일 - a hh:mm "));
-        ChatMessageDto chatMessageDto = new ChatMessageDto(member, time);
+        ChatMessageResponseDto chatMessageResponseDto = new ChatMessageResponseDto(member, time);
 
         // 메세지 보내기
-        messageTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessageDto);
+        messageTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessageResponseDto);
 
         return ResponseDto.success(member.getNickname()+" 입장 성공");
     }
@@ -125,10 +130,10 @@ public class ChatService {
             return ResponseDto.fail(NOTFOUND_ROOM);
         }
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일 - a hh:mm "));
-        ChatMessageDto chatMessageDto = new ChatMessageDto(member, time, message.getMessage());
+        ChatMessageResponseDto chatMessageResponseDto = new ChatMessageResponseDto(member, time, message.getMessage());
 
         // 메세지 보내기
-        messageTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessageDto);
+        messageTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessageResponseDto);
 
         // 보낸 메세지 저장 (db바뀔때 timestamp 없애고 위의 값을 저장하는것으로 바꾸기)
         ChatMessage chatMessage = new ChatMessage(member, chatRoom, message, time);
@@ -156,14 +161,14 @@ public class ChatService {
         }
 
         List<ChatMessage> chatMessageList = chatMessageRepository.findAllByChatRoom(chatRoom);
-        List<ChatMessageDto> chatMessageDtos = new ArrayList<>();
+        List<ChatMessageResponseDto> chatMessageResponseDtos = new ArrayList<>();
 
         for (ChatMessage chatMessage : chatMessageList) {
             Member getMember = chatMessage.getMember();
 
-            chatMessageDtos.add(new ChatMessageDto(getMember, chatMessage));
+            chatMessageResponseDtos.add(new ChatMessageResponseDto(getMember, chatMessage));
         }
-        return ResponseDto.success(chatMessageDtos);
+        return ResponseDto.success(chatMessageResponseDtos);
     }
 
     public ResponseDto<?> getChatRoom(Long user_id, HttpServletRequest request) {
