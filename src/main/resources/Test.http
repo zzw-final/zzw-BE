@@ -230,3 +230,7 @@ oauth: kakao
 ### 마이페이지 - 다른 유저 팔로워
 GET http://localhost:8080/api/mypage/1/follow
 Content-Type: application/json
+
+### 프로필 사진 모두 불러오기
+GET http://localhost:8080/api/member/profile
+Content-Type: application/json

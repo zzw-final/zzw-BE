@@ -83,4 +83,9 @@ public class MemberController {
     public ResponseDto<?> integrationMember(@RequestBody IntegrationMemberRequestDto requestDto, HttpServletResponse response){
         return memberService.integrationMember(requestDto, response);
     }
+
+    @GetMapping("/api/member/profile")
+    public ResponseDto<?> getMemberProfile(){
+        return memberService.getMemberProfile();
+    }
 }

@@ -3,21 +3,22 @@ package com.zzw.zzw_final.Service;
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.Follow;
 import com.zzw.zzw_final.Dto.Entity.Member;
+import com.zzw.zzw_final.Dto.Entity.ProfileList;
 import com.zzw.zzw_final.Dto.Entity.RefreshToken;
 import com.zzw.zzw_final.Dto.Request.IntegrationMemberRequestDto;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
 import com.zzw.zzw_final.Dto.Response.IntegrationResponseDto;
+import com.zzw.zzw_final.Dto.Response.ProfileResponseDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Dto.TokenDto;
-import com.zzw.zzw_final.Repository.FollowRepository;
-import com.zzw.zzw_final.Repository.MemberRepository;
-import com.zzw.zzw_final.Repository.RefreshTokenRepository;
+import com.zzw.zzw_final.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final FollowRepository followRepository;
+    private final ProfileListRepository profileListRepository;
 
     public ResponseDto<?> checkMember(HttpServletRequest request){
 
@@ -116,5 +118,14 @@ public class MemberService {
         IntegrationResponseDto responseDto = new IntegrationResponseDto(member, tokenDto);
 
         return ResponseDto.success(responseDto);
+    }
+
+    public ResponseDto<?> getMemberProfile() {
+        List<ProfileList> profileLists = profileListRepository.findAll();
+        List<ProfileResponseDto> profileResponseDtos = new ArrayList<>();
+        for(ProfileList profileList : profileLists){
+            profileResponseDtos.add(new ProfileResponseDto(profileList));
+        }
+        return ResponseDto.success(profileResponseDtos);
     }
 }
