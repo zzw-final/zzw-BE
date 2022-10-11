@@ -33,17 +33,17 @@ class MemberServiceTest {
 
     @Test
     public void postUserNickname(){
-
-        SignupRequestDto signupRequestDto = new SignupRequestDto();
-        signupRequestDto.setNickname("jeeyeon");
-        signupRequestDto.setEmail("good9712@nate.com");
-
-        //ResponseDto<?> responseDto = memberService.postUserNickname(,signupRequestDto);
-
-        Member loginMember = new Member(signupRequestDto);
-
-        Assertions.assertEquals(loginMember.getNickname(), "jeeyeon");
-        Assertions.assertEquals(loginMember.getEmail(), "good9712@nate.com");
+//
+//        SignupRequestDto signupRequestDto = new SignupRequestDto();
+//        signupRequestDto.setNickname("jeeyeon");
+//        signupRequestDto.setEmail("good9712@nate.com");
+//
+//        ResponseDto<?> responseDto = memberService.postUserNickname(,signupRequestDto);
+//
+//        Member loginMember = new Member(signupRequestDto);
+//
+//        Assertions.assertEquals(loginMember.getNickname(), "jeeyeon");
+//        Assertions.assertEquals(loginMember.getEmail(), "good9712@nate.com");
     }
 
 }

@@ -22,4 +22,8 @@ public class GradeList {
 
     @OneToMany(mappedBy = "gradeList", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Grade> grades;
+
+    public GradeList(String name){
+        this.name = name;
+    }
 }
