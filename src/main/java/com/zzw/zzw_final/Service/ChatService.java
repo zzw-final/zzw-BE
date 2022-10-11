@@ -40,57 +40,6 @@ public class ChatService {
     private final ChatMemberRepository chatMemberRepository;
     private final ChatReadRepository chatReadRepository;
 
-    // 이미 채팅방에 있는 멤버인지 확인
-//    public ResponseDto<?> getChatMember(Long eventId, HttpServletRequest request) {
-//        ResponseDto<?> chkResponse = validateCheck(request);
-//        if (!chkResponse.isSuccess())
-//            return chkResponse;
-//        Member member = memberRepository.findById(((Member) chkResponse.getData()).getId()).orElse(null);
-//        assert member != null;  // 동작할일은 없는 코드
-//
-//        ChatRoom chatRoom = chatRoomRepository.findById(eventId).orElse(null);
-//
-//        Optional<ChatMember> chatMember = chatMemberRepository.findByMemberAndChatRoom(member, chatRoom);
-//        if (chatMember.isPresent())
-//            return ResponseDto.fail("이미 존재하는 회원입니다.");
-//        return ResponseDto.success("채팅방에 없는 회원입니다.");
-//    }
-
-    // 채팅방 입장
-    @Transactional
-    public ResponseDto<?> enterChatRoom(ChatRequestDto message, String token, String oauth) {
-
-        // 토큰으로 유저찾기
-        String ttoken = token.substring(7);
-        String email = tokenProvider.getUserEmail(ttoken);
-        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
-
-        ChatRoom chatRoom = chatRoomRepository.findChatRoomById(message.getRoomId());
-
-        if (chatRoom == null){
-            return ResponseDto.fail(NOTFOUND_ROOM);
-        }
-
-        // 이미 채팅방에 있는 멤버면 막아야함.
-        ChatMember findChatMember = chatMemberRepository.findChatMemberByChatRoomAndMember(chatRoom, member);
-        if (findChatMember != null){
-            return ResponseDto.fail(DUPLICATE_ROOM);
-        }
-
-        // 없다면 채팅방 멤버목록에 넣기
-        ChatMember chatMember = new ChatMember(member, chatRoom);
-        chatMemberRepository.save(chatMember);
-
-        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일 - a hh:mm "));
-        ChatMessageResponseDto chatMessageResponseDto = new ChatMessageResponseDto(member, time);
-
-        // 메세지 보내기
-        messageTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessageResponseDto);
-
-        return ResponseDto.success(member.getNickname()+" 입장 성공");
-    }
-
-    // 채팅방 나가기
     @Transactional
     public ResponseDto<?> exitChatRoom(Long roomId, HttpServletRequest request) {
 
