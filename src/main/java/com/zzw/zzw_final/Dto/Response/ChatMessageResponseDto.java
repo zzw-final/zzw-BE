@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class ChatMessageResponseDto {
     private String sender;
+    private Long messageId;
     private String profile;
     private String message;
     private String sendTime;
@@ -18,6 +19,7 @@ public class ChatMessageResponseDto {
         this.profile = getMember.getProfile();
         this.message = chatMessage.getMessage();
         this.sendTime = chatMessage.getSendTime();
+        this.messageId = chatMessage.getId();
     }
 
     public ChatMessageResponseDto(Member member, String time) {
@@ -26,10 +28,11 @@ public class ChatMessageResponseDto {
         this.sendTime = time;
     }
 
-    public ChatMessageResponseDto(Member member, String time, String message) {
+    public ChatMessageResponseDto(Member member, String time, String message, Long id) {
         this.sender = member.getNickname();
         this.profile = member.getProfile();
         this.message = message;
         this.sendTime = time;
+        this.messageId = id;
     }
 }

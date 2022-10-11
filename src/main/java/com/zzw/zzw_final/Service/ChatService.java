@@ -72,16 +72,16 @@ public class ChatService {
         if (chatRoom == null){
             return ResponseDto.fail(NOTFOUND_ROOM);
         }
+        // 보낸 메세지 저장 (db바뀔때 timestamp 없애고 위의 값을 저장하는것으로 바꾸기)
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        ChatMessageResponseDto chatMessageResponseDto = new ChatMessageResponseDto(member, time, message.getMessage());
+        ChatMessage chatMessage = new ChatMessage(member, chatRoom, message, time);
+        chatMessageRepository.save(chatMessage);
+
+        ChatMessageResponseDto chatMessageResponseDto = new ChatMessageResponseDto(member, time, message.getMessage(), chatMessage.getId());
+
 
         // 메세지 보내기
         messageTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessageResponseDto);
-
-        // 보낸 메세지 저장 (db바뀔때 timestamp 없애고 위의 값을 저장하는것으로 바꾸기)
-        ChatMessage chatMessage = new ChatMessage(member, chatRoom, message, time);
-
-        chatMessageRepository.save(chatMessage);
 
         return ResponseDto.success("success send message!");
     }
