@@ -1,23 +1,17 @@
 package com.zzw.zzw_final.Controller;
 
-import com.zzw.zzw_final.Dto.Entity.Follow;
-import com.zzw.zzw_final.Dto.Entity.Member;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
-import com.zzw.zzw_final.Service.FollowService;
 import com.zzw.zzw_final.Service.MypageService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 
 @RestController
 @RequiredArgsConstructor
 public class MyPageController {
 
     private final MypageService mypageService;
-    private final FollowService followService;
 
     //유저에게 칭호 POST
     @PostMapping("/api/grade/{grade_id}/{user_id}")
@@ -55,36 +49,6 @@ public class MyPageController {
     @GetMapping("/api/mypage/{user_id}/myposts")
     public ResponseDto<?> getOtherUserPosts(@PathVariable Long user_id, HttpServletRequest request){
         return mypageService.getOtherUserPosts(user_id, request);
-    }
-
-    @PostMapping("/api/auth/mypage/follow/{member_id}")
-    public ResponseDto<?> follow(HttpServletRequest request, @PathVariable Long member_id){
-        return followService.follow(request, member_id);
-    }
-
-
-    @GetMapping("/api/auth/mypage/follower")
-    public ResponseDto<?> getFollower(HttpServletRequest request){
-
-        return followService.getFollower(request);
-    }
-
-    @GetMapping("/api/auth/mypage/follow")
-    public ResponseDto<?> getFollow(HttpServletRequest request){
-
-        return followService.getFollow(request);
-    }
-
-
-    @GetMapping("/api/mypage/{user_id}/follow")
-    public ResponseDto<?> getOthersFollow(@PathVariable Long user_id,HttpServletRequest request){
-        return followService.getOthersFollow(user_id, request);
-    }
-
-
-    @GetMapping("/api/mypage/{user_id}/follower")
-    public ResponseDto<?> getOthersFollower(@PathVariable Long user_id, HttpServletRequest request){
-        return followService.getOthersFollower(user_id, request);
     }
 
 }
