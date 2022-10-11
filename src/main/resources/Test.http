@@ -172,13 +172,12 @@ oauth: kakao
 
 ###회원가입
 POST http://localhost:8080/api/member/signup
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDYyNjE5OX0.ZcQM7E2FW_6dCALlhWqJXoF74Nxy4v1lkmtmch5vmIo
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUxNDQ1OTl9.nK_O-hDEywyqynbmEdMZCppvWmCG7vEjpe_y3Xupe7Q
 Content-Type: application/json
 
 {
   "nickname" : "지연",
-  "email" : "good9712@nate.com"
+  "email" : "qkrwldus3927@gmail.com",
+  "oauth" : "google"
 }
 
 ### 소셜로그인 이메일 통합 - PUT
