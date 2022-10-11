@@ -93,4 +93,9 @@ public class MemberController {
     public ResponseDto<?> updateMemberProfile(HttpServletRequest request, @PathVariable Long profileId){
         return memberService.updateMemberProfile(request, profileId);
     }
+
+    @GetMapping("/api/member/grade")
+    public ResponseDto<?> getMemberGrade(HttpServletRequest request){
+        return memberService.getMemberGrade(request);
+    }
 }
