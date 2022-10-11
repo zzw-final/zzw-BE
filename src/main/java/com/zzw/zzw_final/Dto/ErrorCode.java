@@ -17,23 +17,9 @@ public enum ErrorCode {
 
     TOKEN_NOT_FOUND("TOKEN_NOT_FOUND", "존재하지 않는 Token 입니다."),
 
-
-    //회원가입 관련 오류
-    DUPLICATE_EMAIL("DUPLICATE_EMAIL", "이미 이메일이 사용중입니다."),
-
     //게시글 관련 오류
     NOT_EQUAL_MEMBER("NOT_EQUAL_MEMBER","작성하신 글이 아닙니다."),
-
-    //제품(Product) 관련 오류
-    INVALID_PRODUCT("INVALID_PRODUCT", "해당하는 제품이 없습니다."),
-
-    //장바구니 관련 오류
-    INVALID_CART("INVALID_CART", "해당하는 제품이 장바구니에 없습니다."),
-    DUPLICATE_CART("DUPLICATE_CART", "해당하는 제품이 장바구니에 이미 있습니다."),
-
-    //소셜로그인 관련 오류
-    NOTFOUND_LOGIN_TYPE("NOTFOUND_LOGIN_TYPE", "해당하는 소셜로그인 종류가 없습니다."),
-    NOT_GOOGLE("NOT_GOOGLE","구글 로그인이 안됐음"),
+    NULL_FILE("NULL_FILE", "multipartFile이 null값입니다."),
 
     //레시피 관련 오류
     NOTFOUND_POST_ID("NOTFOUND_POST_ID", "해당하는 레시피 id가 없음"),
