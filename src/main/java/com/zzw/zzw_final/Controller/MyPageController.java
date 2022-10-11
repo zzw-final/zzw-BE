@@ -13,19 +13,6 @@ public class MyPageController {
 
     private final MypageService mypageService;
 
-    //유저에게 칭호 POST
-    @PostMapping("/api/grade/{grade_id}/{user_id}")
-    public ResponseDto<?> postGrade(HttpServletRequest request, @PathVariable Long grade_id,
-                                    @PathVariable Long user_id){
-        return mypageService.postGrade(request, grade_id, user_id);
-    }
-
-    //마이페이지 유저정보 GET
-    @GetMapping("/api/auth/mypage")
-    public ResponseDto<?> getUserInfo(HttpServletRequest request){
-        return mypageService.getUserInfo(request);
-    }
-
     //마이페이지 유저가 쓴 글 GET
     @GetMapping("/api/auth/mypage/myposts")
     public ResponseDto<?> getUserPosts(HttpServletRequest request){
@@ -36,13 +23,6 @@ public class MyPageController {
     @GetMapping("/api/auth/mypage/likeposts")
     public ResponseDto<?> getUserLikePosts(HttpServletRequest request){
         return mypageService.getUserLikePosts(request);
-    }
-
-
-    //마이페이지 다른 유저의 정보 GET
-    @GetMapping("/api/mypage/{user_id}")
-    public ResponseDto<?> getOtherUserInfo(@PathVariable Long user_id, HttpServletRequest request){
-        return mypageService.getOtherUserInfo(user_id, request);
     }
 
     //마이페이지 해당 유저의 쓴 글 GET

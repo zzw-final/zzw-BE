@@ -2,11 +2,10 @@ package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.*;
-import com.zzw.zzw_final.Dto.Request.IntegrationMemberRequestDto;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
 import com.zzw.zzw_final.Dto.Response.GradeListResponseDto;
 import com.zzw.zzw_final.Dto.Response.IntegrationResponseDto;
-import com.zzw.zzw_final.Dto.Response.ProfileResponseDto;
+import com.zzw.zzw_final.Dto.Response.MypageUserInfoResponseDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Dto.TokenDto;
 import com.zzw.zzw_final.Repository.*;
@@ -29,9 +28,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final FollowRepository followRepository;
-    private final ProfileListRepository profileListRepository;
-    private final GradeRepository gradeRepository;
-    private final GradeListRepository gradeListRepository;
+    private final GradeService gradeService;
+
     public ResponseDto<?> checkMember(HttpServletRequest request){
 
         //헤더에 리프레시 토큰이 안 왔을 경우 오류 값 반환
@@ -99,56 +97,7 @@ public class MemberService {
 
         return ResponseDto.success("success member delete!");
     }
-    public ResponseDto<?> getMemberProfile() {
-        List<ProfileList> profileLists = profileListRepository.findAll();
-        List<ProfileResponseDto> profileResponseDtos = new ArrayList<>();
-        for(ProfileList profileList : profileLists){
-            profileResponseDtos.add(new ProfileResponseDto(profileList));
-        }
-        return ResponseDto.success(profileResponseDtos);
-    }
 
-    public ResponseDto<?> updateMemberProfile(HttpServletRequest request, Long profileId) {
-        Member loginMember = getMember(request);
-        if (loginMember == null){
-            return ResponseDto.fail(MEMBER_NOT_FOUND);
-        }
-
-        ProfileList profileList = profileListRepository.findProfileListById(profileId);
-
-        loginMember.updateProfile(profileList.getProfile());
-        memberRepository.save(loginMember);
-        return ResponseDto.success("success update profile");
-    }
-
-    public ResponseDto<?> getMemberGrade(HttpServletRequest request) {
-        Member loginMember = getMember(request);
-        if (loginMember == null){
-            return ResponseDto.fail(MEMBER_NOT_FOUND);
-        }
-
-        List<Grade> grades = gradeRepository.findAllByMember(loginMember);
-        List<GradeListResponseDto> gradeListResponseDtos = new ArrayList<>();
-
-        for(Grade grade : grades){
-            gradeListResponseDtos.add(new GradeListResponseDto(grade.getGradeList()));
-        }
-
-        return ResponseDto.success(gradeListResponseDtos);
-    }
-
-    public ResponseDto<?> updateMemberGrade(HttpServletRequest request, Long gradeId) {
-        Member loginMember = getMember(request);
-        if (loginMember == null){
-            return ResponseDto.fail(MEMBER_NOT_FOUND);
-        }
-
-        GradeList gradeList = gradeListRepository.findGradeListById(gradeId);
-        loginMember.updateGrade(gradeList.getName());
-        memberRepository.save(loginMember);
-
-        return ResponseDto.success("success update grade");
-    }
 
     public String getInvalidToken(){
         Calendar cal1 = Calendar.getInstance();
@@ -157,4 +106,64 @@ public class MemberService {
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return transFormat.format(date);
     }
+
+    public ResponseDto<?> getUserInfo(HttpServletRequest request) {
+
+        ResponseDto<?> result = checkMember(request);
+        Member member = (Member) result.getData();
+
+        List<Follow> followerlist = followRepository.findAllByFollowerId(member.getId());
+        List<Follow> followList = followRepository.findAllByMember(member);
+
+        List<GradeListResponseDto> responseDtos = gradeService.getUserGrade(member);
+
+        MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
+                followerlist.size(), followList.size(), responseDtos, true);
+
+        return ResponseDto.success(responseDto);
+    }
+
+
+
+    public ResponseDto<?> getOtherUserInfo(Long user_id, HttpServletRequest request) {
+
+        Member loginMember = getMember(request);
+        Member member = memberRepository.findMemberById(user_id);
+
+        List<Follow> followerlist = followRepository.findAllByFollowerId(member.getId());
+        List<Follow> followList = followRepository.findAllByMember(member);
+
+        List<GradeListResponseDto> responseDtos = gradeService.getUserGrade(member);
+
+
+        MypageUserInfoResponseDto responseDto;
+
+        if(loginMember == null){
+            responseDto = new MypageUserInfoResponseDto(member,
+                    followerlist.size(), followList.size(), responseDtos, false);
+
+            return ResponseDto.success(responseDto);
+        }
+        else
+            responseDto = getUserInfoResponseDto(loginMember, member, followerlist, followList, responseDtos);
+
+        return ResponseDto.success(responseDto);
+    }
+
+    private MypageUserInfoResponseDto getUserInfoResponseDto(Member loginMember, Member member, List<Follow> followerlist,
+                                                             List<Follow> followList, List<GradeListResponseDto> responseDtos) {
+        Follow follow = followRepository.findFollowByFollowerIdAndMember(loginMember.getId(), member);
+
+        if (follow == null) {
+            MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
+                    followerlist.size(), followList.size(), responseDtos,false);
+            return responseDto;
+
+        } else {
+            MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
+                    followerlist.size(), followList.size(), responseDtos,true);
+            return responseDto;
+        }
+    }
+
 }

@@ -51,23 +51,15 @@ public class MemberController {
         return kakaoService.logout(request);
     }
 
-    @GetMapping("/api/member/profile")
-    public ResponseDto<?> getMemberProfile(){
-        return memberService.getMemberProfile();
+    @GetMapping("/api/auth/mypage")
+    public ResponseDto<?> getUserInfo(HttpServletRequest request){
+        return memberService.getUserInfo(request);
     }
 
-    @PutMapping("/api/member/profile/{profileId}")
-    public ResponseDto<?> updateMemberProfile(HttpServletRequest request, @PathVariable Long profileId){
-        return memberService.updateMemberProfile(request, profileId);
+    @GetMapping("/api/mypage/{user_id}")
+    public ResponseDto<?> getOtherUserInfo(@PathVariable Long user_id, HttpServletRequest request){
+        return memberService.getOtherUserInfo(user_id, request);
     }
 
-    @GetMapping("/api/member/grade")
-    public ResponseDto<?> getMemberGrade(HttpServletRequest request){
-        return memberService.getMemberGrade(request);
-    }
 
-    @PutMapping("/api/member/grade/{gradeId}")
-    public ResponseDto<?> updateMemberGrade(HttpServletRequest request, @PathVariable Long gradeId){
-        return memberService.updateMemberGrade(request, gradeId);
-    }
 }
