@@ -58,6 +58,9 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatRead> chatReads;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Profile> profiles;
+
     public Member(String email, String kakao) {
         this.email = email;
         this.nickname = kakao;
