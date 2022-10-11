@@ -79,9 +79,11 @@ public class ChatService {
 
         ChatMessageResponseDto chatMessageResponseDto = new ChatMessageResponseDto(member, time, message.getMessage(), chatMessage.getId());
 
+        ChatMember chatMember = chatMemberRepository.findChatMemberByChatRoomAndMemberNot(chatRoom, member);
 
         // 메세지 보내기
         messageTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessageResponseDto);
+        messageTemplate.convertAndSend("/sub/chat/member/" + chatMember.getMember().getId(), new ChatReadResponseDto(false));
 
         return ResponseDto.success("success send message!");
     }
