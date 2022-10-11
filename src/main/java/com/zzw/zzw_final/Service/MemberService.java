@@ -128,4 +128,17 @@ public class MemberService {
         }
         return ResponseDto.success(profileResponseDtos);
     }
+
+    public ResponseDto<?> updateMemberProfile(HttpServletRequest request, Long profileId) {
+        Member loginMember = getMember(request);
+        if (loginMember == null){
+            return ResponseDto.fail(MEMBER_NOT_FOUND);
+        }
+
+        ProfileList profileList = profileListRepository.findProfileListById(profileId);
+
+        loginMember.updateProfile(profileList.getProfile());
+        memberRepository.save(loginMember);
+        return ResponseDto.success("success update profile");
+    }
 }

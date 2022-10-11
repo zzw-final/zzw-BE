@@ -88,4 +88,9 @@ public class MemberController {
     public ResponseDto<?> getMemberProfile(){
         return memberService.getMemberProfile();
     }
+
+    @PutMapping("/api/member/profile/{profileId}")
+    public ResponseDto<?> updateMemberProfile(HttpServletRequest request, @PathVariable Long profileId){
+        return memberService.updateMemberProfile(request, profileId);
+    }
 }

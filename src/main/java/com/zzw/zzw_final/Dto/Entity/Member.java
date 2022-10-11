@@ -96,4 +96,8 @@ public class Member {
     public void updateOauth(String new_oauth) {
         this.oauth = new_oauth;
     }
+
+    public void updateProfile(String profile) {
+        this.profile = profile;
+    }
 }
