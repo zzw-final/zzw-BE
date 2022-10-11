@@ -28,7 +28,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final FollowRepository followRepository;
-    private final GradeService gradeService;
+    private final GradeRepository gradeRepository;
 
     public ResponseDto<?> checkMember(HttpServletRequest request){
 
@@ -115,7 +115,7 @@ public class MemberService {
         List<Follow> followerlist = followRepository.findAllByFollowerId(member.getId());
         List<Follow> followList = followRepository.findAllByMember(member);
 
-        List<GradeListResponseDto> responseDtos = gradeService.getUserGrade(member);
+        List<GradeListResponseDto> responseDtos = getUserGrade(member);
 
         MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
                 followerlist.size(), followList.size(), responseDtos, true);
@@ -133,7 +133,7 @@ public class MemberService {
         List<Follow> followerlist = followRepository.findAllByFollowerId(member.getId());
         List<Follow> followList = followRepository.findAllByMember(member);
 
-        List<GradeListResponseDto> responseDtos = gradeService.getUserGrade(member);
+        List<GradeListResponseDto> responseDtos = getUserGrade(member);
 
 
         MypageUserInfoResponseDto responseDto;
@@ -166,4 +166,13 @@ public class MemberService {
         }
     }
 
+    public List<GradeListResponseDto> getUserGrade(Member member) {
+        List<GradeListResponseDto> gradeListResponseDtos = new ArrayList<>();
+
+        List<Grade> grades = gradeRepository.findAllByMember(member);
+        for(Grade grade : grades){
+            gradeListResponseDtos.add(new GradeListResponseDto(grade.getGradeList()));
+        }
+        return gradeListResponseDtos;
+    }
 }

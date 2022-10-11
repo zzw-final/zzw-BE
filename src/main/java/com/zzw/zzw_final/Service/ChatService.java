@@ -4,10 +4,7 @@ import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.*;
 import com.zzw.zzw_final.Dto.Request.ChatRequestDto;
 import com.zzw.zzw_final.Dto.Request.CheckReadMessageRequestDto;
-import com.zzw.zzw_final.Dto.Response.ChatListResponseDto;
-import com.zzw.zzw_final.Dto.Response.ChatMessageResponseDto;
-import com.zzw.zzw_final.Dto.Response.ChatRoomResponseDto;
-import com.zzw.zzw_final.Dto.Response.ResponseDto;
+import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Repository.*;
 import com.zzw.zzw_final.Service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -161,13 +158,18 @@ public class ChatService {
         List<ChatListResponseDto> chatListResponseDtos = new ArrayList<>();
 
         for(ChatMember chatMember : chatMembers){
-            ChatRoom chatRoom = chatMember.getChatRoom();
+            ChatRoom chatRoom = chatRoomRepository.findChatRoomById(chatMember.getChatRoom().getId());
             ChatMember chatToMember = chatMemberRepository.findChatMemberByChatRoomAndMemberNot(chatRoom, member);
             List<ChatMessage> chatMessage = chatMessageRepository.findChatMessageByChatRoomOrderByCreatedAtDesc(chatRoom);
 
             if (chatMessage.size() != 0){
                 ChatRead chatRead = chatReadRepository.findChatReadByMemberAndChatRoom(member, chatRoom);
-                if (chatRead.getChatMessage().getId() < chatMessage.get(0).getId())
+
+                Long readMessageId = 0L;
+                if (chatRead != null)
+                    readMessageId = chatRead.getChatMessage().getId();
+
+                if (readMessageId < chatMessage.get(0).getId())
                     chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0), false));
                 else
                     chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0), true));
@@ -200,5 +202,32 @@ public class ChatService {
         }
 
         return ResponseDto.success("메세지 읽음 처리 완료");
+    }
+
+    public ResponseDto<?> isNewMessage(HttpServletRequest request) {
+        ResponseDto<?> result = memberService.checkMember(request);
+        Member member = null;
+        if (result.isSuccess()){
+            member = (Member) result.getData();
+        }
+
+        List<ChatMember> chatMembers = chatMemberRepository.findAllByMember(member);
+        for(ChatMember chatMember : chatMembers){
+
+            ChatRead chatRead = chatReadRepository.findChatReadByMemberAndChatRoom(member, chatMember.getChatRoom());
+            List<ChatMessage> chatMessage = chatMessageRepository.findChatMessageByChatRoomOrderByCreatedAtDesc(chatMember.getChatRoom());
+
+            Long readMessageId = 0L;
+            if (chatRead != null)
+                readMessageId = chatRead.getChatMessage().getId();
+
+            if (chatMessage.size() != 0){
+                if (readMessageId < chatMessage.get(0).getId())
+                    return ResponseDto.success(new ChatReadResponseDto(false));
+            }
+
+        }
+
+        return ResponseDto.success(new ChatReadResponseDto(true));
     }
 }

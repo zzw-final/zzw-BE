@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
-public class ChatRoomController {
+public class ChatController {
     private final ChatService chatService;
 
     //채팅방 생성
@@ -40,4 +40,10 @@ public class ChatRoomController {
     public ResponseDto<?> checkReadMessage(HttpServletRequest request, @RequestBody CheckReadMessageRequestDto checkReadMessageRequestDto){
         return chatService.checkReadMessage(request, checkReadMessageRequestDto);
     }
+
+    @GetMapping("/api/chat/alarm")
+    public ResponseDto<?> isNewMessage(HttpServletRequest request){
+        return chatService.isNewMessage(request);
+    }
+
 }

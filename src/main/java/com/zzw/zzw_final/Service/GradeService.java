@@ -63,14 +63,4 @@ public class GradeService {
         gradeRepository.save(userGrade);
         return ResponseDto.success("post grade success !");
     }
-
-    public List<GradeListResponseDto> getUserGrade(Member member) {
-        List<GradeListResponseDto> gradeListResponseDtos = new ArrayList<>();
-
-        List<Grade> grades = gradeRepository.findAllByMember(member);
-        for(Grade grade : grades){
-            gradeListResponseDtos.add(new GradeListResponseDto(grade.getGradeList()));
-        }
-        return gradeListResponseDtos;
-    }
 }
