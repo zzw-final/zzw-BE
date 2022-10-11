@@ -19,6 +19,7 @@ public class OAuthResponseDto {
     private String refreshToken;
     private String oauthToken;
     private String oauth;
+    private String invalidTime;
 
     public OAuthResponseDto(String email, String oauthToken, String oauth) {
         this.email = email;
@@ -35,7 +36,7 @@ public class OAuthResponseDto {
         this.isDuplicate = isDuplicate;
     }
 
-    public OAuthResponseDto(Member member, TokenDto tokenDto, String oauthToken, String oauth){
+    public OAuthResponseDto(Member member, TokenDto tokenDto, String oauthToken, String oauth, String invalidTime){
         this.email = member.getEmail();
         this.oauth = oauth;
         this.isFirst = false;
@@ -46,6 +47,7 @@ public class OAuthResponseDto {
         this.accessToken = tokenDto.getAccessToken();
         this.refreshToken = tokenDto.getRefreshToken();
         this.oauthToken = oauthToken;
+        this.invalidTime = invalidTime;
     }
 
 }

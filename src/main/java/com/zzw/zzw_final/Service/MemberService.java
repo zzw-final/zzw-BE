@@ -16,9 +16,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static com.zzw.zzw_final.Dto.ErrorCode.*;
 
@@ -68,7 +67,7 @@ public class MemberService {
         TokenDto tokenDto = tokenProvider.generateTokenDto(member);
         response.addHeader("Authorization", tokenDto.getAccessToken());
         response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
-        IntegrationResponseDto responseDto = new IntegrationResponseDto(member, tokenDto);
+        IntegrationResponseDto responseDto = new IntegrationResponseDto(member, tokenDto, getInvalidToken());
 
         return ResponseDto.success(responseDto);
     }
@@ -100,25 +99,6 @@ public class MemberService {
 
         return ResponseDto.success("success member delete!");
     }
-
-    public ResponseDto<?> integrationMember(IntegrationMemberRequestDto requestDto, HttpServletResponse response) {
-        Member member = memberRepository.findMemberByEmailAndOauth(requestDto.getEmail(), requestDto.getOauth());
-        String oauth = member.getOauth();
-        String new_oauth = oauth + "," + requestDto.getOauth();
-
-        member.updateOauth(new_oauth);
-        memberRepository.save(member);
-
-        TokenDto tokenDto = tokenProvider.generateTokenDto(member);
-
-        response.addHeader("Authorization", tokenDto.getAccessToken());
-        response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
-
-        IntegrationResponseDto responseDto = new IntegrationResponseDto(member, tokenDto);
-
-        return ResponseDto.success(responseDto);
-    }
-
     public ResponseDto<?> getMemberProfile() {
         List<ProfileList> profileLists = profileListRepository.findAll();
         List<ProfileResponseDto> profileResponseDtos = new ArrayList<>();
@@ -168,5 +148,13 @@ public class MemberService {
         memberRepository.save(loginMember);
 
         return ResponseDto.success("success update grade");
+    }
+
+    public String getInvalidToken(){
+        Calendar cal1 = Calendar.getInstance();
+        cal1.add(Calendar.DATE, 1);
+        Date date = new Date(cal1.getTimeInMillis());
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return transFormat.format(date);
     }
 }

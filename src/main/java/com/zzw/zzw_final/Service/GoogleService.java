@@ -34,6 +34,7 @@ public class GoogleService {
     private final GoogleLoginConfiguration googleLoginConfiguration;
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
+    private final MemberService memberService;
 
     public ResponseDto<?> googleLogin(String authCode, HttpServletResponse response) {
 
@@ -52,7 +53,7 @@ public class GoogleService {
                     response.addHeader("Authorization", tokenDto.getAccessToken());
                     response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
 
-                    OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, "googleToken", "google");
+                    OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, "googleToken", "google", memberService.getInvalidToken());
                     return ResponseDto.success(responseDto);
                 }
             }

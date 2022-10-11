@@ -32,6 +32,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,6 +44,7 @@ import java.util.List;
 public class KakaoService {
     private final MemberRepository memberRepository;
     private final TokenProvider jwtTokenProvider;
+    private final MemberService memberService;
 
     @Value("${kakao.client-id}")
     private String KakaoClientId;
@@ -63,7 +69,8 @@ public class KakaoService {
                 String oauth = member.getOauth();
                 if(oauth.contains("kakao")){
                     TokenDto tokenDto = jwtTokenProvider.generateTokenDto(member);
-                    OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, kakaoToken, "kakao");
+
+                    OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, kakaoToken, "kakao", memberService.getInvalidToken());
                     response.addHeader("Authorization", tokenDto.getAccessToken());
                     response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
                     return ResponseDto.success(responseDto);

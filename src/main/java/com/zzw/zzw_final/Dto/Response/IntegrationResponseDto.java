@@ -13,8 +13,9 @@ public class IntegrationResponseDto {
     private String profile;
     private String accessToken;
     private String refreshToken;
+    private String invalidTime;
 
-    public IntegrationResponseDto(Member member, TokenDto tokenDto) {
+    public IntegrationResponseDto(Member member, TokenDto tokenDto, String invalidTime) {
         this.email = member.getEmail();
         this.nickname = member.getNickname();
         this.grade = member.getGrade();
@@ -22,5 +23,6 @@ public class IntegrationResponseDto {
         this.profile = member.getProfile();
         this.accessToken = tokenDto.getAccessToken();
         this.refreshToken = tokenDto.getRefreshToken();
+        this.invalidTime = invalidTime;
     }
 }

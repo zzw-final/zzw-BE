@@ -37,6 +37,7 @@ public class NaverService {
 
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
+    private final MemberService memberService;
 
     public ResponseDto<?> naverLogin(String code, HttpServletResponse response, String state) throws JsonProcessingException {
 
@@ -56,7 +57,7 @@ public class NaverService {
                 String oauth = member.getOauth();
                 if (oauth.contains("naver")){
                     TokenDto tokenDto = tokenProvider.generateTokenDto(member);
-                    OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, accessToken, "naver");
+                    OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, accessToken, "naver", memberService.getInvalidToken());
                     response.addHeader("Authorization", tokenDto.getAccessToken());
                     response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
                     return ResponseDto.success(responseDto);
