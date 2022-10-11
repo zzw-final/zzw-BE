@@ -1,17 +1,12 @@
 package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Dto.Entity.*;
-import com.zzw.zzw_final.Dto.Request.*;
-
 import com.zzw.zzw_final.Dto.ErrorCode;
 import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,16 +15,12 @@ import java.util.List;
 public class PostService {
 
     private final MemberService memberService;
-    private final FileUploaderService fileUploaderService;
     private final TagListRepository tagListRepository;
     private final TagRepository tagRepository;
-    private final ContentRepository contentRepository;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
     private final PostLikeRepository postLikeRepository;
-
-    private final CommentRepository commentRepository;
 
     public ResponseDto<?> getBestRecipe(HttpServletRequest request){
 
@@ -295,6 +286,55 @@ public class PostService {
         }
     }
 
+    public ResponseDto<?> getUserPost(HttpServletRequest request) {
+        ResponseDto<?> result = memberService.checkMember(request);
+        Member member = (Member) result.getData();
+
+        List<Post> posts = postRepository.findAllByMember(member);
+        List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
+
+        for (Post post : posts) {
+            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+            userPostResponseDtos.add(getResponsePostUserLike(member, post, ingredientResponseDtos));
+        }
+        return ResponseDto.success(userPostResponseDtos);
+    }
+
+    public ResponseDto<?> getUserLikePosts(HttpServletRequest request) {
+        ResponseDto<?> result = memberService.checkMember(request);
+        Member member = (Member) result.getData();
+
+        List<PostLike> postLikes = postLikeRepository.findAllByMember(member);
+        List<Post> posts = new ArrayList<>();
+
+        for (PostLike postLike : postLikes) {
+            posts.add(postRepository.findPostById(postLike.getPost().getId()));
+        }
+
+        List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
+
+        for (Post post : posts) {
+            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+            userPostResponseDtos.add(getResponsePostUserLike(member, post, ingredientResponseDtos));
+        }
+
+        return ResponseDto.success(userPostResponseDtos);
+    }
+
+    public ResponseDto<?> getOtherUserPosts(Long user_id, HttpServletRequest request) {
+        Member loginMember = memberService.getMember(request);
+
+        Member postMember = memberRepository.findMemberById(user_id);
+
+        List<Post> posts = postRepository.findAllByMember(postMember);
+        List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
+
+        for (Post post : posts) {
+            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+            userPostResponseDtos.add(getResponsePostUserLike(loginMember, post, ingredientResponseDtos));
+        }
+        return ResponseDto.success(userPostResponseDtos);
+    }
 }
 
 
