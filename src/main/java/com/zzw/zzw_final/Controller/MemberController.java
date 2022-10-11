@@ -98,4 +98,9 @@ public class MemberController {
     public ResponseDto<?> getMemberGrade(HttpServletRequest request){
         return memberService.getMemberGrade(request);
     }
+
+    @PutMapping("/api/member/grade/{gradeId}")
+    public ResponseDto<?> updateMemberGrade(HttpServletRequest request, @PathVariable Long gradeId){
+        return memberService.updateMemberGrade(request, gradeId);
+    }
 }

@@ -100,4 +100,8 @@ public class Member {
     public void updateProfile(String profile) {
         this.profile = profile;
     }
+
+    public void updateGrade(String name) {
+        this.grade = name;
+    }
 }
