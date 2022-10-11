@@ -215,9 +215,13 @@ public class ChatService {
             ChatRoom chatRoom = chatMember.getChatRoom();
             ChatMember chatToMember = chatMemberRepository.findChatMemberByChatRoomAndMemberNot(chatRoom, member);
             List<ChatMessage> chatMessage = chatMessageRepository.findChatMessageByChatRoomOrderByCreatedAtDesc(chatRoom);
+
             if (chatMessage.size() != 0){
-                ChatListResponseDto chatListResponseDto = new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0));
-                chatListResponseDtos.add(chatListResponseDto);
+                ChatRead chatRead = chatReadRepository.findChatReadByMemberAndChatRoom(member, chatRoom);
+                if (chatRead.getChatMessage().getId() < chatMessage.get(0).getId())
+                    chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0), false));
+                else
+                    chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0), true));
             }
         }
 
