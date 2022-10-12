@@ -1,10 +1,10 @@
 package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
-import com.zzw.zzw_final.Dto.Entity.Grade;
-import com.zzw.zzw_final.Dto.Entity.GradeList;
-import com.zzw.zzw_final.Dto.Entity.Member;
+import com.zzw.zzw_final.Dto.Entity.*;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
+import com.zzw.zzw_final.Dto.Response.GradeListResponseDto;
+import com.zzw.zzw_final.Dto.Response.MypageUserInfoResponseDto;
 import com.zzw.zzw_final.Dto.TokenDto;
 import com.zzw.zzw_final.Repository.FollowRepository;
 import com.zzw.zzw_final.Repository.GradeRepository;
@@ -24,6 +24,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -35,6 +38,9 @@ class MemberServiceTest {
 
     @MockBean
     private TokenProvider tokenProvider;
+
+    @MockBean
+    private MemberService memberService;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -134,16 +140,55 @@ class MemberServiceTest {
         Assertions.assertEquals(member.getOauth(), "kakao");
     }
 
-    @Test
+    @Test  // 수정해야함.
     void resignMember() {
-    }
+        //when
+        Member member = memberRepository.findMemberById(1L);
+        //then
+        Assertions.assertTrue(!member.getEmail().isEmpty());
+        Assertions.assertTrue(!member.getOauth().isEmpty());
 
-    @Test
-    void getInvalidToken() {
+        //when
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByMember(member);
+        refreshTokenRepository.delete(refreshToken.get());
+
+        List<Follow> followList = followRepository.findAllByFollowerId(1L);
+        for (Follow follow : followList){
+            followRepository.delete(follow);
+        }
+        memberRepository.delete(member);
     }
 
     @Test
     void getUserInfo() {
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        List<Follow> followerlist = followRepository.findAllByFollowerId(member.getId());
+        List<Follow> followList = followRepository.findAllByMember(member);
+
+        List<GradeListResponseDto> responseDtos = memberService.getUserGrade(member);
+
+        MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
+                followerlist.size(), followList.size(), responseDtos, true);
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertEquals(followList.size(), responseDto.getFollower());
+        Assertions.assertEquals(followerlist.size(), responseDto.getFollow());
+        Assertions.assertEquals(responseDtos, responseDto.getGradeList());
+        Assertions.assertEquals(true, responseDto.getIsFollow());
+        Assertions.assertEquals(member.getNickname(), responseDto.getNickname());
+        Assertions.assertEquals(member.getGrade(), responseDto.getGrade());
+        Assertions.assertEquals(member.getProfile(), responseDto.getProfile());
     }
 
     @Test
