@@ -39,9 +39,6 @@ class FollowServiceTest {
     @Autowired
     private FollowRepository followRepository;
 
-    @MockBean
-    private MemberService memberService;
-
     @Autowired
     private MemberRepository memberRepository;
 
@@ -167,5 +164,24 @@ class FollowServiceTest {
 
     @Test
     void getOthersFollower() {
+        Member member = memberRepository.findMemberById(48L);
+
+        List<Follow> followerlist = followRepository.findAllByMemberOrderByFollowNicknameAsc(member);
+
+        List<Member> members = new ArrayList<>();
+
+        for (Follow follower : followerlist) {
+            Member member2 = memberRepository.findMemberById(follower.getFollowerId());
+            members.add(member2);
+        }
+
+        List<FollowResponseDto> followerResponseDtos = new ArrayList<>();
+
+        for (Member member2 : members)
+            followerResponseDtos.add(new FollowResponseDto(member2));
+
+        //then
+        Assertions.assertEquals(followerlist.size(), members.size());
+        Assertions.assertEquals(members.size(), followerResponseDtos.size());
     }
 }
