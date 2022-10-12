@@ -9,6 +9,7 @@ import com.zzw.zzw_final.Repository.FollowRepository;
 import com.zzw.zzw_final.Repository.GradeRepository;
 import com.zzw.zzw_final.Repository.MemberRepository;
 import com.zzw.zzw_final.Repository.RefreshTokenRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,6 +50,10 @@ class MemberServiceTest {
 
     SignupRequestDto signupRequestDto;
     HttpServletRequest request;
+    HttpServletRequest request2;
+    HttpServletRequest request3;
+    HttpServletRequest request4;
+    HttpServletRequest request5;
     @BeforeEach
     public void setup() {
         request = mock(HttpServletRequest.class);
@@ -64,6 +69,38 @@ class MemberServiceTest {
 
     @Test
     void checkMember() {
+        //when
+        when(tokenProvider.validateToken(request.getHeader("Refresh-Token"))).thenReturn(true);
+
+        request2 = mock(HttpServletRequest.class);
+        when(request2.getHeader("Refresh-Token")).thenReturn("eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYwNjU1Njd9.vJtmCwajGZzdsq4W8JsPbL1dymVy7CkYpkA0dl296_g");
+        when(request2.getHeader("oauth")).thenReturn("kakao");
+
+        request3 = mock(HttpServletRequest.class);
+        when(request3.getHeader("Authorization")).thenReturn("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        when(request3.getHeader("oauth")).thenReturn("kakao");
+
+        request4 = mock(HttpServletRequest.class);
+        when(request4.getHeader("Authorization")).thenReturn("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        when(request4.getHeader("Refresh-Token")).thenReturn("eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYwNjU1Njd9.vJtmCwajGZzdsq4W8JsPbL1dymVy7CkYpkA0dl296_g");
+
+        request5 = mock(HttpServletRequest.class);
+        when(request5.getHeader("Refresh-Token")).thenReturn("eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU3MTk5MTl9.E5N3bzfJo2AlB7xJ_mPJictEaOfQluBC5817_OVF_Jo");
+        when(tokenProvider.validateToken(request5.getHeader("Refresh-Token"))).thenReturn(false);
+
+        when(tokenProvider.getUserEmail(request.getHeader("Authorization").substring(7))).thenReturn("good9712@nate.com");
+        Member member = memberRepository.findMemberByEmailAndOauth(tokenProvider.getUserEmail(request.getHeader("Authorization").substring(7)), request.getHeader("oauth"));
+
+
+        //then
+        Assertions.assertEquals(request2.getHeader("Authorization"), null);
+        Assertions.assertEquals(request3.getHeader("Refresh-Token"), null);
+        Assertions.assertEquals(request4.getHeader("oauth"), null);
+        Assertions.assertEquals(tokenProvider.validateToken(request.getHeader("Refresh-Token")), true);
+        Assertions.assertEquals(tokenProvider.validateToken(request5.getHeader("Refresh-Token")), false);
+        Assertions.assertEquals(tokenProvider.getUserEmail(request.getHeader("Authorization").substring(7)), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
     }
 
     @Test
