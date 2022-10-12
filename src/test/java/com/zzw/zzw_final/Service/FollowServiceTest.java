@@ -141,6 +141,28 @@ class FollowServiceTest {
 
     @Test
     void getOthersFollow() {
+        //when
+        Member member = memberRepository.findMemberById(48L);
+
+        List<Follow> followerlist = followRepository.findAllByFollowerIdOrderByFollowNicknameAsc(member.getId());
+
+        List<Member> members = new ArrayList<>();
+
+        for (Follow follower : followerlist) {
+            Member member2 = memberRepository.findMemberById(follower.getMember().getId());
+            members.add(member2);
+        }
+
+        List<FollowResponseDto> followResponseDtos = new ArrayList<>();
+
+        for (Member member1 : members) {
+            followResponseDtos.add(new FollowResponseDto(member1));
+        }
+
+
+        //then
+        Assertions.assertEquals(followerlist.size(), members.size());
+        Assertions.assertEquals(members.size(), followResponseDtos.size());
     }
 
     @Test
