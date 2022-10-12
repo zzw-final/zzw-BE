@@ -25,6 +25,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -234,5 +235,18 @@ class MemberServiceTest {
 
     @Test
     void getUserGrade() {
+        //when
+        Member member = memberRepository.findMemberById(1L);
+        List<GradeListResponseDto> gradeListResponseDtos = new ArrayList<>();
+
+        List<Grade> grades = gradeRepository.findAllByMember(member);
+        for(Grade grade : grades){
+            gradeListResponseDtos.add(new GradeListResponseDto(grade.getGradeList()));
+        }
+
+        //then
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertEquals(grades.size(), gradeListResponseDtos.size());
     }
 }
