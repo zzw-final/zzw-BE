@@ -28,10 +28,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class GradeServiceTest {
-
-    @MockBean
-    MemberService memberService;
-
     @Autowired
     private GradeRepository gradeRepository;
 
