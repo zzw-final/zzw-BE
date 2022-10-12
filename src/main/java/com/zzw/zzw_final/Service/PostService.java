@@ -302,12 +302,23 @@ public class PostService {
         }
 
         List<PostResponseDto> follow_postResponseDtos = new ArrayList<>();
-
-        for (Post post : followPost) {
-            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-            follow_postResponseDtos.add(getResponsePostUserLike(member, post, ingredientResponseDtos));
+        List<InfinitePostResponseDto> responseDtos = new ArrayList<>();
+        int cnt = 0;
+        int page = 1;
+        for (int i = 0; i < followPost.size(); i++) {
+            cnt++;
+            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(followPost.get(i));
+            follow_postResponseDtos.add(getResponsePostUserLike(member, followPost.get(i), ingredientResponseDtos));
+            if (cnt == 6){
+                cnt = 0;
+                responseDtos.add(new InfinitePostResponseDto(follow_postResponseDtos, page));
+                follow_postResponseDtos = new ArrayList<>();
+                page++;
+            }else if(i == followPost.size()-1){
+                responseDtos.add(new InfinitePostResponseDto(follow_postResponseDtos, page));
+            }
         }
 
-        return ResponseDto.success(follow_postResponseDtos);
+        return ResponseDto.success(responseDtos);
     }
 }
