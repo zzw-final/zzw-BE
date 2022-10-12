@@ -5,6 +5,7 @@ import com.zzw.zzw_final.Dto.Entity.*;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
 import com.zzw.zzw_final.Dto.Response.GradeListResponseDto;
 import com.zzw.zzw_final.Dto.Response.MypageUserInfoResponseDto;
+import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Dto.TokenDto;
 import com.zzw.zzw_final.Repository.FollowRepository;
 import com.zzw.zzw_final.Repository.GradeRepository;
@@ -193,6 +194,42 @@ class MemberServiceTest {
 
     @Test
     void getOtherUserInfo() {
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member loginMember = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        Member member = memberRepository.findMemberById(48L);
+
+        List<Follow> followerlist = followRepository.findAllByFollowerId(member.getId());
+        List<Follow> followList = followRepository.findAllByMember(member);
+
+        List<GradeListResponseDto> responseDtos = memberService.getUserGrade(member);
+
+        Follow follow = followRepository.findFollowByFollowerIdAndMember(loginMember.getId(), member);
+
+        MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
+                followerlist.size(), followList.size(), responseDtos,true);
+
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(loginMember.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(loginMember.getOauth(), "kakao");
+        Assertions.assertEquals(member.getEmail(), "hyundo717@kakao.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertEquals(followList.size(), responseDto.getFollower());
+        Assertions.assertEquals(followerlist.size(), responseDto.getFollow());
+        Assertions.assertEquals(responseDtos.size(), responseDto.getGradeList().size());
+        Assertions.assertTrue(follow != null);
+        Assertions.assertEquals(true, responseDto.getIsFollow());
+        Assertions.assertEquals(member.getNickname(), responseDto.getNickname());
+        Assertions.assertEquals(member.getGrade(), responseDto.getGrade());
+        Assertions.assertEquals(member.getProfile(), responseDto.getProfile());
     }
 
     @Test
