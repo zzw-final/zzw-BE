@@ -110,6 +110,33 @@ class FollowServiceTest {
 
     @Test
     void getFollower() {
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member loginMember = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        List<Follow> followerlist = followRepository.findAllByFollowerIdOrderByFollowNicknameAsc(loginMember.getId());
+
+        List<Member> members = new ArrayList<>();
+
+        for (Follow follower : followerlist) {
+            Member member2 = memberRepository.findMemberById(follower.getMember().getId());
+            members.add(member2);
+        }
+
+        List<FollowResponseDto> followResponseDtos = new ArrayList<>();
+
+        for(Member member : members){
+            followResponseDtos.add(new FollowResponseDto(member));
+        }
+
+        //then
+        Assertions.assertEquals(loginMember.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(loginMember.getOauth(), "kakao");
+        Assertions.assertEquals(followerlist.size(), members.size());
+        Assertions.assertEquals(members.size(), followResponseDtos.size());
     }
 
     @Test
