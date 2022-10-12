@@ -90,6 +90,7 @@ class MemberServiceTest {
         when(tokenProvider.validateToken(request5.getHeader("Refresh-Token"))).thenReturn(false);
 
         when(tokenProvider.getUserEmail(request.getHeader("Authorization").substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(request.getHeader("Authorization").substring(7));
         Member member = memberRepository.findMemberByEmailAndOauth(tokenProvider.getUserEmail(request.getHeader("Authorization").substring(7)), request.getHeader("oauth"));
 
 
@@ -99,7 +100,7 @@ class MemberServiceTest {
         Assertions.assertEquals(request4.getHeader("oauth"), null);
         Assertions.assertEquals(tokenProvider.validateToken(request.getHeader("Refresh-Token")), true);
         Assertions.assertEquals(tokenProvider.validateToken(request5.getHeader("Refresh-Token")), false);
-        Assertions.assertEquals(tokenProvider.getUserEmail(request.getHeader("Authorization").substring(7)), "good9712@nate.com");
+        Assertions.assertEquals(email, "good9712@nate.com");
         Assertions.assertEquals(member.getOauth(), "kakao");
         Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
     }
@@ -118,6 +119,19 @@ class MemberServiceTest {
 
     @Test
     void getMember() {
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
     }
 
     @Test
