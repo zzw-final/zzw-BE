@@ -66,7 +66,7 @@ public class PostService {
         int postSize = (recent_posts.size() < 10) ? recent_posts.size() : 10;
 
         if (member == null){
-            for (int i = 0; i < postSize; i++) {
+            for (int i = 0; i < recent_posts.size(); i++) {
                 List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
                 recent_postResponseDtos.add(new PostResponseDto(recent_posts.get(i), ingredientResponseDtos));
             }
