@@ -21,6 +21,7 @@ public class PostService {
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
     private final PostLikeRepository postLikeRepository;
+
     public ResponseDto<?> getBestRecipe(HttpServletRequest request){
         Member member = memberService.getMember(request);
         if (member == null)
@@ -29,26 +30,38 @@ public class PostService {
             return ResponseDto.success(getBestRecipeTop10(member));
     }
 
-    private List<PostResponseDto> getRecentRecipeTop10(Member member) {
+    public ResponseDto<?> getRecentRecipeTop10(Member member) {
         List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
-        List<PostResponseDto> recent_postResponseDtos = new ArrayList<>();
+        List<PostResponseDto> postResponseDtos = new ArrayList<>();
+        List<InfinitePostResponseDto> recent_postResponseDtos = new ArrayList<>();
 
         int postSize = (recent_posts.size() < 10) ? recent_posts.size() : 10;
 
         if (member == null){
+            int page = 1;
+            int cnt = 0;
             for (int i = 0; i < recent_posts.size(); i++) {
+                cnt++;
                 List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
-                recent_postResponseDtos.add(new PostResponseDto(recent_posts.get(i), ingredientResponseDtos));
+                postResponseDtos.add(new PostResponseDto(recent_posts.get(i), ingredientResponseDtos));
+                if (cnt == 6){
+                    cnt = 0;
+                    recent_postResponseDtos.add(new InfinitePostResponseDto(postResponseDtos, page));
+                    postResponseDtos = new ArrayList<>();
+                    page++;
+                }else if(i == recent_posts.size()-1){
+                    recent_postResponseDtos.add(new InfinitePostResponseDto(postResponseDtos, page));
+                }
             }
+            return ResponseDto.success(recent_postResponseDtos);
         }
         else{
             for (int i = 0; i < postSize; i++) {
                 List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
-                recent_postResponseDtos.add(getResponsePostUserLike(member, recent_posts.get(i), ingredientResponseDtos));
+                postResponseDtos.add(getResponsePostUserLike(member, recent_posts.get(i), ingredientResponseDtos));
             }
+            return ResponseDto.success(postResponseDtos);
         }
-
-        return recent_postResponseDtos;
     }
 
     private List<PostResponseDto> getBestRecipeTop10(Member member) {
@@ -73,14 +86,14 @@ public class PostService {
         return best_postResponseDtos;
     }
 
-    private List<BestTagResponseDto> getBestTagList() {
+    public ResponseDto<?> getBestTagList() {
         List<Tag> tags = tagRepository.findAllByOrderByCountDesc();
         List<BestTagResponseDto> tagResponseDtos = new ArrayList<>();
 
         for (int i = 0; i < 5; i++)
             tagResponseDtos.add(new BestTagResponseDto(tags.get(i)));
 
-        return tagResponseDtos;
+        return ResponseDto.success(tagResponseDtos);
     }
 
     public PostResponseDto getResponsePostUserLike (Member member, Post
@@ -273,14 +286,6 @@ public class PostService {
         return ResponseDto.success(userPostResponseDtos);
     }
 
-    public ResponseDto<?> getBestTag() {
-        return ResponseDto.success(getBestTagList());
-    }
-
-    public ResponseDto<?> getRecentRecipe() {
-        return ResponseDto.success(getRecentRecipeTop10(null));
-    }
-
     public ResponseDto<?> getFollowRecipe(HttpServletRequest request) {
         ResponseDto<?> result = memberService.checkMember(request);
         Member member = (Member) result.getData();
@@ -304,12 +309,5 @@ public class PostService {
         }
 
         return ResponseDto.success(follow_postResponseDtos);
-    }
-
-    public ResponseDto<?> getAuthRecentRecipe(HttpServletRequest request) {
-        ResponseDto<?> result = memberService.checkMember(request);
-        Member member = (Member) result.getData();
-
-        return ResponseDto.success(getRecentRecipeTop10(member));
     }
 }

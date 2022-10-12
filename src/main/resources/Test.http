@@ -16,11 +16,9 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYxODI2NDB9.EeVEdstInNLsbbKShAY
 oauth: kakao
 
 ### 메인페이지 - 실시간 Post (로그인 X)
-GET http://localhost:8080/api/auth/post/recent
+GET http://localhost:8080/api/post/recent
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTY2NDI0MH0.DpDhbBfARQz5ScJm7wta3Tjsz1mBI6-XfJoNu6QpXGM
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYxODI2NDB9.EeVEdstInNLsbbKShAYnnqLL3Xz8iwcUI1BWgeblVhg
-oauth: kakao
+
 
 ### 메인페이지 - 팔로우 Post
 GET http://localhost:8080/api/auth/post/follow

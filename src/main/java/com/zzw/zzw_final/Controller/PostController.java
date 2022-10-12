@@ -1,6 +1,8 @@
 package com.zzw.zzw_final.Controller;
 
+import com.zzw.zzw_final.Dto.Entity.Member;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
+import com.zzw.zzw_final.Service.MemberService;
 import com.zzw.zzw_final.Service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -10,19 +12,22 @@ import javax.servlet.http.HttpServletRequest;
 public class PostController {
 
     private final PostService postService;
+    private final MemberService memberService;
 
     @GetMapping("/api/post/tag")
     public ResponseDto<?> getBestTag(){
-        return postService.getBestTag();
+        return postService.getBestTagList();
     }
     @GetMapping("/api/post/recent")
     public ResponseDto<?> getRecentRecipe(){
-        return postService.getRecentRecipe();
+        return postService.getRecentRecipeTop10(null);
     }
 
     @GetMapping("/api/auth/post/recent")
     public ResponseDto<?> getAuthRecentRecipe(HttpServletRequest request){
-        return postService.getAuthRecentRecipe(request);
+        ResponseDto<?> result = memberService.checkMember(request);
+        Member member = (Member) result.getData();
+        return postService.getRecentRecipeTop10(member);
     }
     @GetMapping("/api/auth/post/follow")
     public ResponseDto<?> getFollowRecipe(HttpServletRequest request){
