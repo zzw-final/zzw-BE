@@ -37,8 +37,8 @@ public class ChatController {
     }
 
     @PutMapping("/api/chat/newmessage")
-    public ResponseDto<?> checkReadMessage(HttpServletRequest request, @RequestBody CheckReadMessageRequestDto checkReadMessageRequestDto){
-        return chatService.checkReadMessage(request, checkReadMessageRequestDto);
+    public ResponseDto<?> checkReadMessage(@RequestBody CheckReadMessageRequestDto checkReadMessageRequestDto){
+        return chatService.checkReadMessage(checkReadMessageRequestDto);
     }
 
     @GetMapping("/api/chat/alarm")

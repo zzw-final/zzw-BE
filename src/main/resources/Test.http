@@ -211,13 +211,10 @@ oauth: kakao
 ### 채팅 읽음 처리
 PUT http://localhost:8080/api/chat/newmessage
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYwNjU1Njd9.vJtmCwajGZzdsq4W8JsPbL1dymVy7CkYpkA0dl296_g
-oauth: kakao
 
 {
-  "roomId" :3405,
-  "messageId":17
+  "roomId" :3404,
+  "userId": 1
 }
 
 ### 채팅방 내용 가져오기

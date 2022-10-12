@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public class CheckReadMessageRequestDto {
     private Long roomId;
-    private Long messageId;
+    private Long userId;
 }

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
@@ -181,29 +182,45 @@ public class ChatService {
         return ResponseDto.success(chatListResponseDtos);
     }
 
-    public ResponseDto<?> checkReadMessage(HttpServletRequest request, CheckReadMessageRequestDto checkReadMessageRequestDto) {
-        ResponseDto<?> result = memberService.checkMember(request);
-        Member member = null;
-        if (result.isSuccess()){
-            member = (Member) result.getData();
-        }
-
+    public ResponseDto<?> checkReadMessage(CheckReadMessageRequestDto checkReadMessageRequestDto) {
+        Member member = memberRepository.findMemberById(checkReadMessageRequestDto.getUserId());
         ChatRoom chatRoom = chatRoomRepository.findChatRoomById(checkReadMessageRequestDto.getRoomId());
-        ChatRead checkChatRead = chatReadRepository.findChatReadByMemberAndChatRoom(member, chatRoom);
-        ChatMessage chatMessage = chatMessageRepository.findChatMessageByIdAndChatRoom(checkReadMessageRequestDto.getMessageId(), chatRoom);
 
-        if (chatMessage == null)
-            return ResponseDto.fail(NOTFOUND_MESSAGE);
+        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        if (checkChatRead == null){
-            ChatRead chatRead = new ChatRead(chatRoom, chatMessage, member);
-            chatReadRepository.save(chatRead);
-        }else{
-            checkChatRead.update(chatMessage);
-            chatReadRepository.save(checkChatRead);
+        LocalDateTime localTime = LocalDateTime.parse(now,
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        List<ChatMessage> chatMessages = chatMessageRepository.findAllByChatRoom(chatRoom);
+
+        for(ChatMessage chatMessage : chatMessages){
+            LocalDateTime messageTime = LocalDateTime.parse(chatMessage.getSendTime(),
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            if (localTime.compareTo(messageTime) == -1){
+                ChatRead chatRead = chatReadRepository.findChatReadByMemberAndChatRoom(member, chatRoom);
+                if (chatRead == null){
+                    ChatRead new_chatRead = new ChatRead(chatRoom, chatMessage, member);
+                    chatReadRepository.save(new_chatRead);
+                    return ResponseDto.success("메세지 읽음 처리 완료");
+                }else{
+                    chatRead.update(chatMessage);
+                    chatReadRepository.save(chatRead);
+                    return ResponseDto.success("메세지 읽음 처리 완료");
+                }
+            }
         }
 
-        return ResponseDto.success("메세지 읽음 처리 완료");
+        ChatRead chatRead = chatReadRepository.findChatReadByMemberAndChatRoom(member, chatRoom);
+        if (chatRead == null){
+            ChatRead new_chatRead = new ChatRead(chatRoom, chatMessages.get(chatMessages.size()-1), member);
+            chatReadRepository.save(new_chatRead);
+            return ResponseDto.success("메세지 읽음 처리 완료");
+        }else{
+            chatRead.update(chatMessages.get(chatMessages.size()-1));
+            chatReadRepository.save(chatRead);
+            return ResponseDto.success("메세지 읽음 처리 완료");
+        }
     }
 
     public ResponseDto<?> isNewMessage(HttpServletRequest request) {
