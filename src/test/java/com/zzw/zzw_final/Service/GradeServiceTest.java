@@ -100,6 +100,15 @@ class GradeServiceTest {
 
     @Test
     void updateMemberGrade() {
+        //when
+        GradeList gradeList = gradeListRepository.findGradeListById(63L);
+        member.updateGrade(gradeList.getName());
+        memberRepository.save(member);
+
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertEquals(member.getEmail(), "zzw@naver.com");
+        Assertions.assertEquals(member.getNickname(), "요리왕");
+        Assertions.assertEquals(member.getGrade(), "태초의 존재");
     }
 
 }
