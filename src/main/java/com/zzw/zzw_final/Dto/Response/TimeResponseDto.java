@@ -33,7 +33,7 @@ public class TimeResponseDto {
         this.title = post.getTitle();
         this.isLike = isLike;
         this.profile = post.getMember().getProfile();
-        this.createAt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(post.getModifiedAt());
+        this.createAt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(post.getCreatedAt());
         this.nickname = post.getMember().getNickname();
         this.authorId = post.getMember().getId();
         this.grade = post.getMember().getGrade();
