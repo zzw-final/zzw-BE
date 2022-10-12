@@ -5,6 +5,7 @@ import com.zzw.zzw_final.Dto.Entity.Grade;
 import com.zzw.zzw_final.Dto.Entity.GradeList;
 import com.zzw.zzw_final.Dto.Entity.Member;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
+import com.zzw.zzw_final.Dto.TokenDto;
 import com.zzw.zzw_final.Repository.FollowRepository;
 import com.zzw.zzw_final.Repository.GradeRepository;
 import com.zzw.zzw_final.Repository.MemberRepository;
@@ -105,6 +106,14 @@ class MemberServiceTest {
 
     @Test
     void postUserNickname() {
+        //when
+        Member member = new Member(signupRequestDto);
+        memberRepository.save(member);
+
+        //then
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertEquals(member.getEmail(), "zzw@naver.com");
+        Assertions.assertEquals(member.getNickname(), "요리왕");
     }
 
     @Test
