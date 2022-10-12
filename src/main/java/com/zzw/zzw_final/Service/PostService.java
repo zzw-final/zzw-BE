@@ -21,42 +21,12 @@ public class PostService {
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
     private final PostLikeRepository postLikeRepository;
-
     public ResponseDto<?> getBestRecipe(HttpServletRequest request){
-
         Member member = memberService.getMember(request);
-
-        if (member == null) {
-
-            MainPostResponseDto mainPostResponseDto = new MainPostResponseDto(getBestTagList(),
-                    getBestRecipeTop10(null), getRecentRecipeTop10(null));
-
-            return ResponseDto.success(mainPostResponseDto);
-
-        } else {
-
-            List<Follow> follows = followRepository.findAllByFollowerId(member.getId());
-            List<Post> followPost = new ArrayList<>();
-
-            for (Follow follow : follows) {
-                Member followMember = memberRepository.findMemberById(follow.getMember().getId());
-                List<Post> userPost = postRepository.findAllByMemberOrderByCreatedAtDesc(followMember);
-                if (userPost.size() != 0) {
-                    followPost.add(userPost.get(0));
-                }
-            }
-
-            List<PostResponseDto> follow_postResponseDtos = new ArrayList<>();
-
-            for (Post post : followPost) {
-                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-                follow_postResponseDtos.add(getResponsePostUserLike(member, post, ingredientResponseDtos));
-            }
-
-            MainPostResponseDto mainPostResponseDto = new MainPostResponseDto(getBestTagList(), getBestRecipeTop10(member),
-                    getRecentRecipeTop10(member), follow_postResponseDtos);
-            return ResponseDto.success(mainPostResponseDto);
-        }
+        if (member == null)
+            return ResponseDto.success(getBestRecipeTop10(null));
+        else
+            return ResponseDto.success(getBestRecipeTop10(member));
     }
 
     private List<PostResponseDto> getRecentRecipeTop10(Member member) {
@@ -301,5 +271,45 @@ public class PostService {
             userPostResponseDtos.add(getResponsePostUserLike(loginMember, post, ingredientResponseDtos));
         }
         return ResponseDto.success(userPostResponseDtos);
+    }
+
+    public ResponseDto<?> getBestTag() {
+        return ResponseDto.success(getBestTagList());
+    }
+
+    public ResponseDto<?> getRecentRecipe() {
+        return ResponseDto.success(getRecentRecipeTop10(null));
+    }
+
+    public ResponseDto<?> getFollowRecipe(HttpServletRequest request) {
+        ResponseDto<?> result = memberService.checkMember(request);
+        Member member = (Member) result.getData();
+
+        List<Follow> follows = followRepository.findAllByFollowerId(member.getId());
+        List<Post> followPost = new ArrayList<>();
+
+        for (Follow follow : follows) {
+            Member followMember = memberRepository.findMemberById(follow.getMember().getId());
+            List<Post> userPost = postRepository.findAllByMemberOrderByCreatedAtDesc(followMember);
+            if (userPost.size() != 0) {
+                followPost.add(userPost.get(0));
+            }
+        }
+
+        List<PostResponseDto> follow_postResponseDtos = new ArrayList<>();
+
+        for (Post post : followPost) {
+            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+            follow_postResponseDtos.add(getResponsePostUserLike(member, post, ingredientResponseDtos));
+        }
+
+        return ResponseDto.success(follow_postResponseDtos);
+    }
+
+    public ResponseDto<?> getAuthRecentRecipe(HttpServletRequest request) {
+        ResponseDto<?> result = memberService.checkMember(request);
+        Member member = (Member) result.getData();
+
+        return ResponseDto.success(getRecentRecipeTop10(member));
     }
 }

@@ -4,12 +4,31 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsI
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQzMjY5MDd9.lb4VrR5UdzFoQbRdrmKnkfIokwWruBq-lMTa0lwdPUE
 
 
-### 메인페이지 - 베스트, 최신, 팔로우 레시피 GET
+### 메인페이지 - 베스트 Tag
+GET http://localhost:8080/api/post/tag
+Content-Type: application/json
+
+### 메인페이지 - 베스트 Post
 GET http://localhost:8080/api/post
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvb3N1amluOThAZ21haWwuY29tIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjY0OTM3NzE0fQ.FD6PSNjv6P3Dk-lYJTGyPsYmSbTAbPeaY2s5JoYeCXQ
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU0NTYxMTR9.DMehh2xxd5VCsgKuwiEkj9tV98YvUVbX_AfN6MJ-5Eo
-oauth: google
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTY2NDI0MH0.DpDhbBfARQz5ScJm7wta3Tjsz1mBI6-XfJoNu6QpXGM
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYxODI2NDB9.EeVEdstInNLsbbKShAYnnqLL3Xz8iwcUI1BWgeblVhg
+oauth: kakao
+
+### 메인페이지 - 실시간 Post (로그인 X)
+GET http://localhost:8080/api/auth/post/recent
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTY2NDI0MH0.DpDhbBfARQz5ScJm7wta3Tjsz1mBI6-XfJoNu6QpXGM
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYxODI2NDB9.EeVEdstInNLsbbKShAYnnqLL3Xz8iwcUI1BWgeblVhg
+oauth: kakao
+
+### 메인페이지 - 팔로우 Post
+GET http://localhost:8080/api/auth/post/follow
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTY2NDI0MH0.DpDhbBfARQz5ScJm7wta3Tjsz1mBI6-XfJoNu6QpXGM
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYxODI2NDB9.EeVEdstInNLsbbKShAYnnqLL3Xz8iwcUI1BWgeblVhg
+oauth: kakao
+
 
 
 ### 마이페이지 유저 정보 GET
@@ -213,7 +232,7 @@ PUT http://localhost:8080/api/chat/newmessage
 Content-Type: application/json
 
 {
-  "roomId" :3404,
+  "roomId" :3405,
   "userId": 1
 }
 

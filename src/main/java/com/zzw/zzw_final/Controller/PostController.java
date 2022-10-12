@@ -11,6 +11,23 @@ public class PostController {
 
     private final PostService postService;
 
+    @GetMapping("/api/post/tag")
+    public ResponseDto<?> getBestTag(){
+        return postService.getBestTag();
+    }
+    @GetMapping("/api/post/recent")
+    public ResponseDto<?> getRecentRecipe(){
+        return postService.getRecentRecipe();
+    }
+
+    @GetMapping("/api/auth/post/recent")
+    public ResponseDto<?> getAuthRecentRecipe(HttpServletRequest request){
+        return postService.getAuthRecentRecipe(request);
+    }
+    @GetMapping("/api/auth/post/follow")
+    public ResponseDto<?> getFollowRecipe(HttpServletRequest request){
+        return postService.getFollowRecipe(request);
+    }
     @GetMapping("/api/post")
     public ResponseDto<?> getBestRecipe(HttpServletRequest request){
         return postService.getBestRecipe(request);
