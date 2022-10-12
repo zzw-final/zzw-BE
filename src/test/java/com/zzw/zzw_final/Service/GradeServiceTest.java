@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GradeServiceTest {
 
     @MockBean
-     MemberService memberService;
+    MemberService memberService;
 
     @Autowired
     private GradeRepository gradeRepository;
@@ -105,6 +105,7 @@ class GradeServiceTest {
         member.updateGrade(gradeList.getName());
         memberRepository.save(member);
 
+        //then
         Assertions.assertEquals(member.getOauth(), "kakao");
         Assertions.assertEquals(member.getEmail(), "zzw@naver.com");
         Assertions.assertEquals(member.getNickname(), "요리왕");
