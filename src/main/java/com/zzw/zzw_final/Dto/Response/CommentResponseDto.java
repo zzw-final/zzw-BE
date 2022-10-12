@@ -27,6 +27,6 @@ public class CommentResponseDto {
         this.comment = comment.getComment();
         this.nickname = comment.getMember().getNickname();
         this.grade = comment.getMember().getGrade();
-        this.createdAt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(comment.getModifiedAt());
+        this.createdAt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(comment.getModifiedAt());
     }
 }
