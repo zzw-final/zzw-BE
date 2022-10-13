@@ -37,7 +37,7 @@ public class PostService {
 
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
         Post post = postRepository.findPostById(lastPostId);
-        int index = recent_posts.indexOf(post);
+        int index = (recent_posts.indexOf(post)==0) ? 0 : recent_posts.indexOf(post) + 1;
 
         int size = recent_posts.size();
         int startIndex = index >= size ? size - 1 : index;
@@ -57,7 +57,6 @@ public class PostService {
     public ResponseDto<?> getRecentRecipeTop10(Member member) {
         List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
-        List<InfinitePostResponseDto> recent_postResponseDtos = new ArrayList<>();
 
         int postSize = (recent_posts.size() < 10) ? recent_posts.size() : 10;
 
@@ -310,7 +309,7 @@ public class PostService {
 
         List<PostResponseDto> follow_postResponseDtos = new ArrayList<>();
         Post post = postRepository.findPostById(lastPostId);
-        int index = followPost.indexOf(post);
+        int index = (followPost.indexOf(post)==0) ? 0 : followPost.indexOf(post) + 1;
 
         int size = followPost.size();
         int startIndex = index >= size ? size - 1 : index;
