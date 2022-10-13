@@ -19,8 +19,8 @@ public class PostController {
         return postService.getBestTagList();
     }
     @GetMapping("/api/post/recent")
-    public ResponseDto<?> getRecentRecipe(){
-        return postService.getRecentRecipeTop10(null);
+    public ResponseDto<?> getRecentRecipe(@RequestParam(value = "lastPostId", required = false) Long lastPostId){
+        return postService.getRecentRecipeInfinite(lastPostId);
     }
 
     @GetMapping("/api/auth/post/recent")

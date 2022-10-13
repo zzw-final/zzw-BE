@@ -30,6 +30,25 @@ public class PostService {
             return ResponseDto.success(getBestRecipeTop10(member));
     }
 
+    public ResponseDto<?> getRecentRecipeInfinite(Long lastPostId){
+        List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
+        if (lastPostId==null)
+            lastPostId = recent_posts.get(0).getId();
+
+        List<PostResponseDto> postResponseDtos = new ArrayList<>();
+        Post post = postRepository.findPostById(lastPostId);
+        int index = recent_posts.indexOf(post);
+
+        int size = recent_posts.size();
+        int startIndex = index >= size ? size - 1 : index;
+        int endIndex = startIndex + 6 > size ? size : startIndex + 6;
+
+        for(int i=startIndex; i < endIndex; i++){
+            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
+            postResponseDtos.add(new PostResponseDto(recent_posts.get(i), ingredientResponseDtos));
+        }
+        return ResponseDto.success(postResponseDtos);
+    }
     public ResponseDto<?> getRecentRecipeTop10(Member member) {
         List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
@@ -37,31 +56,11 @@ public class PostService {
 
         int postSize = (recent_posts.size() < 10) ? recent_posts.size() : 10;
 
-        if (member == null){
-            int page = 1;
-            int cnt = 0;
-            for (int i = 0; i < recent_posts.size(); i++) {
-                cnt++;
-                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
-                postResponseDtos.add(new PostResponseDto(recent_posts.get(i), ingredientResponseDtos));
-                if (cnt == 6){
-                    cnt = 0;
-                    recent_postResponseDtos.add(new InfinitePostResponseDto(postResponseDtos, page));
-                    postResponseDtos = new ArrayList<>();
-                    page++;
-                }else if(i == recent_posts.size()-1){
-                    recent_postResponseDtos.add(new InfinitePostResponseDto(postResponseDtos, page));
-                }
-            }
-            return ResponseDto.success(recent_postResponseDtos);
+        for (int i = 0; i < postSize; i++) {
+            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
+            postResponseDtos.add(getResponsePostUserLike(member, recent_posts.get(i), ingredientResponseDtos));
         }
-        else{
-            for (int i = 0; i < postSize; i++) {
-                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
-                postResponseDtos.add(getResponsePostUserLike(member, recent_posts.get(i), ingredientResponseDtos));
-            }
-            return ResponseDto.success(postResponseDtos);
-        }
+        return ResponseDto.success(postResponseDtos);
     }
 
     private List<PostResponseDto> getBestRecipeTop10(Member member) {
