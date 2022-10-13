@@ -30,14 +30,11 @@ public class CommentService {
     @Transactional
     public ResponseDto<?> postComment(CommentRequestDto requestDto, HttpServletRequest request, Long post_id){
 
-        //댓글 작성 권한 여부 확인 :
         ResponseDto<?> result = memberService.checkMember(request);
         Member member = (Member) result.getData();
 
-        //댓글을 써줄 글번호를 찾아 저장해준다
         Post post = postRepository.findPostById(post_id);
 
-        //댓글 메모리 만들어주고 위에서 찾은 정보들을 가지고 객체 생성
         Comment comment = new Comment(requestDto, post, member);
         commentRepository.save(comment);
 
@@ -49,17 +46,13 @@ public class CommentService {
     @Transactional
     public ResponseDto<?> updateComment(CommentRequestDto requestDto, HttpServletRequest request, Long comment_id){
 
-        //로그인 토큰 유효성 검증하기
         ResponseDto<?> result = memberService.checkMember(request);
         Member member = (Member) result.getData();
 
-        //수정할 댓글을 찾아 저장해준다(댓글번호)
-        //댓글 작성자가 맞는지 확인
         Comment comment = commentRepository.findCommentById(comment_id);
 
         if(!member.getEmail().equals(comment.getUseremail())) return ResponseDto.fail(ErrorCode.NOT_EQUAL_MEMBER);
 
-        //댓글 내용 수정
         comment.update(requestDto);
 
         return ResponseDto.success("success comment update");
