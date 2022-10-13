@@ -47,8 +47,13 @@ public class PostService {
             List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
             postResponseDtos.add(new PostResponseDto(recent_posts.get(i), ingredientResponseDtos));
         }
-        return ResponseDto.success(postResponseDtos);
+
+        if (endIndex == size)
+            return ResponseDto.success(new InfinitePostResponseDto(postResponseDtos, true));
+        else
+            return ResponseDto.success(new InfinitePostResponseDto(postResponseDtos, false));
     }
+
     public ResponseDto<?> getRecentRecipeTop10(Member member) {
         List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
@@ -285,7 +290,7 @@ public class PostService {
         return ResponseDto.success(userPostResponseDtos);
     }
 
-    public ResponseDto<?> getFollowRecipe(HttpServletRequest request) {
+    public ResponseDto<?> getFollowRecipe(HttpServletRequest request, Long lastPostId) {
         ResponseDto<?> result = memberService.checkMember(request);
         Member member = (Member) result.getData();
 
@@ -300,24 +305,25 @@ public class PostService {
             }
         }
 
+        if (lastPostId==null)
+            lastPostId = followPost.get(0).getId();
+
         List<PostResponseDto> follow_postResponseDtos = new ArrayList<>();
-        List<InfinitePostResponseDto> responseDtos = new ArrayList<>();
-        int cnt = 0;
-        int page = 1;
-        for (int i = 0; i < followPost.size(); i++) {
-            cnt++;
+        Post post = postRepository.findPostById(lastPostId);
+        int index = followPost.indexOf(post);
+
+        int size = followPost.size();
+        int startIndex = index >= size ? size - 1 : index;
+        int endIndex = startIndex + 6 > size ? size : startIndex + 6;
+
+        for(int i = startIndex; i < endIndex; i++){
             List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(followPost.get(i));
-            follow_postResponseDtos.add(getResponsePostUserLike(member, followPost.get(i), ingredientResponseDtos));
-            if (cnt == 6){
-                cnt = 0;
-                responseDtos.add(new InfinitePostResponseDto(follow_postResponseDtos, page));
-                follow_postResponseDtos = new ArrayList<>();
-                page++;
-            }else if(i == followPost.size()-1){
-                responseDtos.add(new InfinitePostResponseDto(follow_postResponseDtos, page));
-            }
+            follow_postResponseDtos.add(new PostResponseDto(followPost.get(i), ingredientResponseDtos));
         }
 
-        return ResponseDto.success(responseDtos);
+        if (endIndex == size)
+            return ResponseDto.success(new InfinitePostResponseDto(follow_postResponseDtos, true));
+        else
+            return ResponseDto.success(new InfinitePostResponseDto(follow_postResponseDtos, false));
     }
 }

@@ -21,10 +21,10 @@ Content-Type: application/json
 
 
 ### 메인페이지 - 팔로우 Post
-GET http://localhost:8080/api/auth/post/follow
+GET http://localhost:8080/api/auth/post/follow?lastPostId=2651
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTY2NDI0MH0.DpDhbBfARQz5ScJm7wta3Tjsz1mBI6-XfJoNu6QpXGM
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYxODI2NDB9.EeVEdstInNLsbbKShAYnnqLL3Xz8iwcUI1BWgeblVhg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTcyNjg3OH0.X6WJz2I7OlUrBTIjkRers65liYQkq8VqKjAvVFjuX3M
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYyNDUyNzh9.IhrGK0eEl5gRkxJJeREZi6leJrlpVjkEVMapDlHdcNM
 oauth: kakao
 
 

@@ -30,10 +30,11 @@ public class PostController {
         return postService.getRecentRecipeTop10(member);
     }
     @GetMapping("/api/auth/post/follow")
-    public ResponseDto<?> getFollowRecipe(HttpServletRequest request){
-        return postService.getFollowRecipe(request);
+    public ResponseDto<?> getFollowRecipe(HttpServletRequest request,
+                                          @RequestParam(value = "lastPostId", required = false) Long lastPostId){
+        return postService.getFollowRecipe(request, lastPostId);
     }
-    @GetMapping("/api/post")
+    @GetMapping("/api/post/best")
     public ResponseDto<?> getBestRecipe(HttpServletRequest request){
         return postService.getBestRecipe(request);
     }
