@@ -19,10 +19,7 @@ public class PostController {
         return postService.getBestTagList();
     }
     @GetMapping("/api/post/recent")
-    public ResponseDto<?> getRecentRecipe(@RequestParam(value = "lastPostId", required = false) Long lastPostId,
-                                          @RequestParam(value = "isLast", required = false) Boolean isLast){
-        if(isLast != null&& isLast == true)
-            return ResponseDto.success("");
+    public ResponseDto<?> getRecentRecipe(@RequestParam(value = "lastPostId", required = false) Long lastPostId){
         return postService.getRecentRecipeInfinite(lastPostId);
     }
 
@@ -34,10 +31,7 @@ public class PostController {
     }
     @GetMapping("/api/auth/post/follow")
     public ResponseDto<?> getFollowRecipe(HttpServletRequest request,
-                                          @RequestParam(value = "lastPostId", required = false) Long lastPostId,
-                                          @RequestParam(value = "isLast", required = false) Boolean isLast){
-        if(isLast!=null && isLast==true)
-            return ResponseDto.success("");
+                                          @RequestParam(value = "lastPostId", required = false) Long lastPostId){
         return postService.getFollowRecipe(request, lastPostId);
     }
     @GetMapping("/api/post/best")
@@ -47,20 +41,23 @@ public class PostController {
 
     @GetMapping("/api/post/filter/title")
     public ResponseDto<?> filterPostTitle(@RequestParam(name = "title") String title,
+                                          @RequestParam(value = "lastPostId", required = false) Long lastPostId,
                                           HttpServletRequest request){
-        return postService.filterPostTitle(title, request);
+        return postService.filterPostTitle(title, request, lastPostId);
     }
 
     @GetMapping("/api/post/filter/nickname")
     public ResponseDto<?> filterPostNickname(@RequestParam(name = "nickname") String nickname,
+                                             @RequestParam(value = "lastPostId", required = false) Long lastPostId,
                                              HttpServletRequest request){
-        return postService.filterPostNickname(nickname, request);
+        return postService.filterPostNickname(nickname, request, lastPostId);
     }
 
     @GetMapping("/api/post/filter/tag")
     public ResponseDto<?> filterPostTag(@RequestParam(name = "tag")String tag,
+                                        @RequestParam(value = "lastPostId", required = false) Long lastPostId,
                                         HttpServletRequest request){
-        return postService.filterPostTag(tag, request);
+        return postService.filterPostTag(tag, request, lastPostId);
     }
 
     @GetMapping("/api/post/filter")

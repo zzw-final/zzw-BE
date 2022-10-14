@@ -117,25 +117,36 @@ public class PostService {
         return ingredientResponseDtos;
     }
 
-    public ResponseDto<?> filterPostTitle (String title, HttpServletRequest request){
+    public ResponseDto<?> filterPostTitle (String title, HttpServletRequest request, Long lastPostId){
 
         Member member = memberService.getMember(request);
 
         List<Post> posts = postRepository.findAllByTitleContaining(title);
         List<PostResponseDto> Posts = new ArrayList<>();
 
-        for (Post post : posts) {
-            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-            if (member != null)
-                Posts.add(getResponsePostUserLike(member, post, ingredientResponseDtos));
-            else
-                Posts.add(new PostResponseDto(post, ingredientResponseDtos, false));
+        if (posts.size() != 0){
+            if (lastPostId==null)
+                lastPostId = posts.get(0).getId();
+
+            Post post = postRepository.findPostById(lastPostId);
+            int index = (posts.indexOf(post)==0) ? 0 : posts.indexOf(post) + 1;
+
+            int size = posts.size();
+            int endIndex = index + 8 > size ? size : index + 8;
+
+            for (int i=index; i<endIndex; i++) {
+                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(posts.get(i));
+                if (member != null)
+                    Posts.add(getResponsePostUserLike(member, posts.get(i), ingredientResponseDtos));
+                else
+                    Posts.add(new PostResponseDto(posts.get(i), ingredientResponseDtos, false));
+            }
         }
 
         return ResponseDto.success(Posts);
     }
 
-    public ResponseDto<?> filterPostNickname (String nickname, HttpServletRequest request){
+    public ResponseDto<?> filterPostNickname (String nickname, HttpServletRequest request, Long lastPostId){
         Member loginMember = memberService.getMember(request);
 
         List<Member> members = memberRepository.findAllByNicknameContaining(nickname);
@@ -143,13 +154,24 @@ public class PostService {
 
         for (Member member : members) {
             List<Post> posts = postRepository.findAllByMember(member);
-            for (Post post : posts) {
-                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+            if(posts.size() != 0){
+                if (lastPostId==null)
+                    lastPostId = posts.get(0).getId();
 
-                if (loginMember != null)
-                    responseDtos.add(getResponsePostUserLike(loginMember, post, ingredientResponseDtos));
-                else
-                    responseDtos.add(new PostResponseDto(post, ingredientResponseDtos));
+                Post post = postRepository.findPostById(lastPostId);
+                int index = (posts.indexOf(post)==0) ? 0 : posts.indexOf(post) + 1;
+
+                int size = posts.size();
+                int endIndex = index + 8 > size ? size : index + 8;
+
+                for (int i = index; i<endIndex; i++) {
+                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(posts.get(i));
+
+                    if (loginMember != null)
+                        responseDtos.add(getResponsePostUserLike(loginMember, posts.get(i), ingredientResponseDtos));
+                    else
+                        responseDtos.add(new PostResponseDto(posts.get(i), ingredientResponseDtos));
+                }
             }
         }
         return ResponseDto.success(responseDtos);
@@ -169,7 +191,7 @@ public class PostService {
         return ResponseDto.success(tagResponseDtos);
     }
 
-    public ResponseDto<?> filterPostTag (String tag, HttpServletRequest request){
+    public ResponseDto<?> filterPostTag (String tag, HttpServletRequest request, Long lastPostId){
         Member loginMember = memberService.getMember(request);
 
         List<Post> response_posts = new ArrayList<>();
@@ -183,13 +205,24 @@ public class PostService {
 
         List<PostResponseDto> responseDtos = new ArrayList<>();
 
-        for (Post post : response_posts) {
-            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
+        if(response_posts.size() != 0){
+            if (lastPostId==null)
+                lastPostId = response_posts.get(0).getId();
 
-            if (loginMember != null)
-                responseDtos.add(getResponsePostUserLike(loginMember, post, ingredientResponseDtos));
-            else
-                responseDtos.add(new PostResponseDto(post, ingredientResponseDtos));
+            Post post = postRepository.findPostById(lastPostId);
+            int index = (response_posts.indexOf(post)==0) ? 0 : response_posts.indexOf(post) + 1;
+
+            int size = response_posts.size();
+            int endIndex = index + 8 > size ? size : index + 8;
+
+            for (int i = index; i <endIndex; i++) {
+                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(response_posts.get(i));
+
+                if (loginMember != null)
+                    responseDtos.add(getResponsePostUserLike(loginMember, response_posts.get(i), ingredientResponseDtos));
+                else
+                    responseDtos.add(new PostResponseDto(response_posts.get(i), ingredientResponseDtos));
+            }
         }
 
         return ResponseDto.success(responseDtos);
