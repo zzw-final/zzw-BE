@@ -19,7 +19,10 @@ public class PostController {
         return postService.getBestTagList();
     }
     @GetMapping("/api/post/recent")
-    public ResponseDto<?> getRecentRecipe(@RequestParam(value = "lastPostId", required = false) Long lastPostId){
+    public ResponseDto<?> getRecentRecipe(@RequestParam(value = "lastPostId", required = false) Long lastPostId,
+                                          @RequestParam(value = "isLast", required = false) Boolean isLast){
+        if(isLast != null&& isLast == true)
+            return ResponseDto.success("");
         return postService.getRecentRecipeInfinite(lastPostId);
     }
 
@@ -31,7 +34,10 @@ public class PostController {
     }
     @GetMapping("/api/auth/post/follow")
     public ResponseDto<?> getFollowRecipe(HttpServletRequest request,
-                                          @RequestParam(value = "lastPostId", required = false) Long lastPostId){
+                                          @RequestParam(value = "lastPostId", required = false) Long lastPostId,
+                                          @RequestParam(value = "isLast", required = false) Boolean isLast){
+        if(isLast!=null && isLast==true)
+            return ResponseDto.success("");
         return postService.getFollowRecipe(request, lastPostId);
     }
     @GetMapping("/api/post/best")
