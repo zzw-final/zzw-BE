@@ -187,11 +187,34 @@ class ChatServiceTest {
         Assertions.assertEquals(chatRead.getChatMessage(), chatMessage);
     }
 
-    @Test
-    void checkReadMessage() {
-    }
-
-    @Test
+    @Test   //수정하기
     void isNewMessage() {
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomById(3405L);
+        ChatMember chatMember = chatMemberRepository.findChatMemberByChatRoomAndMember(chatRoom, member);
+        ChatRead chatRead = chatReadRepository.findChatReadByMemberAndChatRoom(member, chatRoom);
+//        List<ChatMessage> chatMessage = chatMessageRepository.findChatMessageByChatRoomOrderByCreatedAtDesc(chatRoom);
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertNotNull(chatRoom);
+        Assertions.assertNotNull(chatMember);
+        Assertions.assertNotNull(chatRead);
+        Assertions.assertEquals(chatRoom.getId(), 3405L);
+        Assertions.assertEquals(chatMember.getChatRoom(), chatRoom);
+        Assertions.assertEquals(chatMember.getMember(), member);
+        Assertions.assertEquals(chatRead.getChatRoom(), chatRoom);
+        Assertions.assertEquals(chatRead.getMember(), member);
+//        Assertions.assertNotEquals(chatMessage.get(0).getId(), chatRead.getChatMessage().getId());
     }
 }
