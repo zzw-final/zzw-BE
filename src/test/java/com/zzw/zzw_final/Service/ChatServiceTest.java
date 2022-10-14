@@ -1,11 +1,9 @@
 package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
-import com.zzw.zzw_final.Dto.Entity.ChatMember;
-import com.zzw.zzw_final.Dto.Entity.ChatMessage;
-import com.zzw.zzw_final.Dto.Entity.ChatRoom;
-import com.zzw.zzw_final.Dto.Entity.Member;
+import com.zzw.zzw_final.Dto.Entity.*;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
+import com.zzw.zzw_final.Dto.Response.ChatListResponseDto;
 import com.zzw.zzw_final.Dto.Response.ChatMessageResponseDto;
 import com.zzw.zzw_final.Dto.Response.ChatRoomResponseDto;
 import com.zzw.zzw_final.Repository.*;
@@ -158,6 +156,35 @@ class ChatServiceTest {
 
     @Test
     void getUserChatList() {
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        List<ChatMember> chatMembers = chatMemberRepository.findAllByMember(member);
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomById(3404L);
+        ChatMember chatMember = chatMemberRepository.findChatMemberByChatRoomAndMember(chatRoom, member);
+        ChatRead chatRead = chatReadRepository.findChatReadByMemberAndChatRoom(member, chatRoom);
+        ChatMessage chatMessage = chatMessageRepository.findChatMessageByIdAndChatRoom(16L, chatRoom);
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertNotEquals(chatMembers.size(), 0);
+        Assertions.assertNotNull(chatRoom);
+        Assertions.assertNotNull(chatMember);
+        Assertions.assertNotNull(chatRead);
+        Assertions.assertEquals(chatRoom.getId(), 3404L);
+        Assertions.assertEquals(chatMember.getChatRoom(), chatRoom);
+        Assertions.assertEquals(chatMember.getMember(), member);
+        Assertions.assertEquals(chatRead.getChatRoom(), chatRoom);
+        Assertions.assertEquals(chatRead.getMember(), member);
+        Assertions.assertEquals(chatRead.getChatMessage(), chatMessage);
     }
 
     @Test
