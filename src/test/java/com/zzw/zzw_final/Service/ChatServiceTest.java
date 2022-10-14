@@ -7,6 +7,7 @@ import com.zzw.zzw_final.Dto.Entity.ChatRoom;
 import com.zzw.zzw_final.Dto.Entity.Member;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
 import com.zzw.zzw_final.Dto.Response.ChatMessageResponseDto;
+import com.zzw.zzw_final.Dto.Response.ChatRoomResponseDto;
 import com.zzw.zzw_final.Repository.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -121,6 +122,38 @@ class ChatServiceTest {
 
     @Test
     void getChatRoom() {
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        Member chatToMember = memberRepository.findMemberById(1482L);
+
+        ChatRoom chatRoom = new ChatRoom();
+        chatRoomRepository.save(chatRoom);
+
+        ChatMember chatMember = new ChatMember(member, chatRoom);
+        ChatMember chatMember1 = new ChatMember(chatToMember, chatRoom);
+        chatMemberRepository.save(chatMember1);
+        chatMemberRepository.save(chatMember);
+
+        ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(chatRoom.getId());
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertNotEquals(member.getId(), chatToMember.getId());
+        Assertions.assertNotNull(chatRoom);
+        Assertions.assertEquals(chatMember.getMember(), member);
+        Assertions.assertEquals(chatMember1.getMember(), chatToMember);
+        Assertions.assertEquals(chatMember.getChatRoom(), chatRoom);
+        Assertions.assertEquals(chatMember1.getChatRoom(), chatRoom);
+        Assertions.assertEquals(chatRoomResponseDto.getRoomId(), chatRoom.getId());
     }
 
     @Test
