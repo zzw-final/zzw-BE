@@ -29,6 +29,7 @@ public class MemberService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final FollowRepository followRepository;
     private final GradeRepository gradeRepository;
+    private final GradeListRepository gradeListRepository;
 
     public ResponseDto<?> checkMember(HttpServletRequest request){
 
@@ -66,6 +67,9 @@ public class MemberService {
         response.addHeader("Authorization", tokenDto.getAccessToken());
         response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
         IntegrationResponseDto responseDto = new IntegrationResponseDto(member, tokenDto, getInvalidToken());
+        GradeList gradeList = gradeListRepository.findGradeListById(3006L);
+        Grade grade = new Grade(member, gradeList);
+        gradeRepository.save(grade);
 
         return ResponseDto.success(responseDto);
     }

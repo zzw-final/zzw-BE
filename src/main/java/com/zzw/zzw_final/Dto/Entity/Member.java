@@ -81,7 +81,7 @@ public class Member {
         this.nickname = requestDto.getNickname();
         this.email = requestDto.getEmail();
         this.oauth = requestDto.getOauth();
-        this.grade = "사이트의 개발자";
+        this.grade = "베타테스터";
         this.profile = "https://zzwimage.s3.ap-northeast-2.amazonaws.com/zzw.-removebg-preview.png";
     }
 
