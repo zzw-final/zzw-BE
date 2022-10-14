@@ -30,6 +30,7 @@ public class MemberService {
     private final FollowRepository followRepository;
     private final GradeRepository gradeRepository;
     private final GradeListRepository gradeListRepository;
+    private final PostRepository postRepository;
 
     public ResponseDto<?> checkMember(HttpServletRequest request){
 
@@ -120,9 +121,10 @@ public class MemberService {
         List<Follow> followList = followRepository.findAllByMember(member);
 
         List<GradeListResponseDto> responseDtos = getUserGrade(member);
+        List<Post> posts = postRepository.findAllByMember(member);
 
         MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
-                followerlist.size(), followList.size(), responseDtos, true);
+                followerlist.size(), followList.size(), responseDtos, true, posts.size());
 
         return ResponseDto.success(responseDto);
     }
@@ -138,34 +140,35 @@ public class MemberService {
         List<Follow> followList = followRepository.findAllByMember(member);
 
         List<GradeListResponseDto> responseDtos = getUserGrade(member);
+        List<Post> posts = postRepository.findAllByMember(member);
 
 
         MypageUserInfoResponseDto responseDto;
 
         if(loginMember == null){
             responseDto = new MypageUserInfoResponseDto(member,
-                    followerlist.size(), followList.size(), responseDtos, false);
+                    followerlist.size(), followList.size(), responseDtos, false, posts.size());
 
             return ResponseDto.success(responseDto);
         }
         else
-            responseDto = getUserInfoResponseDto(loginMember, member, followerlist, followList, responseDtos);
+            responseDto = getUserInfoResponseDto(loginMember, member, followerlist, followList, responseDtos, posts.size());
 
         return ResponseDto.success(responseDto);
     }
 
     private MypageUserInfoResponseDto getUserInfoResponseDto(Member loginMember, Member member, List<Follow> followerlist,
-                                                             List<Follow> followList, List<GradeListResponseDto> responseDtos) {
+                                                             List<Follow> followList, List<GradeListResponseDto> responseDtos, int postSize) {
         Follow follow = followRepository.findFollowByFollowerIdAndMember(loginMember.getId(), member);
 
         if (follow == null) {
             MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
-                    followerlist.size(), followList.size(), responseDtos,false);
+                    followerlist.size(), followList.size(), responseDtos,false, postSize);
             return responseDto;
 
         } else {
             MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
-                    followerlist.size(), followList.size(), responseDtos,true);
+                    followerlist.size(), followList.size(), responseDtos,true, postSize);
             return responseDto;
         }
     }

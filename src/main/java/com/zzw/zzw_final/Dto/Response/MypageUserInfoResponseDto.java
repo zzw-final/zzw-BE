@@ -18,9 +18,10 @@ public class MypageUserInfoResponseDto {
     private int follower;
     private String profile;
     private Boolean isFollow;
+    private int postSize;
 
     public MypageUserInfoResponseDto(Member member, int follow, int follower,
-                                     List<GradeListResponseDto> gradeList, Boolean isFollow){
+                                     List<GradeListResponseDto> gradeList, Boolean isFollow, int postSize){
         this.nickname = member.getNickname();
         this.grade = member.getGrade();
         this.profile = member.getProfile();
@@ -28,5 +29,6 @@ public class MypageUserInfoResponseDto {
         this.follower = follower;
         this.gradeList = gradeList;
         this.isFollow = isFollow;
+        this.postSize = postSize;
     }
 }
