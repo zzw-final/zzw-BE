@@ -48,10 +48,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsI
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUyMjMzNTJ9.lEIErp-PyYdGGoOHxH2NLch3D4l49ayN49DRIsV2dD4
 
 ###마이페이지 - 내가 좋아요한 레시피 GET
-GET http://localhost:8080/api/auth/mypage/likeposts
+GET http://localhost:8080/api/auth/mypage/likeposts?lastPostId=2760
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2MzkxNjcwNH0._qWbmpD0nawqfFnpcZLuXQ6sYxaKkvH1q5xDj2g3H9U
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ0MzUxMDR9.yrHBnLJppQOn5PZ4xxs_ZB0GJAnQfvetS7UeLEdsVig
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTgwNjYwMH0.SSh0jVu6NtLELOUyKv9Al8VgOt_DafoGybdt1O48HxI
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYzMjUwMDB9.TkRI7-qpm_gWBT-Y0KVHQ3M2eIde3dpZ52efG_ZNrew
+oauth: kakao
 
 ### 상세페이지 - 게시글 내용 GET
 GET http://localhost:8080/api/post/1880

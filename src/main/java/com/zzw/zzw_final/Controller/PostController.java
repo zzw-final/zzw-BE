@@ -77,14 +77,13 @@ public class PostController {
 
 
     @GetMapping("/api/auth/mypage/likeposts")
-    public ResponseDto<?> getUserLikePosts(HttpServletRequest request){
-        return postService.getUserLikePosts(request);
+    public ResponseDto<?> getUserLikePosts(@RequestParam(value = "lastPostId", required = false) Long lastPostId,
+                                           HttpServletRequest request){
+        return postService.getUserLikePosts(request, lastPostId);
     }
 
     @GetMapping("/api/mypage/{user_id}/myposts")
     public ResponseDto<?> getOtherUserPosts(@PathVariable Long user_id, HttpServletRequest request){
         return postService.getOtherUserPosts(user_id, request);
     }
-
-
 }

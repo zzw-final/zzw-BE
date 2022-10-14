@@ -282,10 +282,11 @@ public class PostService {
             List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
             userPostResponseDtos.add(getResponsePostUserLike(member, post, ingredientResponseDtos));
         }
+
         return ResponseDto.success(userPostResponseDtos);
     }
 
-    public ResponseDto<?> getUserLikePosts(HttpServletRequest request) {
+    public ResponseDto<?> getUserLikePosts(HttpServletRequest request, Long lastPostId) {
         ResponseDto<?> result = memberService.checkMember(request);
         Member member = (Member) result.getData();
 
@@ -298,9 +299,20 @@ public class PostService {
 
         List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
 
-        for (Post post : posts) {
-            List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
-            userPostResponseDtos.add(getResponsePostUserLike(member, post, ingredientResponseDtos));
+        if(posts.size() != 0){
+            if (lastPostId==null)
+                lastPostId = posts.get(0).getId();
+
+            Post post = postRepository.findPostById(lastPostId);
+            int index = (posts.indexOf(post)==0) ? 0 : posts.indexOf(post) + 1;
+
+            int size = posts.size();
+            int endIndex = index + 6 > size ? size : index + 6;
+
+            for (int i = index; i<endIndex; i++) {
+                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(posts.get(i));
+                userPostResponseDtos.add(getResponsePostUserLike(member, posts.get(i), ingredientResponseDtos));
+            }
         }
 
         return ResponseDto.success(userPostResponseDtos);
@@ -318,6 +330,7 @@ public class PostService {
             List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(post);
             userPostResponseDtos.add(getResponsePostUserLike(loginMember, post, ingredientResponseDtos));
         }
+
         return ResponseDto.success(userPostResponseDtos);
     }
 
