@@ -57,10 +57,16 @@ public class GradeService {
 
         Member member = memberRepository.findMemberById(user_id);
 
-        GradeList gradeList = gradeListRepository.findGradeListById(grade_id);
-        Grade userGrade = new Grade(member, gradeList);
+        if(member != null){
+            GradeList gradeList = gradeListRepository.findGradeListById(grade_id);
+            Grade userGrade = new Grade(member, gradeList);
+            // 이 칭호를 이미 소유하고 있는가 ?를 판단
+            if (userGrade == null){
+                // 칭호를 획득하게 해준다.
+            }
 
-        gradeRepository.save(userGrade);
+            gradeRepository.save(userGrade);
+        }
         return ResponseDto.success("post grade success !");
     }
 }
