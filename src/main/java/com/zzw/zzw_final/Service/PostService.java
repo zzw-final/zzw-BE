@@ -40,10 +40,9 @@ public class PostService {
         int index = (recent_posts.indexOf(post)==0) ? 0 : recent_posts.indexOf(post) + 1;
 
         int size = recent_posts.size();
-        int startIndex = index >= size ? size - 1 : index;
-        int endIndex = startIndex + 6 > size ? size : startIndex + 6;
+        int endIndex = index + 6 > size ? size : index + 6;
 
-        for(int i=startIndex; i < endIndex; i++){
+        for(int i=index; i < endIndex; i++){
             List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(recent_posts.get(i));
             postResponseDtos.add(new PostResponseDto(recent_posts.get(i), ingredientResponseDtos));
         }
@@ -312,10 +311,9 @@ public class PostService {
         int index = (followPost.indexOf(post)==0) ? 0 : followPost.indexOf(post) + 1;
 
         int size = followPost.size();
-        int startIndex = index >= size ? size - 1 : index;
-        int endIndex = startIndex + 6 > size ? size : startIndex + 6;
+        int endIndex = index + 6 > size ? size : index + 6;
 
-        for(int i = startIndex; i < endIndex; i++){
+        for(int i = index; i < endIndex; i++){
             List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(followPost.get(i));
             follow_postResponseDtos.add(new PostResponseDto(followPost.get(i), ingredientResponseDtos));
         }
