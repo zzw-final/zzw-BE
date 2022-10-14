@@ -2,9 +2,11 @@ package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.ChatMember;
+import com.zzw.zzw_final.Dto.Entity.ChatMessage;
 import com.zzw.zzw_final.Dto.Entity.ChatRoom;
 import com.zzw.zzw_final.Dto.Entity.Member;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
+import com.zzw.zzw_final.Dto.Response.ChatMessageResponseDto;
 import com.zzw.zzw_final.Repository.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +20,9 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -81,11 +86,37 @@ class ChatServiceTest {
     }
 
     @Test
-    void sendMessage() {
-    }
-
-    @Test
     void getMessage() {
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomById(3332L);
+        ChatMember chatMember = chatMemberRepository.findChatMemberByChatRoomAndMember(chatRoom, member);
+
+        List<ChatMessage> chatMessageList = chatMessageRepository.findAllByChatRoom(chatRoom);
+        List<ChatMessageResponseDto> chatMessageResponseDtos = new ArrayList<>();
+
+        for (ChatMessage chatMessage : chatMessageList) {
+            Member getMember = chatMessage.getMember();
+            chatMessageResponseDtos.add(new ChatMessageResponseDto(getMember, chatMessage));
+        }
+
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertNotNull(chatRoom);
+        Assertions.assertNotNull(chatMember);
+        Assertions.assertEquals(chatMember.getMember(), member);
+        Assertions.assertEquals(chatMember.getChatRoom(), chatRoom);
+        Assertions.assertEquals(chatMessageList.size(), chatMessageResponseDtos.size());
     }
 
     @Test
