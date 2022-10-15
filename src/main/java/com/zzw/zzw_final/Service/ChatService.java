@@ -90,10 +90,8 @@ public class ChatService {
     public ResponseDto<?> sendMessage(ChatRequestDto message, String token, String oauth) {
         String ttoken = token.substring(7);
 
-        // 토큰으로 유저찾기
         String email = tokenProvider.getUserEmail(ttoken);
         Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
-
         ChatRoom chatRoom = chatRoomRepository.findChatRoomById(message.getRoomId());
 
         if (chatRoom == null){
@@ -110,7 +108,6 @@ public class ChatService {
         chatMember.update(false);
         chatMemberRepository.save(chatMember);
 
-        // 메세지 보내기
         messageTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessageResponseDto);
         messageTemplate.convertAndSend("/sub/chat/member/" + chatMember.getMember().getId(), new ChatReadResponseDto(false));
 
