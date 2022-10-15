@@ -3,10 +3,7 @@ package com.zzw.zzw_final.Service;
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.*;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
-import com.zzw.zzw_final.Dto.Response.GradeListResponseDto;
-import com.zzw.zzw_final.Dto.Response.IntegrationResponseDto;
-import com.zzw.zzw_final.Dto.Response.MypageUserInfoResponseDto;
-import com.zzw.zzw_final.Dto.Response.ResponseDto;
+import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Dto.TokenDto;
 import com.zzw.zzw_final.Repository.*;
 import lombok.RequiredArgsConstructor;
@@ -34,17 +31,14 @@ public class MemberService {
 
     public ResponseDto<?> checkMember(HttpServletRequest request){
 
-        //헤더에 리프레시 토큰이 안 왔을 경우 오류 값 반환
         if (null == request.getHeader("Refresh-Token")) {
             return ResponseDto.fail(NULL_TOKEN);
         }
 
-        //헤더에 어세스 토큰이 안 왔을 경우 오류 값 반환
         if (null == request.getHeader("Authorization")) {
             return ResponseDto.fail(NULL_TOKEN);
         }
 
-        //헤더에 리프레시 토큰이 유효시간이 지났을 경우 오류 값 반환
         if(!tokenProvider.validateToken(request.getHeader("Refresh-Token")))
             return ResponseDto.fail(INVALID_TOKEN);
 
@@ -52,14 +46,12 @@ public class MemberService {
             return ResponseDto.fail(NULL_OAUTH);
         }
 
-        //헤더에 정상적으로 토큰이 전달 됐을 경우
         String email = tokenProvider.getUserEmail(request.getHeader("Authorization").substring(7));
         Member member = memberRepository.findMemberByEmailAndOauth(email, request.getHeader("oauth"));
 
         return ResponseDto.success(member);
     }
 
-    //선착순 20명 repository.size
     public ResponseDto<?> postUserNickname(HttpServletResponse response, SignupRequestDto requestDto) {
 
         Member member = new Member(requestDto);
@@ -73,10 +65,16 @@ public class MemberService {
         Grade grade = new Grade(member, gradeList);
         gradeRepository.save(grade);
 
+        //선착순 20명 repository
+        if(memberRepository.findAll().size() <= 20){
+            if(isMemberGetGrade(5011L, member)) {
+                return ResponseDto.success(responseDto);
+            }
+        }
+
         return ResponseDto.success(responseDto);
     }
 
-    // 토큰을 보내줬는지 안보내줬는지 확인하는 함수
     public Member getMember(HttpServletRequest request){
         String token = request.getHeader("Authorization");
         String oauth = request.getHeader("oauth");

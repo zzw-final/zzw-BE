@@ -49,7 +49,6 @@ public class FollowService {
 
             return ResponseDto.success("follow success");
 
-
         } else {
             followRepository.delete(follow);
 
