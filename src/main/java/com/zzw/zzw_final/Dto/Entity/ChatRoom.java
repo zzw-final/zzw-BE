@@ -23,4 +23,7 @@ public class ChatRoom extends Timestamped {
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatRead> chatReads;
+
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChatRoomOut> chatRoomOuts;
 }

@@ -110,7 +110,7 @@ public class ChatService {
         List<ChatMessageResponseDto> chatMessageResponseDtos = new ArrayList<>();
 
         for (ChatMessage chatMessage : chatMessageList) {
-            Member getMember = chatMessage.getMember();
+            Member getMember = memberRepository.findMemberById(chatMessage.getMemberId());
 
             chatMessageResponseDtos.add(new ChatMessageResponseDto(getMember, chatMessage));
         }
