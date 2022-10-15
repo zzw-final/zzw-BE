@@ -2,7 +2,9 @@ package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Dto.Entity.Follow;
 import com.zzw.zzw_final.Dto.Entity.Member;
+import com.zzw.zzw_final.Dto.Response.CommentGradeResponseDto;
 import com.zzw.zzw_final.Dto.Response.FollowResponseDto;
+import com.zzw.zzw_final.Dto.Response.GetGradeResponseDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Repository.FollowRepository;
 import com.zzw.zzw_final.Repository.MemberRepository;
@@ -21,7 +23,6 @@ public class FollowService {
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
 
-
     public ResponseDto<?> follow(HttpServletRequest request, Long member_id) {
 
         ResponseDto<?> result = memberService.checkMember(request);
@@ -29,7 +30,7 @@ public class FollowService {
 
         Member followMember = memberRepository.findMemberById(member_id);
         if(member.getId() == followMember.getId()){
-            return ResponseDto.fail(SAME_PERSON);              //예외처리
+            return ResponseDto.fail(SAME_PERSON);
         }
 
         Follow follow = followRepository.findFollowByFollowerIdAndMember(member.getId(), followMember);
@@ -37,6 +38,15 @@ public class FollowService {
         if (follow == null) {
             Follow followUser = new Follow(member, followMember);
             followRepository.save(followUser);
+
+            List <Follow> follows = followRepository.findAllByFollowerId(member.getId());
+
+            if (follows.size() >= 10){
+                if(memberService.isMemberGetGrade(5009L, member)) {
+                    return ResponseDto.success(new GetGradeResponseDto(true));
+                }
+            }
+
             return ResponseDto.success("follow success");
 
         } else {
