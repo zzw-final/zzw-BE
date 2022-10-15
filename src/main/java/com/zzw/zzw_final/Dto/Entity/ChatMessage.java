@@ -24,9 +24,8 @@ public class ChatMessage extends Timestamped {
     private String message;
 
     // 발신자의 id (멤버한명이 여러개의 메세지를 보냄)
-    @JoinColumn(name = "sender_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    @Column
+    private Long memberId;
 
     // 채팅방 번호 (챗룸 한개에 많은 채팅메세지)
     @JoinColumn(name = "chat_room_id", nullable = false)
@@ -39,10 +38,13 @@ public class ChatMessage extends Timestamped {
     @OneToMany(mappedBy = "chatMessage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatRead> chatReads;
 
+    @OneToMany(mappedBy = "chatMessage", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChatRoomOut> chatRoomOuts;
+
 
     public ChatMessage(Member member, ChatRoom chatRoom, ChatRequestDto message, String time) {
         this.message = message.getMessage();
-        this.member = member;
+        this.memberId = member.getId();
         this.chatRoom = chatRoom;
         this.sendTime = time;
     }

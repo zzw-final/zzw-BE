@@ -6,12 +6,10 @@ import com.zzw.zzw_final.Dto.Request.ChatRequestDto;
 import com.zzw.zzw_final.Dto.Request.CheckReadMessageRequestDto;
 import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Repository.*;
-import com.zzw.zzw_final.Service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +35,7 @@ public class ChatService {
     private final MemberService memberService;
     private final ChatMemberRepository chatMemberRepository;
     private final ChatReadRepository chatReadRepository;
+    private final ChatRoomOutRepository chatRoomOutRepository;
 
     @Transactional
     public ResponseDto<?> exitChatRoom(Long roomId, HttpServletRequest request) {
@@ -44,6 +43,11 @@ public class ChatService {
         Member member = memberService.getMember(request);
 
         ChatRoom chatRoom = chatRoomRepository.findChatRoomById(roomId);
+
+        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        LocalDateTime localTime = LocalDateTime.parse(now,
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         if (chatRoom == null){
             return ResponseDto.fail(NOTFOUND_ROOM);
@@ -53,8 +57,30 @@ public class ChatService {
         if (chatMember == null){
             return ResponseDto.fail(INVALID_MEMBER);
         }
+        chatMember.update(true);
+        List<ChatMessage> chatMessages = chatMessageRepository.findAllByChatRoom(chatRoom);
+        for (ChatMessage chatMessage : chatMessages){
+            LocalDateTime messageTime = LocalDateTime.parse(chatMessage.getSendTime(),
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        chatMemberRepository.delete(chatMember);
+            if (localTime.compareTo(messageTime) == -1){
+                ChatRoomOut findRoomOut = chatRoomOutRepository.findChatRoomOutByMemberAndChatRoom(member, chatRoom);
+                if (findRoomOut != null)
+                    findRoomOut.update(chatMessage);
+                else{
+                    ChatRoomOut chatRoomOut = new ChatRoomOut(member, chatRoom, chatMessage);
+                    chatRoomOutRepository.save(chatRoomOut);
+                }
+            }
+        }
+
+        ChatRoomOut findRoomOut = chatRoomOutRepository.findChatRoomOutByMemberAndChatRoom(member, chatRoom);
+        if (findRoomOut != null)
+            findRoomOut.update(chatMessages.get(chatMessages.size()-1));
+        else{
+            ChatRoomOut chatRoomOut = new ChatRoomOut(member, chatRoom, chatMessages.get(chatMessages.size()-1));
+            chatRoomOutRepository.save(chatRoomOut);
+        }
 
         return ResponseDto.success("나가기 완료");
     }
@@ -81,6 +107,8 @@ public class ChatService {
         ChatMessageResponseDto chatMessageResponseDto = new ChatMessageResponseDto(member, time, message.getMessage(), chatMessage.getId());
 
         ChatMember chatMember = chatMemberRepository.findChatMemberByChatRoomAndMemberNot(chatRoom, member);
+        chatMember.update(false);
+        chatMemberRepository.save(chatMember);
 
         // 메세지 보내기
         messageTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessageResponseDto);
@@ -108,11 +136,13 @@ public class ChatService {
 
         List<ChatMessage> chatMessageList = chatMessageRepository.findAllByChatRoom(chatRoom);
         List<ChatMessageResponseDto> chatMessageResponseDtos = new ArrayList<>();
+        ChatRoomOut chatRoomOut = chatRoomOutRepository.findChatRoomOutByMemberAndChatRoom(member, chatRoom);
+        int index = (chatRoomOut != null) ? chatMessageList.indexOf(chatRoomOut.getChatMessage()) + 1 : 0;
 
-        for (ChatMessage chatMessage : chatMessageList) {
-            Member getMember = chatMessage.getMember();
+        for (int i = index; i<chatMessageList.size(); i++) {
+            Member getMember = memberRepository.findMemberById(chatMessageList.get(i).getMemberId());
 
-            chatMessageResponseDtos.add(new ChatMessageResponseDto(getMember, chatMessage));
+            chatMessageResponseDtos.add(new ChatMessageResponseDto(getMember, chatMessageList.get(i)));
         }
         return ResponseDto.success(chatMessageResponseDtos);
     }
@@ -133,6 +163,8 @@ public class ChatService {
             ChatMember isChatRoom = chatMemberRepository.findChatMemberByChatRoomAndMember(chatRoom, chatToMember);
             if (isChatRoom != null){
                 ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(isChatRoom.getChatRoom().getId());
+                chatMember.update(false);
+                chatMemberRepository.save(chatMember);
                 return ResponseDto.success(chatRoomResponseDto);
             }
         }
@@ -161,21 +193,23 @@ public class ChatService {
         List<ChatListResponseDto> chatListResponseDtos = new ArrayList<>();
 
         for(ChatMember chatMember : chatMembers){
-            ChatRoom chatRoom = chatRoomRepository.findChatRoomById(chatMember.getChatRoom().getId());
-            ChatMember chatToMember = chatMemberRepository.findChatMemberByChatRoomAndMemberNot(chatRoom, member);
-            List<ChatMessage> chatMessage = chatMessageRepository.findChatMessageByChatRoomOrderByCreatedAtDesc(chatRoom);
+            if(!chatMember.getIsOut()){
+                ChatRoom chatRoom = chatRoomRepository.findChatRoomById(chatMember.getChatRoom().getId());
+                ChatMember chatToMember = chatMemberRepository.findChatMemberByChatRoomAndMemberNot(chatRoom, member);
+                List<ChatMessage> chatMessage = chatMessageRepository.findChatMessageByChatRoomOrderByCreatedAtDesc(chatRoom);
 
-            if (chatMessage.size() != 0){
-                ChatRead chatRead = chatReadRepository.findChatReadByMemberAndChatRoom(member, chatRoom);
+                if (chatMessage.size() != 0){
+                    ChatRead chatRead = chatReadRepository.findChatReadByMemberAndChatRoom(member, chatRoom);
 
-                Long readMessageId = 0L;
-                if (chatRead != null)
-                    readMessageId = chatRead.getChatMessage().getId();
+                    Long readMessageId = 0L;
+                    if (chatRead != null)
+                        readMessageId = chatRead.getChatMessage().getId();
 
-                if (readMessageId < chatMessage.get(0).getId())
-                    chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0), false));
-                else
-                    chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0), true));
+                    if (readMessageId < chatMessage.get(0).getId())
+                        chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0), false));
+                    else
+                        chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0), true));
+                }
             }
         }
 

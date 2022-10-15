@@ -18,7 +18,4 @@ public class ProfileList {
 
     @Column
     private String profile;
-
-    @OneToMany(mappedBy = "profileList", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Profile> profiles;
 }

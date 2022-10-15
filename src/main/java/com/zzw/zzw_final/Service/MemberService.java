@@ -28,6 +28,7 @@ public class MemberService {
     private final GradeRepository gradeRepository;
     private final GradeListRepository gradeListRepository;
     private final PostRepository postRepository;
+    private final TagListRepository tagListRepository;
 
     public ResponseDto<?> checkMember(HttpServletRequest request){
 
@@ -182,6 +183,57 @@ public class MemberService {
         return gradeListResponseDtos;
     }
 
+    public Boolean isGetGrade(Member member, Post post){
+
+        Boolean isGet = memberPostSizeCheck(member);
+
+        List<TagList> tagLists = tagListRepository.findAllByPost(post);
+        for (TagList tagList : tagLists){
+            if (tagList.getName().contains("김치")){
+                if(isMemberGetGrade(5007L, member))
+                    isGet = true;
+            } else if (tagList.getName().contains("된장찌개")) {
+                if(isMemberGetGrade(5004L, member))
+                    isGet = true;
+            }
+        }
+
+        List<TagList> allTagList = tagListRepository.findAll();
+        int tagNum = 0;
+        for(TagList tagList: allTagList){
+            if(tagList.getPost().getMember() == member)
+                tagNum++;
+            if(tagNum > 30)
+                if (isMemberGetGrade(5006L, member))
+                    isGet = true;
+        }
+        return isGet;
+    }
+
+    public Boolean memberPostSizeCheck(Member member){
+        Boolean isGetGrade = false;
+        Long gradeListId = 1L;
+
+        List<Post> posts = postRepository.findAllByMember(member);
+
+        switch (posts.size()){
+            case 5:
+                gradeListId = 5005L;
+                break;
+            case 10:
+                gradeListId = 5003L;
+                break;
+            case 20:
+                gradeListId = 5002L;
+        }
+
+        if (gradeListId != 1L) {
+            if(isMemberGetGrade(5005L, member))
+                isGetGrade = true;
+        }
+        return isGetGrade;
+    }
+    
     public Boolean isMemberGetGrade(Long gradeListId, Member member){
         GradeList gradeList = gradeListRepository.findGradeListById(gradeListId);
         Grade grade = gradeRepository.findGradeByMemberAndGradeList(member, gradeList);

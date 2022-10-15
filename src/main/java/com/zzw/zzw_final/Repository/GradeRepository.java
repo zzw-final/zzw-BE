@@ -10,5 +10,4 @@ import java.util.List;
 public interface GradeRepository extends JpaRepository<Grade, Long> {
     List<Grade> findAllByMember(Member member);
     Grade findGradeByMemberAndGradeList(Member member, GradeList gradeList);
-
 }

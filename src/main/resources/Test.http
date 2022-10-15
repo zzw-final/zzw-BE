@@ -160,32 +160,32 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUyMjMzNTJ9.lEIErp-PyYdGGoOHxH2
 ### 상세페이지 - 레시피 생성
 POST http://localhost:8080/api/auth/post
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTIwMTUxOX0.ys1SYCxJfjxpvraVT9L8Vi9zC1aCQydMdR2m6_HENPg
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU3MTk5MTl9.E5N3bzfJo2AlB7xJ_mPJictEaOfQluBC5817_OVF_Jo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTg4NzM3MH0.GnumNn4MTeeCNNtIMokRSNAGp94BmCEKvDYK66oi5cM
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MDU3NzB9.Vau1r2RzN_XQC5FzsXZFvBb9GCEtLQWJ82X-zRFxDrg
 oauth: kakao
 
 {
-  "title" : "test222",
-  "foodName": "테스트음식이름2222",
+  "title" : "칭호테스트중",
+  "foodName": "칭호칭호",
   "time": "15분",
-  "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/772f17bb-63a8-459b-8196-e9ab0e16c24b.png",
-  "ingredient": ["게시글삭제"],
+  "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/%EB%8C%80%EC%A7%80+10_2.png",
+  "ingredient": ["된장찌개", "김치", "칭호", "테스트중"],
   "pageList" : [{
     "page": 1,
-    "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/772f17bb-63a8-459b-8196-e9ab0e16c24b.png",
+    "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/%EB%8C%80%EC%A7%80+10_2.png",
     "content" : "test 중 1111 "
   },{
     "page" : 2,
-    "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/772f17bb-63a8-459b-8196-e9ab0e16c24b.png",
+    "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/%EB%8C%80%EC%A7%80+10_2.png",
     "content": "test 중 2222"
   }]
 }
 
 ### 상세페이지 게시글 삭제
-DELETE http://localhost:8080/api/auth/post/2548
+DELETE http://localhost:8080/api/auth/post/4266
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTIwMTUxOX0.ys1SYCxJfjxpvraVT9L8Vi9zC1aCQydMdR2m6_HENPg
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU3MTk5MTl9.E5N3bzfJo2AlB7xJ_mPJictEaOfQluBC5817_OVF_Jo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTg4NzM3MH0.GnumNn4MTeeCNNtIMokRSNAGp94BmCEKvDYK66oi5cM
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MDU3NzB9.Vau1r2RzN_XQC5FzsXZFvBb9GCEtLQWJ82X-zRFxDrg
 oauth: kakao
 
 ###회원가입
@@ -215,8 +215,8 @@ Content-Type: application/json
 ### 채팅방 생성
 GET http://localhost:8080/api/mypage/145/chat
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYwNjU1Njd9.vJtmCwajGZzdsq4W8JsPbL1dymVy7CkYpkA0dl296_g
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTg5NjQwMn0.7dk59Qzq5VMbuh0RPvPnvKR4IODxRaf2gJbkpCfB9SY
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MTQ4MDJ9.ZC-WulIdaXdWRWb1JM675dfm4pA3riT5tdKoR1bbNlk
 oauth: kakao
 
 ### 채팅방 목록 가져오기
@@ -236,11 +236,19 @@ Content-Type: application/json
 }
 
 ### 채팅방 내용 가져오기
-GET http://localhost:8080/api/chat/message/3211
+GET http://localhost:8080/api/chat/message/4417
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTQ3NjEyM30.lSmaKsngcsoXBzuufYgTa-5b5GnrgbEqwbnEmr3e86Y
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU5OTQ1MjN9.XpXt52a8kdoeeih8XkkspmMiKH305FGrhzHxOaDAReo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTg5NjQwMn0.7dk59Qzq5VMbuh0RPvPnvKR4IODxRaf2gJbkpCfB9SY
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MTQ4MDJ9.ZC-WulIdaXdWRWb1JM675dfm4pA3riT5tdKoR1bbNlk
 oauth: kakao
+
+### 채팅방 나가기
+DELETE http://localhost:8080/api/chat/member/4431
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTg5NjQwMn0.7dk59Qzq5VMbuh0RPvPnvKR4IODxRaf2gJbkpCfB9SY
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MTQ4MDJ9.ZC-WulIdaXdWRWb1JM675dfm4pA3riT5tdKoR1bbNlk
+oauth: kakao
+
 
 ### 마이페이지 - 다른 유저 팔로워
 GET http://localhost:8080/api/mypage/1/follow

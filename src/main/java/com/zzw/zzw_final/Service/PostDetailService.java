@@ -27,6 +27,7 @@ public class PostDetailService {
     private final PostLikeRepository postLikeRepository;
     private final CommentRepository commentRepository;
 
+
     public ResponseDto<?> postRecipe(PostRecipeRequestDto requestDto, HttpServletRequest request) {
 
         ResponseDto<?> result = memberService.checkMember(request);
@@ -49,7 +50,10 @@ public class PostDetailService {
             contentRepository.save(content);
         }
 
-        return ResponseDto.success("success post");
+        if (memberService.isGetGrade(member, post))
+            return ResponseDto.success(new PostRecipeResponseDto(post.getId(), true));
+        else
+            return ResponseDto.success(new PostRecipeResponseDto(post.getId(), false));
     }
 
     private void saveRecipeTag(String foodName, Post post, Boolean isTitle) {
@@ -204,5 +208,4 @@ public class PostDetailService {
 
         return ResponseDto.success(contentResponseDto);
     }
-
 }
