@@ -243,15 +243,12 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MTQ4MDJ9.ZC-WulIdaXdWRWb1JM6
 oauth: kakao
 
 ### 채팅방 나가기
-DELETE http://localhost:8080/api/chat/member/4417
+DELETE http://localhost:8080/api/chat/member/4431
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTg5NjQwMn0.7dk59Qzq5VMbuh0RPvPnvKR4IODxRaf2gJbkpCfB9SY
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MTQ4MDJ9.ZC-WulIdaXdWRWb1JM675dfm4pA3riT5tdKoR1bbNlk
 oauth: kakao
 
-{
-  "messageId" :8
-}
 
 ### 마이페이지 - 다른 유저 팔로워
 GET http://localhost:8080/api/mypage/1/follow

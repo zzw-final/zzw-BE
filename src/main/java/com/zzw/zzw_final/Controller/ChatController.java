@@ -28,9 +28,8 @@ public class ChatController {
 
     // 채팅방 나가기
     @DeleteMapping("/api/chat/member/{roomId}")
-    public ResponseDto<?> exitChatRoom (@PathVariable Long roomId, HttpServletRequest request,
-                                        @RequestBody ChatRoomOutResponseDto chatRoomOutResponseDto) {
-        return chatService.exitChatRoom(roomId, request, chatRoomOutResponseDto);
+    public ResponseDto<?> exitChatRoom (@PathVariable Long roomId, HttpServletRequest request) {
+        return chatService.exitChatRoom(roomId, request);
     }
 
     @GetMapping("/api/chat")

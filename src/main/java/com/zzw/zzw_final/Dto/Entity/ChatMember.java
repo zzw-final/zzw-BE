@@ -25,8 +25,16 @@ public class ChatMember extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     private ChatRoom chatRoom;
 
+    @Column
+    private Boolean isOut;
+
     public ChatMember(Member member, ChatRoom chatRoom) {
         this.member = member;
         this.chatRoom = chatRoom;
+        this.isOut = false;
+    }
+
+    public void update(boolean isOut) {
+        this.isOut = isOut;
     }
 }
