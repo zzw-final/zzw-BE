@@ -6,12 +6,10 @@ import com.zzw.zzw_final.Dto.Request.ChatRequestDto;
 import com.zzw.zzw_final.Dto.Request.CheckReadMessageRequestDto;
 import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Repository.*;
-import com.zzw.zzw_final.Service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,9 +35,10 @@ public class ChatService {
     private final MemberService memberService;
     private final ChatMemberRepository chatMemberRepository;
     private final ChatReadRepository chatReadRepository;
+    private final ChatRoomOutRepository chatRoomOutRepository;
 
     @Transactional
-    public ResponseDto<?> exitChatRoom(Long roomId, HttpServletRequest request) {
+    public ResponseDto<?> exitChatRoom(Long roomId, HttpServletRequest request, ChatRoomOutResponseDto chatRoomOutResponseDto) {
 
         Member member = memberService.getMember(request);
 
@@ -53,6 +52,9 @@ public class ChatService {
         if (chatMember == null){
             return ResponseDto.fail(INVALID_MEMBER);
         }
+        ChatMessage chatMessage = chatMessageRepository.findChatMessageById(chatRoomOutResponseDto.getMessageId());
+        ChatRoomOut chatRoomOut = new ChatRoomOut(member, chatRoom, chatMessage);
+        chatRoomOutRepository.save(chatRoomOut);
 
         chatMemberRepository.delete(chatMember);
 

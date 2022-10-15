@@ -215,8 +215,8 @@ Content-Type: application/json
 ### 채팅방 생성
 GET http://localhost:8080/api/mypage/145/chat
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYwNjU1Njd9.vJtmCwajGZzdsq4W8JsPbL1dymVy7CkYpkA0dl296_g
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTg5NjQwMn0.7dk59Qzq5VMbuh0RPvPnvKR4IODxRaf2gJbkpCfB9SY
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MTQ4MDJ9.ZC-WulIdaXdWRWb1JM675dfm4pA3riT5tdKoR1bbNlk
 oauth: kakao
 
 ### 채팅방 목록 가져오기
@@ -241,6 +241,17 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTQ3NjEyM30.lSmaKsngcsoXBzuufYgTa-5b5GnrgbEqwbnEmr3e86Y
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU5OTQ1MjN9.XpXt52a8kdoeeih8XkkspmMiKH305FGrhzHxOaDAReo
 oauth: kakao
+
+### 채팅방 나가기
+DELETE http://localhost:8080/api/chat/member/4374
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTg5NjQwMn0.7dk59Qzq5VMbuh0RPvPnvKR4IODxRaf2gJbkpCfB9SY
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MTQ4MDJ9.ZC-WulIdaXdWRWb1JM675dfm4pA3riT5tdKoR1bbNlk
+oauth: kakao
+
+{
+  "messageId" :3
+}
 
 ### 마이페이지 - 다른 유저 팔로워
 GET http://localhost:8080/api/mypage/1/follow

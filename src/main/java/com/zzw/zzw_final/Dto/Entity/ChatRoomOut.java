@@ -28,4 +28,10 @@ public class ChatRoomOut {
     @JoinColumn(name = "chatMessage_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private ChatMessage chatMessage;
+
+    public ChatRoomOut(Member member, ChatRoom chatRoom, ChatMessage chatMessage) {
+        this.chatMessage = chatMessage;
+        this.member = member;
+        this.chatRoom = chatRoom;
+    }
 }
