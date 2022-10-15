@@ -59,6 +59,7 @@ public class MemberService {
         return ResponseDto.success(member);
     }
 
+    //선착순 20명 repository.size
     public ResponseDto<?> postUserNickname(HttpServletResponse response, SignupRequestDto requestDto) {
 
         Member member = new Member(requestDto);
@@ -181,5 +182,16 @@ public class MemberService {
             gradeListResponseDtos.add(new GradeListResponseDto(grade.getGradeList()));
         }
         return gradeListResponseDtos;
+    }
+
+    public Boolean isMemberGetGrade(Long gradeListId, Member member){
+        GradeList gradeList = gradeListRepository.findGradeListById(gradeListId);
+        Grade grade = gradeRepository.findGradeByMemberAndGradeList(member, gradeList);
+        if (grade == null) {
+            Grade getGrade = new Grade(member, gradeList);
+            gradeRepository.save(getGrade);
+            return true;
+        }
+        return false;
     }
 }
