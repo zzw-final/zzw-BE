@@ -68,7 +68,7 @@ public class MemberService {
         response.addHeader("Authorization", tokenDto.getAccessToken());
         response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
         IntegrationResponseDto responseDto = new IntegrationResponseDto(member, tokenDto, getInvalidToken());
-        GradeList gradeList = gradeListRepository.findGradeListById(3006L);
+        GradeList gradeList = gradeListRepository.findGradeListById(5012L);
         Grade grade = new Grade(member, gradeList);
         gradeRepository.save(grade);
 

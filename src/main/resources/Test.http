@@ -89,7 +89,7 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ3NTg5NzZ9.rgMAhZNhA0OeDSoKSjP
 
 
 ### 특정 유저에게 칭호 POST
-POST http://localhost:8080/api/grade/63/1481
+POST http://localhost:8080/api/grade/5012/1481
 Content-Type: application/json
 
 ### 마이페이지 - 다른 유저의 정보 GET
