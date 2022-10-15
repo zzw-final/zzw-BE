@@ -160,32 +160,32 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUyMjMzNTJ9.lEIErp-PyYdGGoOHxH2
 ### 상세페이지 - 레시피 생성
 POST http://localhost:8080/api/auth/post
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTIwMTUxOX0.ys1SYCxJfjxpvraVT9L8Vi9zC1aCQydMdR2m6_HENPg
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU3MTk5MTl9.E5N3bzfJo2AlB7xJ_mPJictEaOfQluBC5817_OVF_Jo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTg4NzM3MH0.GnumNn4MTeeCNNtIMokRSNAGp94BmCEKvDYK66oi5cM
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MDU3NzB9.Vau1r2RzN_XQC5FzsXZFvBb9GCEtLQWJ82X-zRFxDrg
 oauth: kakao
 
 {
-  "title" : "test222",
-  "foodName": "테스트음식이름2222",
+  "title" : "칭호테스트중",
+  "foodName": "칭호칭호",
   "time": "15분",
-  "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/772f17bb-63a8-459b-8196-e9ab0e16c24b.png",
-  "ingredient": ["게시글삭제"],
+  "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/%EB%8C%80%EC%A7%80+10_2.png",
+  "ingredient": ["된장찌개", "김치", "칭호", "테스트중"],
   "pageList" : [{
     "page": 1,
-    "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/772f17bb-63a8-459b-8196-e9ab0e16c24b.png",
+    "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/%EB%8C%80%EC%A7%80+10_2.png",
     "content" : "test 중 1111 "
   },{
     "page" : 2,
-    "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/772f17bb-63a8-459b-8196-e9ab0e16c24b.png",
+    "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/%EB%8C%80%EC%A7%80+10_2.png",
     "content": "test 중 2222"
   }]
 }
 
 ### 상세페이지 게시글 삭제
-DELETE http://localhost:8080/api/auth/post/2548
+DELETE http://localhost:8080/api/auth/post/4266
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTIwMTUxOX0.ys1SYCxJfjxpvraVT9L8Vi9zC1aCQydMdR2m6_HENPg
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU3MTk5MTl9.E5N3bzfJo2AlB7xJ_mPJictEaOfQluBC5817_OVF_Jo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTg4NzM3MH0.GnumNn4MTeeCNNtIMokRSNAGp94BmCEKvDYK66oi5cM
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MDU3NzB9.Vau1r2RzN_XQC5FzsXZFvBb9GCEtLQWJ82X-zRFxDrg
 oauth: kakao
 
 ###회원가입
