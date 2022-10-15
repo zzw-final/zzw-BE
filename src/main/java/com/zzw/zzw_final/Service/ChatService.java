@@ -53,10 +53,16 @@ public class ChatService {
             return ResponseDto.fail(INVALID_MEMBER);
         }
         ChatMessage chatMessage = chatMessageRepository.findChatMessageById(chatRoomOutResponseDto.getMessageId());
-        ChatRoomOut chatRoomOut = new ChatRoomOut(member, chatRoom, chatMessage);
-        chatRoomOutRepository.save(chatRoomOut);
+        ChatRoomOut findRoomOut = chatRoomOutRepository.findChatRoomOutByMemberAndChatRoom(member, chatRoom);
 
-        chatMemberRepository.delete(chatMember);
+        if (findRoomOut != null)
+            findRoomOut.update(chatMessage);
+        else{
+            ChatRoomOut chatRoomOut = new ChatRoomOut(member, chatRoom, chatMessage);
+            chatRoomOutRepository.save(chatRoomOut);
+        }
+
+
 
         return ResponseDto.success("나가기 완료");
     }
@@ -110,11 +116,13 @@ public class ChatService {
 
         List<ChatMessage> chatMessageList = chatMessageRepository.findAllByChatRoom(chatRoom);
         List<ChatMessageResponseDto> chatMessageResponseDtos = new ArrayList<>();
+        ChatRoomOut chatRoomOut = chatRoomOutRepository.findChatRoomOutByMemberAndChatRoom(member, chatRoom);
+        int index = (chatRoomOut != null) ? chatMessageList.indexOf(chatRoomOut.getChatMessage()) + 1 : 0;
 
-        for (ChatMessage chatMessage : chatMessageList) {
-            Member getMember = memberRepository.findMemberById(chatMessage.getMemberId());
+        for (int i = index; i<chatMessageList.size(); i++) {
+            Member getMember = memberRepository.findMemberById(chatMessageList.get(i).getMemberId());
 
-            chatMessageResponseDtos.add(new ChatMessageResponseDto(getMember, chatMessage));
+            chatMessageResponseDtos.add(new ChatMessageResponseDto(getMember, chatMessageList.get(i)));
         }
         return ResponseDto.success(chatMessageResponseDtos);
     }

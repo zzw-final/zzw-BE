@@ -34,4 +34,8 @@ public class ChatRoomOut {
         this.member = member;
         this.chatRoom = chatRoom;
     }
+
+    public void update(ChatMessage chatMessage) {
+        this.chatMessage = chatMessage;
+    }
 }
