@@ -44,7 +44,6 @@ public class PostDetailService {
            saveRecipeTag(ingredientName, post, false);
         }
 
-        //게시글 내용과 이미지를 Content 데이터베이스에 담기
         for(PostRecipeDetailRequestDto postRecipeDetailRequestDto : requestDto.getPageList()){
             Content content = new Content(postRecipeDetailRequestDto, post);
             contentRepository.save(content);
@@ -57,6 +56,7 @@ public class PostDetailService {
     }
 
     private void saveRecipeTag(String foodName, Post post, Boolean isTitle) {
+
         Tag tag = tagRepository.findTagByName(foodName);
 
         if (tag == null){

@@ -36,7 +36,7 @@ public class Comment extends Timestamped{
         this.comment = requestDto.getComment();
         this.post = post;
         this.member = member;
-        this.useremail = member.getEmail();         //수정
+        this.useremail = member.getEmail();
     }
 
     public void update(CommentRequestDto requestDto) {

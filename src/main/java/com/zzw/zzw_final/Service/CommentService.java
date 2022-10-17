@@ -55,17 +55,13 @@ public class CommentService {
     @Transactional
     public ResponseDto<?> updateComment(CommentRequestDto requestDto, HttpServletRequest request, Long comment_id){
 
-        //로그인 토큰 유효성 검증하기
         ResponseDto<?> result = memberService.checkMember(request);
         Member member = (Member) result.getData();
 
-        //수정할 댓글을 찾아 저장해준다(댓글번호)
-        //댓글 작성자가 맞는지 확인
         Comment comment = commentRepository.findCommentById(comment_id);
 
         if(!member.getEmail().equals(comment.getUseremail())) return ResponseDto.fail(ErrorCode.NOT_EQUAL_MEMBER);
 
-        //댓글 내용 수정
         comment.update(requestDto);
 
         return ResponseDto.success("success comment update");
