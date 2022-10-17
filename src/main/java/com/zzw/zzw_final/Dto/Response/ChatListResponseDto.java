@@ -12,6 +12,7 @@ public class ChatListResponseDto {
     private String grade;
     private String profile;
     private String message;
+    private String chatTime;
     private Long roomId;
     private Boolean isRead;
 
@@ -24,5 +25,6 @@ public class ChatListResponseDto {
         this.message = chatMessage.getMessage();
         this.roomId = chatRoom.getId();
         this.isRead = isRead;
+        this.chatTime = chatMessage.getSendTime();
     }
 }

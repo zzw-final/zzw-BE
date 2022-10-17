@@ -236,14 +236,14 @@ Content-Type: application/json
 }
 
 ### 채팅방 내용 가져오기
-GET http://localhost:8080/api/chat/message/4417
+GET http://localhost:8080/api/chat/message/4663?lastId=40
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTg5NjQwMn0.7dk59Qzq5VMbuh0RPvPnvKR4IODxRaf2gJbkpCfB9SY
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MTQ4MDJ9.ZC-WulIdaXdWRWb1JM675dfm4pA3riT5tdKoR1bbNlk
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NjA4NzkyNX0.TZLSejCvJDpuKqA8QfhFEoQjahw3nV5rTSvBe2xOMn0
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY2MDYzMjV9.EA4kQ2osCijorI-Uka4C58hOPMZpX1v2brBcm8_Bdyc
 oauth: kakao
 
 ### 채팅방 나가기
-DELETE http://localhost:8080/api/chat/member/4431
+DELETE http://localhost:8080/api/chat/member/4663
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTg5NjQwMn0.7dk59Qzq5VMbuh0RPvPnvKR4IODxRaf2gJbkpCfB9SY
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MTQ4MDJ9.ZC-WulIdaXdWRWb1JM675dfm4pA3riT5tdKoR1bbNlk

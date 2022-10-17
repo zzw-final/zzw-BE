@@ -13,20 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class ChatController {
     private final ChatService chatService;
-
-    //채팅방 생성
     @GetMapping("/api/mypage/{user_id}/chat")
     public ResponseDto<?> getChatRoom(@PathVariable Long user_id, HttpServletRequest request){
         return chatService.getChatRoom(user_id, request);
     }
 
-    // 채팅메세지 불러오기
     @GetMapping ("/api/chat/message/{roomId}")
-    public ResponseDto<?> getMessageLog (@PathVariable Long roomId, HttpServletRequest request) {
-        return chatService.getMessage(roomId, request);
+    public ResponseDto<?> getMessageLog (@PathVariable Long roomId, HttpServletRequest request,
+                                         @RequestParam(value = "lastId", required = false) Long lastId) {
+        return chatService.getMessage(roomId, request, lastId);
     }
 
-    // 채팅방 나가기
     @DeleteMapping("/api/chat/member/{roomId}")
     public ResponseDto<?> exitChatRoom (@PathVariable Long roomId, HttpServletRequest request) {
         return chatService.exitChatRoom(roomId, request);

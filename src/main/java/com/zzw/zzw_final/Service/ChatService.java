@@ -116,7 +116,7 @@ public class ChatService {
 
 
     // 기존 채팅방 메세지들 불러오기
-    public ResponseDto<?> getMessage(Long roomId, HttpServletRequest request) {
+    public ResponseDto<?> getMessage(Long roomId, HttpServletRequest request, Long lastId) {
 
         Member member = memberService.getMember(request);
 
@@ -135,13 +135,31 @@ public class ChatService {
         List<ChatMessageResponseDto> chatMessageResponseDtos = new ArrayList<>();
         ChatRoomOut chatRoomOut = chatRoomOutRepository.findChatRoomOutByMemberAndChatRoom(member, chatRoom);
         int index = (chatRoomOut != null) ? chatMessageList.indexOf(chatRoomOut.getChatMessage()) + 1 : 0;
+        int start = 0;
+        int end = 0;
+        if (lastId == null){
+            start = (chatMessageList.size() > 20) ? chatMessageList.size()-20 : chatMessageList.size();
+            end = chatMessageList.size();
+        }else{
+            ChatMessage chatMessage = chatMessageRepository.findChatMessageById(lastId);
+            end = chatMessageList.indexOf(chatMessage);
+            start = (end - 20 > 0) ? end-20 : 0;
+        }
 
-        for (int i = index; i<chatMessageList.size(); i++) {
+        start = (index > start) ? index : start;
+
+        for (int i = start; i<end; i++) {
             Member getMember = memberRepository.findMemberById(chatMessageList.get(i).getMemberId());
-
             chatMessageResponseDtos.add(new ChatMessageResponseDto(getMember, chatMessageList.get(i)));
         }
-        return ResponseDto.success(chatMessageResponseDtos);
+
+        if (start == index){
+            InfiniteChatResponseDto infiniteChatResponseDto = new InfiniteChatResponseDto(true, chatMessageResponseDtos);
+            return ResponseDto.success(infiniteChatResponseDto);
+        }else{
+            InfiniteChatResponseDto infiniteChatResponseDto = new InfiniteChatResponseDto(false, chatMessageResponseDtos);
+            return ResponseDto.success(infiniteChatResponseDto);
+        }
     }
 
     public ResponseDto<?> getChatRoom(Long user_id, HttpServletRequest request) {
