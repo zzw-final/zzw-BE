@@ -319,6 +319,11 @@ public class PostService {
                 List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(posts.get(i));
                 userPostResponseDtos.add(getResponsePostUserLike(member, posts.get(i), ingredientResponseDtos));
             }
+
+            if(endIndex == size)
+                return ResponseDto.success(new InfinitePostResponseDto(userPostResponseDtos, true));
+            else
+                return ResponseDto.success(new InfinitePostResponseDto(userPostResponseDtos, false));
         }
 
         return ResponseDto.success(userPostResponseDtos);
