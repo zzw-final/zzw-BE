@@ -101,4 +101,8 @@ public class Member {
     public void updateGrade(String name) {
         this.grade = name;
     }
+
+    public void isPresent(String nickname){
+        this.nickname = nickname;
+    }
 }
