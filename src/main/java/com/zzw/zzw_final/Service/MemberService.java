@@ -55,6 +55,11 @@ public class MemberService {
 
     public ResponseDto<?> postUserNickname(HttpServletResponse response, SignupRequestDto requestDto) {
 
+        Optional<Member> nickname = memberRepository.findByNickname(requestDto.getNickname());
+        if(nickname.isPresent()){
+            return ResponseDto.fail(DUPLICATE_NICKNAME) ;
+        }
+
         Member member = new Member(requestDto);
         memberRepository.save(member);
 
@@ -62,6 +67,7 @@ public class MemberService {
         response.addHeader("Authorization", tokenDto.getAccessToken());
         response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
         IntegrationResponseDto responseDto = new IntegrationResponseDto(member, tokenDto, getInvalidToken());
+
         GradeList gradeList = gradeListRepository.findGradeListById(5012L);
         Grade grade = new Grade(member, gradeList);
         gradeRepository.save(grade);
@@ -72,7 +78,6 @@ public class MemberService {
                 return ResponseDto.success(responseDto);
             }
         }
-
         return ResponseDto.success(responseDto);
     }
 

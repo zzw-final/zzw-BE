@@ -36,10 +36,13 @@ public class MemberController {
             return naverService.naverLogin(code, response, state);
     }
 
+    //닉네임 중복검사도 추가
     @PostMapping("/api/member/signup")
     public ResponseDto<?> postUserNickname(HttpServletResponse response, @RequestBody SignupRequestDto requestDto){
         return memberService.postUserNickname(response, requestDto);
     }
+
+
 
     @DeleteMapping("/api/member/resign/{member_id}")
     public ResponseDto<?> resignMember(@PathVariable Long member_id){
@@ -60,6 +63,5 @@ public class MemberController {
     public ResponseDto<?> getOtherUserInfo(@PathVariable Long user_id, HttpServletRequest request){
         return memberService.getOtherUserInfo(user_id, request);
     }
-
-
 }
+

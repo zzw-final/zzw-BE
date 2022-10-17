@@ -16,6 +16,7 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND("MEMBER_NOT_FOUND", "해당하는 유저가 없습니다."),
 
     TOKEN_NOT_FOUND("TOKEN_NOT_FOUND", "존재하지 않는 Token 입니다."),
+    DUPLICATE_NICKNAME("DUPLICATE_NICKNAME","중복된 닉네임입니다."),
 
     //게시글 관련 오류
     NOT_EQUAL_MEMBER("NOT_EQUAL_MEMBER","작성하신 글이 아닙니다."),
