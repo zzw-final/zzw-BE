@@ -42,10 +42,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsI
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ0MzUxMDR9.yrHBnLJppQOn5PZ4xxs_ZB0GJAnQfvetS7UeLEdsVig
 
 ###모든 페이지 - 레시피 좋아요
-POST http://localhost:8080/api/auth/post/1173
+POST http://localhost:8080/api/auth/post/2611
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDcwNDk1Mn0.Fbia4KEIZ7rtD6kcr13hu_TMXD8huTFje8ydSnZVgFQ
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUyMjMzNTJ9.lEIErp-PyYdGGoOHxH2NLch3D4l49ayN49DRIsV2dD4
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoeXVuZG83MTdAZ21haWwuY29tIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjY1OTA5NzIyfQ.4A7WLRRivsisaKUYkf51qcsSo61L0bewqAuF38RMhg4
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MjgxMjJ9.q61lH_YGU-NYIx_7JX1g3wH6vZzOFzuNF-XliVoybts
+oauth: google
 
 ###마이페이지 - 내가 좋아요한 레시피 GET
 GET http://localhost:8080/api/auth/mypage/likeposts?lastPostId=2760
@@ -67,10 +68,11 @@ GET http://localhost:8080/api/post/1173/2
 Content-Type: application/json
 
 ### 상세페이지 - 댓글달기
-POST http://localhost:8080/api/auth/post/1173/comment
+POST http://localhost:8080/api/auth/post/4378/comment
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDYyMzcyMn0.TKPgOMqwaft7fiDZ1SZRsnQbh7wZzFQszDwaTuIwswI
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUxNDIxMjJ9.tdywImntlsbR-nWB1y0YZZAEi6w3EgGT1d8-4KDl4IQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoeXVuZG83MTdAa2FrYW8uY29tIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjY1ODk4NDYyfQ._Ljm23gUyei8QpEtcmewnidlxhqudbuvMTlRjLKlZfk
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MTY4NjJ9.4uxxrYBatiACH0i6T6mOWOtclsuA4erOKEqheF-9OcE
+oauth:kakao
 
 {
   "comment" : "이거보고 따라해봤는데 간계밥 존맛 ,, 진짜 쉬워요 !!!"
@@ -105,9 +107,10 @@ GET http://localhost:8080/api/post/filter
 Content-Type: application/json
 
 ### 팔로우 하기
-POST http://localhost:8080/api/auth/mypage/follow/48
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJxa3J3bGR1czM5MjdAZ21haWwuY29tIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjY0NDEyNDM3fQ.O7SLRrJmXPKCi17sKv1sMG55IJAruEPahFUMfiIE598
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ5MzA4Mzd9.Ab2Il0YG9P7Q0qYrAb78MqbmgPpU_j4-7zZ950WjTtw
+POST http://localhost:8080/api/auth/mypage/follow/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoeXVuZG83MTdAa2FrYW8uY29tIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjY1ODk4NDYyfQ._Ljm23gUyei8QpEtcmewnidlxhqudbuvMTlRjLKlZfk
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY0MTY4NjJ9.4uxxrYBatiACH0i6T6mOWOtclsuA4erOKEqheF-9OcE
+oauth: kakao
 
 ### 마이페이지 - 다른 유저
 GET http://localhost:8080/api/mypage/1/myposts
@@ -195,8 +198,19 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjUxNDQ1OTl9.nK_O-hDEywyqynbmEdM
 Content-Type: application/json
 
 {
+<<<<<<< Updated upstream
   "nickname" : "지연",
+<<<<<<< Updated upstream
   "email" : "good9712@nate.com"
+=======
+  "email" : "qkrwldus3927@gmail.com",
+  "oauth" : "google"
+=======
+  "nickname": "도현도",
+  "email": "hyundo717@gmail.com",
+  "oauth": "google"
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 }
 
 ### 소셜로그인 이메일 통합 - PUT
@@ -209,7 +223,7 @@ Content-Type: application/json
 }
 
 ### 회원탈퇴
-DELETE http://localhost:8080/api/member/resign/1479
+DELETE http://localhost:8080/api/member/resign/4513
 Content-Type: application/json
 
 ### 채팅방 생성
