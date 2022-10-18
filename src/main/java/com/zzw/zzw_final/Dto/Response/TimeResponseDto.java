@@ -1,6 +1,6 @@
 package com.zzw.zzw_final.Dto.Response;
 
-import com.zzw.zzw_final.Dto.Entity.Content;
+import com.zzw.zzw_final.Dto.Entity.Follow;
 import com.zzw.zzw_final.Dto.Entity.Post;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +19,7 @@ public class TimeResponseDto {
     private int likeNum;
     private String profile;
     private Boolean isLike;
+    private Boolean isFollow;
     private String time;
     private List<IngredientResponseDto> ingredient;
     private String createAt;
@@ -28,7 +29,7 @@ public class TimeResponseDto {
 
 
     public TimeResponseDto(Post post, List<IngredientResponseDto> responseDtos,
-                           Boolean isLike, List<ContentResponseDto> contentList){
+                           Boolean isLike, List<ContentResponseDto> contentList, Follow follow){
         this.postId = post.getId();
         this.title = post.getTitle();
         this.isLike = isLike;
@@ -42,5 +43,6 @@ public class TimeResponseDto {
         this.contentList = contentList;
         this.ingredient = responseDtos;
         this.time = post.getTime().substring(0, post.getTime().length()-1);
+        this.isFollow = (follow==null) ? false : true;
     }
 }
