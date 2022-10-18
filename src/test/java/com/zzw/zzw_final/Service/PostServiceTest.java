@@ -190,6 +190,38 @@ class PostServiceTest {
 
     @Test
     void filterPostTitle() {
+        //when
+        String title = "김";
+        List<Post> posts = postRepository.findAllByTitleContaining(title);
+        List<PostResponseDto> Posts = new ArrayList<>();
+
+        Long lastPostId = posts.get(0).getId();
+
+        Post post = postRepository.findPostById(lastPostId);
+        int index = (posts.indexOf(post) == 0) ? 0 : posts.indexOf(post) + 1;
+
+        int size = posts.size();
+        int endIndex = index + 8 > size ? size : index + 8;
+
+        for (int i = index; i < endIndex; i++) {
+            List<TagList> tagLists = tagListRepository.findAllByPost(posts.get(i));
+            List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
+            for (TagList tagList : tagLists) {
+                Assertions.assertEquals(tagList.getPost(), posts.get(i));
+                ingredientResponseDtos.add(new IngredientResponseDto(tagList));
+            }
+            Posts.add(new PostResponseDto(posts.get(i), ingredientResponseDtos, false));
+        }
+
+        //then
+        Assertions.assertEquals(posts.size(), 2);
+        Assertions.assertEquals(lastPostId, 2559L);
+        Assertions.assertEquals(post.getId(), lastPostId);
+        Assertions.assertEquals(index, 0);
+        Assertions.assertEquals(size,2);
+        Assertions.assertEquals(endIndex, 2);
+        Assertions.assertEquals(Posts.size(), endIndex-index);
+        Assertions.assertEquals(endIndex-index, 2);
     }
 
     @Test
