@@ -340,7 +340,29 @@ class PostServiceTest {
 
     @Test
     void isPostInTag() {
+        //when
+        Long post_id = 4378L;
+        Post post = postRepository.findPostById(post_id);
 
+        String tag = "김치,된장찌개";
+        String[] tag_list = tag.split(",");
+
+        int count = 0;
+
+        for (int i = 0; i < tag_list.length; i++) {
+            for (TagList postTag : post.getTagLists()) {
+                if (postTag.getName().equals(tag_list[i])) {
+                    count++;
+                }
+            }
+        }
+
+        //then
+        Assertions.assertEquals(tag_list.length, 2);
+        Assertions.assertEquals(tag_list[0], "김치");
+        Assertions.assertEquals(tag_list[1], "된장찌개");
+        Assertions.assertEquals(post.getId(), 4378L);
+        Assertions.assertEquals(count, 2);
     }
 
     @Test
