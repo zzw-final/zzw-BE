@@ -236,7 +236,7 @@ Content-Type: application/json
 }
 
 ### 채팅방 내용 가져오기
-GET http://localhost:8080/api/chat/message/4663?lastId=40
+GET http://localhost:8080/api/chat/message/4663
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NjA4NzkyNX0.TZLSejCvJDpuKqA8QfhFEoQjahw3nV5rTSvBe2xOMn0
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY2MDYzMjV9.EA4kQ2osCijorI-Uka4C58hOPMZpX1v2brBcm8_Bdyc

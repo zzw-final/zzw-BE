@@ -19,9 +19,8 @@ public class ChatController {
     }
 
     @GetMapping ("/api/chat/message/{roomId}")
-    public ResponseDto<?> getMessageLog (@PathVariable Long roomId, HttpServletRequest request,
-                                         @RequestParam(value = "lastId", required = false) Long lastId) {
-        return chatService.getMessage(roomId, request, lastId);
+    public ResponseDto<?> getMessageLog (@PathVariable Long roomId, HttpServletRequest request) {
+        return chatService.getMessage(roomId, request);
     }
 
     @DeleteMapping("/api/chat/member/{roomId}")
