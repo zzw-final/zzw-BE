@@ -231,36 +231,40 @@ class PostServiceTest {
 
         List<Member> members = memberRepository.findAllByNicknameContaining(nickname);
         List<PostResponseDto> responseDtos = new ArrayList<>();
+        List<Post> containPost = new ArrayList<>();
 
         for (Member member : members) {
             List<Post> posts = postRepository.findAllByMember(member);
-            Long lastPostId = posts.get(0).getId();
+            for(Post post : posts)
+                containPost.add(post);
+        }
 
-            if (posts.size() != 0) {
-                if (lastPostId == null)
-                    lastPostId = posts.get(0).getId();
+        Long lastPostId = containPost.get(0).getId();
 
-                Post post = postRepository.findPostById(lastPostId);
-                int index = (posts.indexOf(post) == 0) ? 0 : posts.indexOf(post) + 1;
+        Post post = postRepository.findPostById(lastPostId);
+        int index = (containPost.indexOf(post) == 0) ? 0 : containPost.indexOf(post) + 1;
 
-                int size = posts.size();
-                int endIndex = index + 8 > size ? size : index + 8;
+        int size = containPost.size();
+        int endIndex = index + 8 > size ? size : index + 8;
 
-                for (int i = index; i < endIndex; i++) {
-                    List<TagList> tagLists = tagListRepository.findAllByPost(posts.get(i));
-                    List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
-                    for (TagList tagList : tagLists) {
-                        Assertions.assertEquals(tagList.getPost(), posts.get(i));
-                        ingredientResponseDtos.add(new IngredientResponseDto(tagList));
-                    }
-                    responseDtos.add(new PostResponseDto(posts.get(i), ingredientResponseDtos, false));
-                }
+        for (int i = index; i < endIndex; i++) {
+            List<TagList> tagLists = tagListRepository.findAllByPost(containPost.get(i));
+            List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
+            for (TagList tagList : tagLists) {
+                Assertions.assertEquals(tagList.getPost(), containPost.get(i));
+                ingredientResponseDtos.add(new IngredientResponseDto(tagList));
             }
+            responseDtos.add(new PostResponseDto(containPost.get(i), ingredientResponseDtos));
         }
 
         //then
         Assertions.assertEquals(members.size(), 2);
         Assertions.assertEquals(responseDtos.size(), 4);
+        Assertions.assertEquals(lastPostId, 2559L);
+        Assertions.assertEquals(post.getId(), 2559L);
+        Assertions.assertEquals(index, 0);
+        Assertions.assertEquals(size, 4);
+        Assertions.assertEquals(endIndex, 4);
     }
 
     @Test
