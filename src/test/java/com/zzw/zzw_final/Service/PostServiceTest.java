@@ -397,6 +397,35 @@ class PostServiceTest {
 
     @Test
     void getUserPost() {
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        List<Post> posts = postRepository.findAllByMember(member);
+        List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
+
+        for (Post post : posts) {
+            List<TagList> tagLists = tagListRepository.findAllByPost(post);
+            List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
+            for (TagList tagList : tagLists) {
+                Assertions.assertEquals(tagList.getPost(), post);
+                ingredientResponseDtos.add(new IngredientResponseDto(tagList));
+            }
+            userPostResponseDtos.add(new PostResponseDto(post, ingredientResponseDtos));
+        }
+
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertEquals(posts.size(), 4);
+        Assertions.assertEquals(userPostResponseDtos.size(), 4);
     }
 
     @Test
