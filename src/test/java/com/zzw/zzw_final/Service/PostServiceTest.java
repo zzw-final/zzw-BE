@@ -4,8 +4,10 @@ import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.Member;
 import com.zzw.zzw_final.Dto.Entity.Post;
 import com.zzw.zzw_final.Dto.Entity.TagList;
+import com.zzw.zzw_final.Dto.Response.InfinitePostResponseDto;
 import com.zzw.zzw_final.Dto.Response.IngredientResponseDto;
 import com.zzw.zzw_final.Dto.Response.PostResponseDto;
+import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Repository.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,6 +95,34 @@ class PostServiceTest {
 
     @Test
     void getRecentRecipeInfinite() {
+        //when
+        Long lastPostId = 2559L;
+        List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
+        List<PostResponseDto> postResponseDtos = new ArrayList<>();
+        Post post = postRepository.findPostById(lastPostId);
+        int index = (recent_posts.indexOf(post) == 0) ? 0 : recent_posts.indexOf(post) + 1;
+
+        int size = recent_posts.size();
+        int endIndex = index + 6 > size ? size : index + 6;
+
+        for (int i = index; i < endIndex; i++) {
+            List<TagList> tagLists = tagListRepository.findAllByPost(recent_posts.get(i));
+            List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
+            for (TagList tagList : tagLists) {
+                Assertions.assertEquals(tagList.getPost(), recent_posts.get(i));
+                ingredientResponseDtos.add(new IngredientResponseDto(tagList));
+            }
+            postResponseDtos.add(new PostResponseDto(recent_posts.get(i), ingredientResponseDtos));
+            Assertions.assertEquals(tagLists.size(), postResponseDtos.get(i).getIngredient().size());
+        }
+
+        //then
+        Assertions.assertEquals(post.getId(), 2559L);
+//        Assertions.assertEquals(postResponseDtos.size(), 6);
+        Assertions.assertEquals(index, 13);
+        Assertions.assertEquals(endIndex, 7);
+        Assertions.assertEquals(size, recent_posts.size());
+        Assertions.assertEquals(endIndex-index, 6);
     }
 
     @Test
