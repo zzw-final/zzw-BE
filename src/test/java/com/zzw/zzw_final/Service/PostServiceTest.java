@@ -479,6 +479,29 @@ class PostServiceTest {
 
     @Test
     void getOtherUserPosts() {
+        //when
+        Long user_id = 145L;
+        Member postMember = memberRepository.findMemberById(user_id);
+
+        List<Post> posts = postRepository.findAllByMember(postMember);
+        List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
+
+        for (Post post : posts) {
+            List<TagList> tagLists = tagListRepository.findAllByPost(post);
+            List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
+            for (TagList tagList : tagLists) {
+                Assertions.assertEquals(tagList.getPost(), post);
+                ingredientResponseDtos.add(new IngredientResponseDto(tagList));
+            }
+            userPostResponseDtos.add(new PostResponseDto(post, ingredientResponseDtos));
+        }
+
+        //then
+        Assertions.assertEquals(postMember.getId(), 145L);
+        Assertions.assertEquals(posts.size(), 4);
+        Assertions.assertEquals(userPostResponseDtos.size(), 4);
+        Assertions.assertEquals(userPostResponseDtos.get(0).getNickname(), "공듀듀");
+        Assertions.assertEquals(userPostResponseDtos.get(1).getNickname(), "공듀듀");
     }
 
     @Test
