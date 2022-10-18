@@ -430,6 +430,51 @@ class PostServiceTest {
 
     @Test
     void getUserLikePosts() {
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        List<PostLike> postLikes = postLikeRepository.findAllByMember(member);
+        List<Post> posts = new ArrayList<>();
+
+        for (PostLike postLike : postLikes) {
+            posts.add(postRepository.findPostById(postLike.getPost().getId()));
+        }
+
+        List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
+        Long lastPostId = posts.get(0).getId();
+
+        Post post = postRepository.findPostById(lastPostId);
+        int index = (posts.indexOf(post)==0) ? 0 : posts.indexOf(post) + 1;
+
+        int size = posts.size();
+        int endIndex = index + 6 > size ? size : index + 6;
+
+        for (int i = index; i<endIndex; i++) {
+            List<TagList> tagLists = tagListRepository.findAllByPost(posts.get(i));
+            List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
+            for (TagList tagList : tagLists) {
+                Assertions.assertEquals(tagList.getPost(), posts.get(i));
+                ingredientResponseDtos.add(new IngredientResponseDto(tagList));
+            }
+            userPostResponseDtos.add(new PostResponseDto(posts.get(i), ingredientResponseDtos));
+        }
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertEquals(posts.size(), 6);
+        Assertions.assertEquals(lastPostId, 2801L);
+        Assertions.assertEquals(post.getId(), 2801L);
+        Assertions.assertEquals(size, 6);
+        Assertions.assertEquals(endIndex, 6);
+        Assertions.assertEquals(userPostResponseDtos.size(), 6);
     }
 
     @Test
