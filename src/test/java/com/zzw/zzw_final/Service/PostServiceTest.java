@@ -96,7 +96,7 @@ class PostServiceTest {
     @Test
     void getRecentRecipeInfinite() {
         //when
-        Long lastPostId = 2559L;
+        Long lastPostId = 4378L;
         List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
         Post post = postRepository.findPostById(lastPostId);
@@ -117,10 +117,10 @@ class PostServiceTest {
         }
 
         //then
-        Assertions.assertEquals(post.getId(), 2559L);
-//        Assertions.assertEquals(postResponseDtos.size(), 6);
-        Assertions.assertEquals(index, 13);
-        Assertions.assertEquals(endIndex, 7);
+        Assertions.assertEquals(post.getId(), 4378L);
+        Assertions.assertEquals(postResponseDtos.size(), 6);
+        Assertions.assertEquals(index, 0);
+        Assertions.assertEquals(endIndex, 6);
         Assertions.assertEquals(size, recent_posts.size());
         Assertions.assertEquals(endIndex-index, 6);
     }
