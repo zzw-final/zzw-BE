@@ -7,10 +7,7 @@ import com.zzw.zzw_final.Dto.Response.GradeListResponseDto;
 import com.zzw.zzw_final.Dto.Response.MypageUserInfoResponseDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Dto.TokenDto;
-import com.zzw.zzw_final.Repository.FollowRepository;
-import com.zzw.zzw_final.Repository.GradeRepository;
-import com.zzw.zzw_final.Repository.MemberRepository;
-import com.zzw.zzw_final.Repository.RefreshTokenRepository;
+import com.zzw.zzw_final.Repository.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,6 +53,9 @@ class MemberServiceTest {
     @Autowired
     private FollowRepository followRepository;
 
+    @Autowired
+    private PostRepository postRepository;
+
 
     SignupRequestDto signupRequestDto;
     HttpServletRequest request;
@@ -70,10 +70,7 @@ class MemberServiceTest {
         when(request.getHeader("Refresh-Token")).thenReturn("eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYwNjU1Njd9.vJtmCwajGZzdsq4W8JsPbL1dymVy7CkYpkA0dl296_g");
         when(request.getHeader("oauth")).thenReturn("kakao");
 
-        signupRequestDto = SignupRequestDto.builder()
-                .oauth("kakao")
-                .email("zzw@naver.com")
-                .nickname("요리왕").build();
+        signupRequestDto = new SignupRequestDto("요리왕", "zzw@naver.com", "kakao");
     }
 
     @Test
@@ -174,9 +171,9 @@ class MemberServiceTest {
         List<Follow> followList = followRepository.findAllByMember(member);
 
         List<GradeListResponseDto> responseDtos = memberService.getUserGrade(member);
-
+        List<Post> posts = postRepository.findAllByMember(member);
         MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
-                followerlist.size(), followList.size(), responseDtos, true);
+                followerlist.size(), followList.size(), responseDtos, true, posts.size());
 
         //then
         Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
@@ -191,6 +188,7 @@ class MemberServiceTest {
         Assertions.assertEquals(member.getNickname(), responseDto.getNickname());
         Assertions.assertEquals(member.getGrade(), responseDto.getGrade());
         Assertions.assertEquals(member.getProfile(), responseDto.getProfile());
+        Assertions.assertEquals(posts.size(), responseDto.getPostSize());
     }
 
     @Test
@@ -210,9 +208,10 @@ class MemberServiceTest {
         List<GradeListResponseDto> responseDtos = memberService.getUserGrade(member);
 
         Follow follow = followRepository.findFollowByFollowerIdAndMember(loginMember.getId(), member);
+        List<Post> posts = postRepository.findAllByMember(member);
 
         MypageUserInfoResponseDto responseDto = new MypageUserInfoResponseDto(member,
-                followerlist.size(), followList.size(), responseDtos,true);
+                followerlist.size(), followList.size(), responseDtos,true, posts.size());
 
 
         //then
@@ -231,6 +230,7 @@ class MemberServiceTest {
         Assertions.assertEquals(member.getNickname(), responseDto.getNickname());
         Assertions.assertEquals(member.getGrade(), responseDto.getGrade());
         Assertions.assertEquals(member.getProfile(), responseDto.getProfile());
+        Assertions.assertEquals(posts.size(), responseDto.getPostSize());
     }
 
     @Test
