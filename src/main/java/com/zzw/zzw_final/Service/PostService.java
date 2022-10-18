@@ -149,28 +149,32 @@ public class PostService {
         Member loginMember = memberService.getMember(request);
 
         List<Member> members = memberRepository.findAllByNicknameContaining(nickname);
+        List<Post> containPost = new ArrayList<>();
         List<PostResponseDto> responseDtos = new ArrayList<>();
 
         for (Member member : members) {
             List<Post> posts = postRepository.findAllByMember(member);
-            if (posts.size() != 0) {
-                if (lastPostId == null)
-                    lastPostId = posts.get(0).getId();
+            for(Post post : posts)
+                containPost.add(post);
+        }
 
-                Post post = postRepository.findPostById(lastPostId);
-                int index = (posts.indexOf(post) == 0) ? 0 : posts.indexOf(post) + 1;
+        if (containPost.size() != 0) {
+            if (lastPostId == null)
+                lastPostId = containPost.get(0).getId();
 
-                int size = posts.size();
-                int endIndex = index + 8 > size ? size : index + 8;
+            Post post = postRepository.findPostById(lastPostId);
+            int index = (containPost.indexOf(post) == 0) ? 0 : containPost.indexOf(post) + 1;
 
-                for (int i = index; i < endIndex; i++) {
-                    List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(posts.get(i));
+            int size = containPost.size();
+            int endIndex = index + 8 > size ? size : index + 8;
 
-                    if (loginMember != null)
-                        responseDtos.add(getResponsePostUserLike(loginMember, posts.get(i), ingredientResponseDtos));
-                    else
-                        responseDtos.add(new PostResponseDto(posts.get(i), ingredientResponseDtos));
-                }
+            for (int i = index; i < endIndex; i++) {
+                List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(containPost.get(i));
+
+                if (loginMember != null)
+                    responseDtos.add(getResponsePostUserLike(loginMember, containPost.get(i), ingredientResponseDtos));
+                else
+                    responseDtos.add(new PostResponseDto(containPost.get(i), ingredientResponseDtos));
             }
         }
         return ResponseDto.success(responseDtos);
