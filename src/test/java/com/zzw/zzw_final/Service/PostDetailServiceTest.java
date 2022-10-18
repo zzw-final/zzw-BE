@@ -169,12 +169,12 @@ class PostDetailServiceTest {
             tagListRepository.delete(tagList1);
         }
 
-        saveRecipeTag(requestDto.getFoodName(), post, true);
+//        saveRecipeTag(requestDto.getFoodName(), post, true);
 
         List<String> ingredients = requestDto.getIngredient();
 
         for(String ingredient : ingredients){
-            saveRecipeTag(ingredient, post, false);
+//            saveRecipeTag(ingredient, post, false);
         }
 
 
