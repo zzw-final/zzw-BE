@@ -506,5 +506,54 @@ class PostServiceTest {
 
     @Test
     void getFollowRecipe() {
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        List<Follow> follows = followRepository.findAllByFollowerId(member.getId());
+        List<Post> followPost = new ArrayList<>();
+
+        for (Follow follow : follows) {
+            Member followMember = memberRepository.findMemberById(follow.getMember().getId());
+            List<Post> userPost = postRepository.findAllByMemberOrderByCreatedAtDesc(followMember);
+            if (userPost.size() != 0) {
+                followPost.add(userPost.get(0));
+            }
+        }
+        Long lastPostId = followPost.get(0).getId();
+        List<PostResponseDto> follow_postResponseDtos = new ArrayList<>();
+        Post post = postRepository.findPostById(lastPostId);
+        int index = (followPost.indexOf(post)==0) ? 0 : followPost.indexOf(post) + 1;
+
+        int size = followPost.size();
+        int endIndex = index + 6 > size ? size : index + 6;
+
+        for(int i = index; i < endIndex; i++){
+            List<TagList> tagLists = tagListRepository.findAllByPost(post);
+            List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
+            for (TagList tagList : tagLists) {
+                Assertions.assertEquals(tagList.getPost(), post);
+                ingredientResponseDtos.add(new IngredientResponseDto(tagList));
+            }
+            follow_postResponseDtos.add(new PostResponseDto(post, ingredientResponseDtos));
+        }
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertEquals(member.getId(), 1L);
+        Assertions.assertEquals(follows.size(), 6);
+        Assertions.assertEquals(followPost.size(), 4);
+        Assertions.assertEquals(lastPostId, 2651L);
+        Assertions.assertEquals(post.getId(), 2651L);
+        Assertions.assertEquals(size, 4);
+        Assertions.assertEquals(endIndex, 4);
+        Assertions.assertEquals(follow_postResponseDtos.size(), 4);
     }
 }
