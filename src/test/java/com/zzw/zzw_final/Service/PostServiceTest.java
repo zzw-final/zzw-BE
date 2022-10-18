@@ -1,10 +1,7 @@
 package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
-import com.zzw.zzw_final.Dto.Entity.Member;
-import com.zzw.zzw_final.Dto.Entity.Post;
-import com.zzw.zzw_final.Dto.Entity.Tag;
-import com.zzw.zzw_final.Dto.Entity.TagList;
+import com.zzw.zzw_final.Dto.Entity.*;
 import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Repository.*;
 import org.junit.jupiter.api.Assertions;
@@ -343,10 +340,37 @@ class PostServiceTest {
 
     @Test
     void isPostInTag() {
+
     }
 
     @Test
     void postLike() {
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        Long post_id = 4378L;
+        Post post = postRepository.findPostById(post_id);
+
+        PostLike userLike = new PostLike(member, post);
+        postLikeRepository.save(userLike);
+
+        post.setLikeNum(postLikeRepository.countAllByPost(post).intValue());
+        postRepository.save(post);
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertEquals(post.getId(), 4378L);
+        Assertions.assertEquals(userLike.getPost(), post);
+        Assertions.assertEquals(userLike.getMember(), member);
+        Assertions.assertEquals(post.getLikeNum(), 3);
     }
 
     @Test
