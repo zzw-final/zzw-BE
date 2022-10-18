@@ -127,6 +127,38 @@ class PostServiceTest {
 
     @Test
     void getRecentRecipeTop10() {
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        List<Post> recent_posts = postRepository.findAllByOrderByCreatedAtDesc();
+        List<PostResponseDto> postResponseDtos = new ArrayList<>();
+
+        int postSize = (recent_posts.size() < 10) ? recent_posts.size() : 10;
+
+        for (int i = 0; i < postSize; i++) {
+            List<TagList> tagLists = tagListRepository.findAllByPost(recent_posts.get(i));
+            List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
+            for (TagList tagList : tagLists) {
+                Assertions.assertEquals(tagList.getPost(), recent_posts.get(i));
+                ingredientResponseDtos.add(new IngredientResponseDto(tagList));
+            }
+            postResponseDtos.add(new PostResponseDto(recent_posts.get(i), ingredientResponseDtos));
+            Assertions.assertEquals(tagLists.size(), postResponseDtos.get(i).getIngredient().size());
+        }
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertEquals(recent_posts.size(), 13);
+        Assertions.assertEquals(postSize, 10);
+        Assertions.assertEquals(postResponseDtos.size(), 10);
     }
 
     @Test
