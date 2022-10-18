@@ -269,6 +269,20 @@ class PostServiceTest {
 
     @Test
     void getAllTag() {
+        //when
+        List<Tag> tags = tagRepository.findAllByOrderByCountDesc();
+        List<BestTagResponseDto> tagResponseDtos = new ArrayList<>();
+
+        int tagSize = (tags.size() < 100) ? tags.size() : 100;
+
+        for (int i = 0; i < tagSize; i++) {
+            tagResponseDtos.add(new BestTagResponseDto(tags.get(i)));
+        }
+
+        //then
+        Assertions.assertEquals(tags.size(), 55);
+        Assertions.assertEquals(tagSize, 55);
+        Assertions.assertEquals(tagResponseDtos.size(), 55);
     }
 
     @Test
