@@ -226,6 +226,41 @@ class PostServiceTest {
 
     @Test
     void filterPostNickname() {
+        //when
+        String nickname = "공듀";
+
+        List<Member> members = memberRepository.findAllByNicknameContaining(nickname);
+        List<PostResponseDto> responseDtos = new ArrayList<>();
+
+        for (Member member : members) {
+            List<Post> posts = postRepository.findAllByMember(member);
+            Long lastPostId = posts.get(0).getId();
+
+            if (posts.size() != 0) {
+                if (lastPostId == null)
+                    lastPostId = posts.get(0).getId();
+
+                Post post = postRepository.findPostById(lastPostId);
+                int index = (posts.indexOf(post) == 0) ? 0 : posts.indexOf(post) + 1;
+
+                int size = posts.size();
+                int endIndex = index + 8 > size ? size : index + 8;
+
+                for (int i = index; i < endIndex; i++) {
+                    List<TagList> tagLists = tagListRepository.findAllByPost(posts.get(i));
+                    List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
+                    for (TagList tagList : tagLists) {
+                        Assertions.assertEquals(tagList.getPost(), posts.get(i));
+                        ingredientResponseDtos.add(new IngredientResponseDto(tagList));
+                    }
+                    responseDtos.add(new PostResponseDto(posts.get(i), ingredientResponseDtos, false));
+                }
+            }
+        }
+
+        //then
+        Assertions.assertEquals(members.size(), 2);
+        Assertions.assertEquals(responseDtos.size(), 4);
     }
 
     @Test
