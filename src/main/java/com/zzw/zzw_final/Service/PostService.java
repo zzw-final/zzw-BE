@@ -351,6 +351,8 @@ public class PostService {
 
         List<Follow> follows = followRepository.findAllByFollowerId(member.getId());
         List<Post> followPost = new ArrayList<>();
+        if (follows.size() == 0)
+            return ResponseDto.success("");
 
         for (Follow follow : follows) {
             Member followMember = memberRepository.findMemberById(follow.getMember().getId());

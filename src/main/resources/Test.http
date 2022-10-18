@@ -23,8 +23,8 @@ Content-Type: application/json
 ### 메인페이지 - 팔로우 Post
 GET http://localhost:8080/api/auth/post/follow?lastPostId=2651
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTcyNjg3OH0.X6WJz2I7OlUrBTIjkRers65liYQkq8VqKjAvVFjuX3M
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYyNDUyNzh9.IhrGK0eEl5gRkxJJeREZi6leJrlpVjkEVMapDlHdcNM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NjE1ODA4OX0.g08tlWO1-ZtU-tlyreO69Yrhoq7QvMh4sLTflt5HoaU
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY2NzY0ODl9.2SnhdnhfMMEEF-F3ZBL-EoCnOFjge-jRMFaqkxxWk4Y
 oauth: kakao
 
 
@@ -55,8 +55,11 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYzMjUwMDB9.TkRI7-qpm_gWBT-Y0KV
 oauth: kakao
 
 ### 상세페이지 - 게시글 내용 GET
-GET http://localhost:8080/api/post/1880
+GET http://localhost:8080/api/post/2559
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NjE1ODA4OX0.g08tlWO1-ZtU-tlyreO69Yrhoq7QvMh4sLTflt5HoaU
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY2NzY0ODl9.2SnhdnhfMMEEF-F3ZBL-EoCnOFjge-jRMFaqkxxWk4Y
+oauth: kakao
 
 ### 상세 페이지 - 해당 게시물 댓글
 GET http://localhost:8080/api/post/1173/comment
@@ -292,4 +295,11 @@ GET http://localhost:8080/api/chat/alarm
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYwNjU1Njd9.vJtmCwajGZzdsq4W8JsPbL1dymVy7CkYpkA0dl296_g
+oauth: kakao
+
+### 상세페이지 - 팔로우하기
+POST http://localhost:8080/api/post/2559/follow
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NjE1ODA4OX0.g08tlWO1-ZtU-tlyreO69Yrhoq7QvMh4sLTflt5HoaU
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY2NzY0ODl9.2SnhdnhfMMEEF-F3ZBL-EoCnOFjge-jRMFaqkxxWk4Y
 oauth: kakao
