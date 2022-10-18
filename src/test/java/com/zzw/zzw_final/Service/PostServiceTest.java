@@ -287,6 +287,58 @@ class PostServiceTest {
 
     @Test
     void filterPostTag() {
+        //when
+        String tag = "김치,된장찌개";
+        List<Post> response_posts = new ArrayList<>();
+        List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
+
+        String[] tag_list = tag.split(",");
+
+        for (Post post : posts){
+            int count = 0;
+            for (int i = 0; i < tag_list.length; i++) {
+                String post_tag = tag_list[i];
+
+                for (TagList postTag : post.getTagLists()) {
+                    if (postTag.getName().equals(post_tag)) {
+                        count++;
+                    }
+                }
+            }
+            if (count >= tag_list.length)
+                response_posts.add(post);
+        }
+
+        List<PostResponseDto> responseDtos = new ArrayList<>();
+        Long lastPostId = response_posts.get(0).getId();
+
+        Post post = postRepository.findPostById(lastPostId);
+        int index = (response_posts.indexOf(post) == 0) ? 0 : response_posts.indexOf(post) + 1;
+
+        int size = response_posts.size();
+        int endIndex = index + 8 > size ? size : index + 8;
+
+        for (int i = index; i < endIndex; i++) {
+            List<TagList> tagLists = tagListRepository.findAllByPost(response_posts.get(i));
+            List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
+            for (TagList tagList : tagLists) {
+                Assertions.assertEquals(tagList.getPost(), response_posts.get(i));
+                ingredientResponseDtos.add(new IngredientResponseDto(tagList));
+            }
+            responseDtos.add(new PostResponseDto(response_posts.get(i), ingredientResponseDtos));
+        }
+
+        //then
+        Assertions.assertEquals(posts.size(), 13);
+        Assertions.assertEquals(tag_list.length, 2);
+        Assertions.assertEquals(tag_list[0], "김치");
+        Assertions.assertEquals(tag_list[1], "된장찌개");
+        Assertions.assertEquals(response_posts.size(), 1);
+        Assertions.assertEquals(lastPostId, 4378L);
+        Assertions.assertEquals(post.getId(), 4378L);
+        Assertions.assertEquals(size, 1);
+        Assertions.assertEquals(endIndex, 1);
+        Assertions.assertEquals(responseDtos.size(), 1);
     }
 
     @Test
