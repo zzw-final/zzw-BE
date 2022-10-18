@@ -19,19 +19,16 @@ public class PostDetailController {
         return postDetailService.getRecipe(post_id, request);
     }
 
-    //상세페이지 -> 해당 게시글 댓글 GET
     @GetMapping("/api/post/{post_id}/comment")
     public ResponseDto<?> getRecipeComment(@PathVariable Long post_id){
         return postDetailService.getRecipeComment(post_id);
     }
 
-    //상세페이지 -> 페이지 별로 데이터 GET
     @GetMapping("/api/post/{post_id}/{page}")
     public ResponseDto<?> getRecipeByPage(@PathVariable Long post_id, @PathVariable int page){
         return postDetailService.getRecipeByPage(post_id, page);
     }
 
-    //상세페이지 -> 레시피 등록 POST
     @PostMapping("/api/auth/post")
     public ResponseDto<?> postRecipe(@RequestBody PostRecipeRequestDto requestDto, HttpServletRequest request){
         return postDetailService.postRecipe(requestDto, request);
@@ -50,5 +47,10 @@ public class PostDetailController {
     @DeleteMapping("/api/auth/post/{post_id}")
     public ResponseDto<?> deleteRecipe(HttpServletRequest request, @PathVariable Long post_id){
         return postDetailService.deleteRecipe(request, post_id);
+    }
+
+    @PostMapping("/api/post/{post_id}/follow")
+    public ResponseDto<?> postFollow(HttpServletRequest request, @PathVariable Long post_id){
+        return postDetailService.postFollow(request, post_id);
     }
 }

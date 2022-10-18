@@ -26,6 +26,7 @@ public class PostDetailService {
     private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
     private final CommentRepository commentRepository;
+    private final FollowRepository followRepository;
 
 
     public ResponseDto<?> postRecipe(PostRecipeRequestDto requestDto, HttpServletRequest request) {
@@ -140,7 +141,7 @@ public class PostDetailService {
         return ResponseDto.success("success delete");
     }
 
-    public ResponseDto<?> getRecipe (Long post_id, HttpServletRequest request){
+    public ResponseDto<?> getRecipe(Long post_id, HttpServletRequest request){
 
         Member member = memberService.getMember(request);
 
@@ -157,24 +158,19 @@ public class PostDetailService {
         for (Content content : contentList)
             contentResponseDtos.add(new ContentResponseDto(content));
 
-        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
-        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
-
-        for (Comment comment : commentList)
-            commentResponseDtos.add(new CommentResponseDto(comment));
-
         return ResponseDto.success(getRecipeDetailResponseDto(member, post, responseDtos, contentResponseDtos));
     }
 
     private TimeResponseDto getRecipeDetailResponseDto(Member member, Post post, List<IngredientResponseDto> responseDtos, List<ContentResponseDto> contentResponseDtos) {
         if (member == null)
-            return new TimeResponseDto(post, responseDtos, false, contentResponseDtos);
+            return new TimeResponseDto(post, responseDtos, false, contentResponseDtos, null);
         else{
             PostLike postLikes = postLikeRepository.findPostLikesByPostAndMember(post, member);
+            Follow follow = followRepository.findFollowByFollowerIdAndMember(member.getId(), post.getMember());
             if (postLikes == null)
-                return new TimeResponseDto(post, responseDtos, false, contentResponseDtos);
+                return new TimeResponseDto(post, responseDtos, false, contentResponseDtos, follow);
             else
-                return new TimeResponseDto(post, responseDtos, true, contentResponseDtos);
+                return new TimeResponseDto(post, responseDtos, true, contentResponseDtos, follow);
         }
     }
 
@@ -189,7 +185,7 @@ public class PostDetailService {
     public ResponseDto<?> getRecipeComment (Long post_id){
         Post post = postRepository.findPostById(post_id);
 
-        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
+        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtAsc(post);
 
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
 
@@ -207,5 +203,20 @@ public class PostDetailService {
         ContentResponseDto contentResponseDto = new ContentResponseDto(content);
 
         return ResponseDto.success(contentResponseDto);
+    }
+
+    public ResponseDto<?> postFollow(HttpServletRequest request, Long post_id) {
+        Member member = memberService.getMember(request);
+        Member author = postRepository.findPostById(post_id).getMember();
+
+        Follow follow = followRepository.findFollowByFollowerIdAndMember(member.getId(), author);
+        if (follow == null){
+            Follow new_follow = new Follow(member, author);
+            followRepository.save(new_follow);
+            return ResponseDto.success("follow success!");
+        }else{
+            followRepository.delete(follow);
+            return ResponseDto.success("follow delete success!");
+        }
     }
 }
