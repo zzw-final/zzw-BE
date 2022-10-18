@@ -174,11 +174,18 @@ class PostServiceTest {
     }
 
     @Test
-    void getResponsePostUserLike() {
-    }
-
-    @Test
     void getIngredientByPost() {
+        //when
+        Post post = postRepository.findPostById(2559L);
+
+        List<TagList> tagLists = tagListRepository.findAllByPost(post);
+        List<IngredientResponseDto> ingredientResponseDtos = new ArrayList<>();
+        for (TagList tagList : tagLists)
+            ingredientResponseDtos.add(new IngredientResponseDto(tagList));
+
+        //then
+        Assertions.assertEquals(post.getId(), 2559L);
+        Assertions.assertEquals(tagLists.size(), 4);
     }
 
     @Test
