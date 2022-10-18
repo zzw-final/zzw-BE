@@ -3,11 +3,9 @@ package com.zzw.zzw_final.Service;
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.Member;
 import com.zzw.zzw_final.Dto.Entity.Post;
+import com.zzw.zzw_final.Dto.Entity.Tag;
 import com.zzw.zzw_final.Dto.Entity.TagList;
-import com.zzw.zzw_final.Dto.Response.InfinitePostResponseDto;
-import com.zzw.zzw_final.Dto.Response.IngredientResponseDto;
-import com.zzw.zzw_final.Dto.Response.PostResponseDto;
-import com.zzw.zzw_final.Dto.Response.ResponseDto;
+import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Repository.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -163,6 +161,16 @@ class PostServiceTest {
 
     @Test
     void getBestTagList() {
+        //when
+        List<Tag> tags = tagRepository.findAllByOrderByCountDesc();
+        List<BestTagResponseDto> tagResponseDtos = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++)
+            tagResponseDtos.add(new BestTagResponseDto(tags.get(i)));
+
+        //then
+        Assertions.assertEquals(tags.size(), 55);
+        Assertions.assertEquals(tagResponseDtos.size(), 5);
     }
 
     @Test
