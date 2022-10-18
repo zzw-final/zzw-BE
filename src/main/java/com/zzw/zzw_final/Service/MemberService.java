@@ -29,6 +29,7 @@ public class MemberService {
     private final GradeListRepository gradeListRepository;
     private final PostRepository postRepository;
     private final TagListRepository tagListRepository;
+    private final ChatMemberRepository chatMemberRepository;
 
     public ResponseDto<?> checkMember(HttpServletRequest request){
 
@@ -100,9 +101,16 @@ public class MemberService {
             refreshTokenRepository.delete(refreshToken.get());
         }
         List<Follow> followList = followRepository.findAllByFollowerId(member_id);
-        for (Follow follow : followList){
-            followRepository.delete(follow);
+        if (followList.size() != 0){
+            for (Follow follow : followList){
+                followRepository.delete(follow);
+            }
         }
+
+        List<ChatMember> chatMembers = chatMemberRepository.findAllByMember(member);
+        for(ChatMember chatMember : chatMembers)
+            chatMemberRepository.delete(chatMember);
+
         memberRepository.delete(member);
 
         return ResponseDto.success("success member delete!");

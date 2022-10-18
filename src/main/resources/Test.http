@@ -209,7 +209,7 @@ Content-Type: application/json
 }
 
 ### 회원탈퇴
-DELETE http://localhost:8080/api/member/resign/1479
+DELETE http://localhost:8080/api/member/resign/1482
 Content-Type: application/json
 
 ### 채팅방 생성
