@@ -265,8 +265,9 @@ public class PostService {
         if (postLike == null) {
             PostLike userLike = new PostLike(member, post);
             postLikeRepository.save(userLike);
-        } else
+        } else{
             postLikeRepository.delete(postLike);
+        }
 
         post.setLikeNum(postLikeRepository.countAllByPost(post).intValue());
         postRepository.save(post);
@@ -277,7 +278,7 @@ public class PostService {
                 return ResponseDto.success(new GetGradeResponseDto(true));
             }
         }
-            return ResponseDto.success("post like success");
+        return ResponseDto.success("post like success");
     }
 
 

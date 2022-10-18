@@ -192,6 +192,7 @@ public class ChatService {
             if(!chatMember.getIsOut()){
                 ChatRoom chatRoom = chatRoomRepository.findChatRoomById(chatMember.getChatRoom().getId());
                 ChatMember chatToMember = chatMemberRepository.findChatMemberByChatRoomAndMemberNot(chatRoom, member);
+
                 List<ChatMessage> chatMessage = chatMessageRepository.findChatMessageByChatRoomOrderByCreatedAtDesc(chatRoom);
 
                 if (chatMessage.size() != 0){
@@ -202,9 +203,15 @@ public class ChatService {
                         readMessageId = chatRead.getChatMessage().getId();
 
                     if (readMessageId < chatMessage.get(0).getId())
-                        chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0), false));
+                        if (chatToMember == null)
+                            chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatMessage.get(0), false));
+                        else
+                            chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0), false));
                     else
-                        chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0), true));
+                        if (chatToMember == null)
+                            chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatMessage.get(0), true));
+                        else
+                            chatListResponseDtos.add(new ChatListResponseDto(chatRoom, chatToMember, chatMessage.get(0), true));
                 }
             }
         }

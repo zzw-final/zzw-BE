@@ -47,13 +47,10 @@ public class FollowService {
                 }
             }
 
-            return ResponseDto.success("follow success");
-
-        } else {
+        } else
             followRepository.delete(follow);
 
-            return ResponseDto.success("unfollow success");
-        }
+        return ResponseDto.success(new GetGradeResponseDto(false));
     }
 
     public ResponseDto<?> getFollow(HttpServletRequest request) {

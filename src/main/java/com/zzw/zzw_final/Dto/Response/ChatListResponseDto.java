@@ -27,4 +27,14 @@ public class ChatListResponseDto {
         this.isRead = isRead;
         this.chatTime = chatMessage.getSendTime();
     }
+
+    public ChatListResponseDto(ChatRoom chatRoom,
+                               ChatMessage chatMessage, Boolean isRead) {
+        this.nickname = "알 수 없음";
+        this.profile = "https://zzwimage.s3.ap-northeast-2.amazonaws.com/zzw.-removebg-preview.png";
+        this.message = chatMessage.getMessage();
+        this.roomId = chatRoom.getId();
+        this.isRead = isRead;
+        this.chatTime = chatMessage.getSendTime();
+    }
 }

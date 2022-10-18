@@ -15,8 +15,8 @@ public class ChatMessageResponseDto {
     private String sendTime;
 
     public ChatMessageResponseDto(Member getMember, ChatMessage chatMessage) {
-        this.sender = getMember.getNickname();
-        this.profile = getMember.getProfile();
+        this.sender = (getMember!= null) ? getMember.getNickname() : "알 수 없음";
+        this.profile = (getMember!= null) ? getMember.getProfile() : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/zzw.-removebg-preview.png";
         this.message = chatMessage.getMessage();
         this.sendTime = chatMessage.getSendTime();
         this.messageId = chatMessage.getId();
