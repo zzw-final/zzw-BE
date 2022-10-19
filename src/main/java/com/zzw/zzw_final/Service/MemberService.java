@@ -30,6 +30,7 @@ public class MemberService {
     private final PostRepository postRepository;
     private final TagListRepository tagListRepository;
     private final ChatMemberRepository chatMemberRepository;
+    private final ProfileListRepository profileListRepository;
 
     public ResponseDto<?> checkMember(HttpServletRequest request){
 
@@ -61,7 +62,12 @@ public class MemberService {
             return ResponseDto.fail(DUPLICATE_NICKNAME) ;
         }
 
-        Member member = new Member(requestDto);
+        Random random = new Random();
+        int num = random.nextInt(13);
+        num = (num==0) ? 1 : num;
+        ProfileList profileList = profileListRepository.findProfileListById(Long.valueOf(num));
+
+        Member member = new Member(requestDto, profileList);
         memberRepository.save(member);
 
         TokenDto tokenDto = tokenProvider.generateTokenDto(member);

@@ -8,6 +8,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Random;
 
 @Setter
 @Getter // get 함수를 일괄적으로 만들어줍니다.
@@ -74,12 +75,12 @@ public class Member {
         this.profile = "https://postimagestorage.s3.amazonaws.com/mini_project/zzw.-removebg-preview.png";
     }
 
-    public Member(SignupRequestDto requestDto){
+    public Member(SignupRequestDto requestDto, ProfileList profileList){
         this.nickname = requestDto.getNickname();
         this.email = requestDto.getEmail();
         this.oauth = requestDto.getOauth();
         this.grade = "베타테스터";
-        this.profile = "https://zzwimage.s3.ap-northeast-2.amazonaws.com/zzw.-removebg-preview.png";
+        this.profile = profileList.getProfile();
     }
 
     public Member(OauthUserDto oauthUserDto){
