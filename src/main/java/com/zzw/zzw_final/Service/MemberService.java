@@ -74,7 +74,7 @@ public class MemberService {
         gradeRepository.save(grade);
 
         //선착순 20명 repository
-        if(memberRepository.findAll().size() <= 20){
+        if(memberRepository.findAll().size() <= 36){
             if(isMemberGetGrade(5011L, member)) {
                 return ResponseDto.success(responseDto);
             }
