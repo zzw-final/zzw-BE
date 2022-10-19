@@ -261,12 +261,13 @@ public class PostService {
         }
 
         PostLike postLike = postLikeRepository.findPostLikesByPostAndMember(post, member);
-
+        Boolean isLike = true;
         if (postLike == null) {
             PostLike userLike = new PostLike(member, post);
             postLikeRepository.save(userLike);
         } else{
             postLikeRepository.delete(postLike);
+            isLike = false;
         }
 
         post.setLikeNum(postLikeRepository.countAllByPost(post).intValue());
@@ -275,10 +276,10 @@ public class PostService {
         List<PostLike> postLikes = postLikeRepository.findAllByMember(member);
         if (postLikes.size() >= 20) {
             if (memberService.isMemberGetGrade(5010L, member)) {
-                return ResponseDto.success(new GetGradeResponseDto(true));
+                return ResponseDto.success(new GetGradeResponseDto(true, isLike));
             }
         }
-        return ResponseDto.success("post like success");
+        return ResponseDto.success(new GetGradeResponseDto(false, isLike));
     }
 
 
@@ -310,28 +311,28 @@ public class PostService {
 
         List<PostResponseDto> userPostResponseDtos = new ArrayList<>();
 
-        if(posts.size() != 0){
-            if (lastPostId==null)
+        if(posts.size() != 0) {
+            if (lastPostId == null)
                 lastPostId = posts.get(0).getId();
 
             Post post = postRepository.findPostById(lastPostId);
-            int index = (posts.indexOf(post)==0) ? 0 : posts.indexOf(post) + 1;
+            int index = (posts.indexOf(post) == 0) ? 0 : posts.indexOf(post) + 1;
 
             int size = posts.size();
             int endIndex = index + 6 > size ? size : index + 6;
 
-            for (int i = index; i<endIndex; i++) {
+            for (int i = index; i < endIndex; i++) {
                 List<IngredientResponseDto> ingredientResponseDtos = getIngredientByPost(posts.get(i));
                 userPostResponseDtos.add(getResponsePostUserLike(member, posts.get(i), ingredientResponseDtos));
             }
 
-            if(endIndex == size)
+            if (endIndex == size)
                 return ResponseDto.success(new InfinitePostResponseDto(userPostResponseDtos, true));
             else
                 return ResponseDto.success(new InfinitePostResponseDto(userPostResponseDtos, false));
-        }
 
-        return ResponseDto.success(userPostResponseDtos);
+        }else
+            return ResponseDto.fail(ErrorCode.NOTFOUND_POST);
     }
 
     public ResponseDto<?> getOtherUserPosts(Long user_id, HttpServletRequest request) {
