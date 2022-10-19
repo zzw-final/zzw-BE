@@ -42,8 +42,6 @@ public class MemberController {
         return memberService.postUserNickname(response, requestDto);
     }
 
-
-
     @DeleteMapping("/api/member/resign/{member_id}")
     public ResponseDto<?> resignMember(@PathVariable Long member_id){
         return memberService.resignMember(member_id);

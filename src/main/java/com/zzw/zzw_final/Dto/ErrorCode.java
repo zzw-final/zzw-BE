@@ -24,6 +24,7 @@ public enum ErrorCode {
 
     //레시피 관련 오류
     NOTFOUND_POST_ID("NOTFOUND_POST_ID", "해당하는 레시피 id가 없음"),
+    NOTFOUND_POST("NOTFOUND_POST", "좋아요한 레시피가 없음"),
 
     //팔로우 관련 오류
     SAME_PERSON("SAME_PERSON","같은 사용자입니다."),
