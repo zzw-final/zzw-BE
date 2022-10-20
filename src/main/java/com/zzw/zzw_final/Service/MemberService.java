@@ -75,13 +75,13 @@ public class MemberService {
         response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
         IntegrationResponseDto responseDto = new IntegrationResponseDto(member, tokenDto, getInvalidToken());
 
-        GradeList gradeList = gradeListRepository.findGradeListById(5012L);
+        GradeList gradeList = gradeListRepository.findGradeListById(5011L);
         Grade grade = new Grade(member, gradeList);
         gradeRepository.save(grade);
 
         //선착순 20명 repository
         if(memberRepository.findAll().size() <= 36){
-            if(isMemberGetGrade(5011L, member)) {
+            if(isMemberGetGrade(5012L, member)) {
                 return ResponseDto.success(responseDto);
             }
         }
