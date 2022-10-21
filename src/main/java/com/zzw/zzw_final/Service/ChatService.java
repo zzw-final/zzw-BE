@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
 import static com.zzw.zzw_final.Dto.ErrorCode.*;
 
@@ -215,6 +217,9 @@ public class ChatService {
                 }
             }
         }
+
+        chatListResponseDtos = chatListResponseDtos.stream()
+                .sorted(Comparator.comparing(ChatListResponseDto::getChatTime).reversed()).collect(Collectors.toList());
 
         return ResponseDto.success(chatListResponseDtos);
     }

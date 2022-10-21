@@ -225,8 +225,8 @@ oauth: kakao
 ### 채팅방 목록 가져오기
 GET http://localhost:8080/api/chat
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NjE1ODA4OX0.g08tlWO1-ZtU-tlyreO69Yrhoq7QvMh4sLTflt5HoaU
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY2NzY0ODl9.2SnhdnhfMMEEF-F3ZBL-EoCnOFjge-jRMFaqkxxWk4Y
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NjkzODU2Mn0.reFeChsVASD7ZkjhY3LyXU1qFhiR8KhHW7W3UoCeI00
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY5Mzg1NjJ9.zO_1aRzAD55JoojmYyOqg-B7lwcIvbTvkrcMcCgMyV8
 oauth: kakao
 
 ### 채팅 읽음 처리
