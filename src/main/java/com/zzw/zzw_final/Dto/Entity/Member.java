@@ -103,7 +103,7 @@ public class Member {
         this.grade = name;
     }
 
-    public void isPresent(String nickname){
-        this.nickname = nickname;
+    public void updateNickname(String nickname) {
+        this.nickname= nickname;
     }
 }

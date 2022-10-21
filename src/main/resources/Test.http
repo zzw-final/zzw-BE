@@ -93,7 +93,7 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ3NTg5NzZ9.rgMAhZNhA0OeDSoKSjP
 
 
 ### 특정 유저에게 칭호 POST
-POST http://localhost:8080/api/grade/5000/5490
+POST http://localhost:8080/api/grade/5001/1159
 Content-Type: application/json
 
 ### 마이페이지 - 다른 유저의 정보 GET
@@ -303,3 +303,14 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NjE1ODA4OX0.g08tlWO1-ZtU-tlyreO69Yrhoq7QvMh4sLTflt5HoaU
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY2NzY0ODl9.2SnhdnhfMMEEF-F3ZBL-EoCnOFjge-jRMFaqkxxWk4Y
 oauth: kakao
+
+### 마이페이지 - 닉네임 변경
+PUT http://localhost:8080/api/auth/mypage/nickname
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2Njk2NTg3N30.uLuBKvg7X8TY-x7aDlYj4adVemBI5az_WuvRRviFGis
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY5NjU4Nzd9.nF-QBq01C_8NuO1QXQlKlc8Sot3dJ5CMsBMwCWWg_wU
+oauth: kakao
+
+{
+  "nickname": "요리신지연"
+}

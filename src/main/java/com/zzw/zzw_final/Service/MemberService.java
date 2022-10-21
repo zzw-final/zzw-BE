@@ -2,6 +2,7 @@ package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.*;
+import com.zzw.zzw_final.Dto.Request.NicknameUpdateRequestDto;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
 import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Dto.TokenDto;
@@ -262,5 +263,15 @@ public class MemberService {
             return true;
         }
         return false;
+    }
+
+    public ResponseDto<?> putUserNickname(HttpServletRequest request, NicknameUpdateRequestDto requestDto) {
+        ResponseDto<?> result = checkMember(request);
+        Member member = (Member) result.getData();
+
+        member.updateNickname(requestDto.getNickname());
+        memberRepository.save(member);
+
+        return ResponseDto.success("success update nickname");
     }
 }

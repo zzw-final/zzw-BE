@@ -1,6 +1,7 @@
 package com.zzw.zzw_final.Controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.zzw.zzw_final.Dto.Request.NicknameUpdateRequestDto;
 import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Service.GoogleService;
@@ -60,6 +61,11 @@ public class MemberController {
     @GetMapping("/api/mypage/{user_id}")
     public ResponseDto<?> getOtherUserInfo(@PathVariable Long user_id, HttpServletRequest request){
         return memberService.getOtherUserInfo(user_id, request);
+    }
+
+    @PutMapping("/api/auth/mypage/nickname")
+    public ResponseDto<?> putUserNickname(HttpServletRequest request, @RequestBody NicknameUpdateRequestDto requestDto){
+        return memberService.putUserNickname(request, requestDto);
     }
 }
 
