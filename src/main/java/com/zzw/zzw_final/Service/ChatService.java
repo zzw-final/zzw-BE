@@ -291,4 +291,18 @@ public class ChatService {
 
         return ResponseDto.success(new ChatReadResponseDto(true));
     }
+
+    public ResponseDto<?> findMember(HttpServletRequest request, String nickname) {
+        Member member = memberService.getMember(request);
+
+        List<Member> members = memberRepository.findAllByNicknameContaining(nickname);
+        List<MemberListResponseDto> memberListResponseDtos = new ArrayList<>();
+
+        for(Member findMember : members){
+            if (findMember != member)
+                memberListResponseDtos.add(new MemberListResponseDto(findMember));
+        }
+
+        return ResponseDto.success(memberListResponseDtos);
+    }
 }

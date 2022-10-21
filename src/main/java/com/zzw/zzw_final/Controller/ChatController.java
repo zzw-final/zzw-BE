@@ -43,4 +43,9 @@ public class ChatController {
         return chatService.isNewMessage(request);
     }
 
+    @GetMapping("/api/chat/member")
+    public ResponseDto<?> findMember(HttpServletRequest request,@RequestParam(name = "nickname")String nickname){
+        return chatService.findMember(request, nickname);
+    }
+
 }
