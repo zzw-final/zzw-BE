@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static com.zzw.zzw_final.Dto.ErrorCode.*;
 
@@ -268,6 +269,10 @@ public class MemberService {
     public ResponseDto<?> putUserNickname(HttpServletRequest request, NicknameUpdateRequestDto requestDto) {
         ResponseDto<?> result = checkMember(request);
         Member member = (Member) result.getData();
+
+        boolean isHangeul = Pattern.matches("^[ㄱ-ㅎ가-힣]*$", requestDto.getNickname());
+        if (!isHangeul)
+            return ResponseDto.fail(IS_NOT_HANGEUL);
 
         member.updateNickname(requestDto.getNickname());
         memberRepository.save(member);

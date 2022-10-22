@@ -33,7 +33,8 @@ public enum ErrorCode {
     NOTFOUND_ROOM("NOTFOUND_ROOM", "Room id가 잘못되었습니다."),
     INVALID_MEMBER("INVALID_MEMBER", "해당 유저는 권한이 없습니다."),
     DUPLICATE_ROOM("DUPLICATE_ROOM", "이미 참여한 채팅방입니다."),
-    NOTFOUND_MESSAGE("NOTFOUND_MESSAGE", "잘못된 메세지 ID입니다.");
+    NOTFOUND_MESSAGE("NOTFOUND_MESSAGE", "잘못된 메세지 ID입니다."),
+    IS_NOT_HANGEUL("IS_NOT_HANGEUL", "한글이 아닙니다.");
 
     private final String code;
     private final String message;
