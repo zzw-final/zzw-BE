@@ -44,8 +44,7 @@ public class ChatController {
     }
 
     @GetMapping("/api/chat/member")
-    public ResponseDto<?> findMember(HttpServletRequest request,@RequestParam(name = "nickname")String nickname){
+    public ResponseDto<?> findMember(HttpServletRequest request,@RequestParam(name = "nickname", required = false)String nickname){
         return chatService.findMember(request, nickname);
     }
-
 }

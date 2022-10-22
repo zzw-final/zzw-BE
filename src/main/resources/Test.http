@@ -316,7 +316,7 @@ oauth: kakao
 }
 
 ### 채팅 - 유저 검색
-http://localhost:8080/api/chat/member?nickname=공듀
+GET http://localhost:8080/api/chat/member?nickname=공듀
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2Njk2NTg3N30.uLuBKvg7X8TY-x7aDlYj4adVemBI5az_WuvRRviFGis
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjY5NjU4Nzd9.nF-QBq01C_8NuO1QXQlKlc8Sot3dJ5CMsBMwCWWg_wU
