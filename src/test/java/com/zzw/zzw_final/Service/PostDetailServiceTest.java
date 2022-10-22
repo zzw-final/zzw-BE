@@ -96,7 +96,6 @@ class PostDetailServiceTest {
         TagList tagList = new TagList(requestDto.getFoodName(), post, tag1, true);
         tagListRepository.save(tagList);
 
-
         List<String> ingredients = requestDto.getIngredient();
 
         for (String ingredientName : ingredients) {
@@ -184,7 +183,7 @@ class PostDetailServiceTest {
 
 
 
-//
+
 //    @Test
 //    void deleteRecipe() {
 //
