@@ -21,6 +21,7 @@ public enum ErrorCode {
     //게시글 관련 오류
     NOT_EQUAL_MEMBER("NOT_EQUAL_MEMBER","작성하신 글이 아닙니다."),
     NULL_FILE("NULL_FILE", "multipartFile이 null값입니다."),
+    DUPLICATE_POST("DUPLICATE_POST","작성하신 글이 이미 등록되었습니다."),
 
     //레시피 관련 오류
     NOTFOUND_POST_ID("NOTFOUND_POST_ID", "해당하는 레시피 id가 없음"),

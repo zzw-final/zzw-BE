@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zzw.zzw_final.Dto.ErrorCode.DUPLICATE_POST;
 import static com.zzw.zzw_final.Dto.ErrorCode.NULL_FILE;
 
 @Service
@@ -34,6 +35,14 @@ public class PostDetailService {
         ResponseDto<?> result = memberService.checkMember(request);
         Member member = (Member) result.getData();
 
+        List<Post> AvoidDuplicate = postRepository.findAllByOrderByCreatedAtDesc();
+        Post post1 =AvoidDuplicate.get(0);
+        Post post2 =AvoidDuplicate.get(1);
+        if(post1.getThumbnail().equals(requestDto.getImageUrl()) ||
+                post2.getThumbnail().equals(requestDto.getImageUrl())){
+            return ResponseDto.fail(DUPLICATE_POST);
+        }
+
         Post post = new Post(requestDto, member);
         postRepository.save(post);
 
@@ -50,6 +59,7 @@ public class PostDetailService {
             Content content = new Content(postRecipeDetailRequestDto, post);
             contentRepository.save(content);
         }
+
 
         if (memberService.isGetGrade(member, post))
             return ResponseDto.success(new PostRecipeResponseDto(post.getId(), true));
