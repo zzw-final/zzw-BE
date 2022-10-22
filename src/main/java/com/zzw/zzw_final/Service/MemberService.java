@@ -274,6 +274,11 @@ public class MemberService {
         if (!isHangeul)
             return ResponseDto.fail(IS_NOT_HANGEUL);
 
+        Optional<Member> nickname = memberRepository.findByNickname(requestDto.getNickname());
+        if(nickname.isPresent()){
+            return ResponseDto.fail(DUPLICATE_NICKNAME);
+        }
+
         member.updateNickname(requestDto.getNickname());
         memberRepository.save(member);
 
