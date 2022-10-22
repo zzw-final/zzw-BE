@@ -195,10 +195,17 @@ oauth: kakao
 POST http://localhost:8080/api/member/signup
 Content-Type: application/json
 
+
 {
+<<<<<<< Updated upstream
   "nickname": "도현도",
   "email": "hyundo717@gmail.com",
   "oauth": "google"
+=======
+  "nickname" : "도현도",
+  "email" : "goju9080@gmail.com",
+  "oauth" : "google"
+>>>>>>> Stashed changes
 }
 
 ### 소셜로그인 이메일 통합 - PUT
