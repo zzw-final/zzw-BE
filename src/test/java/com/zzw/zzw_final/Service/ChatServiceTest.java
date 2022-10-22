@@ -40,8 +40,6 @@ class ChatServiceTest {
     private ChatMessageRepository chatMessageRepository;
     @Autowired
     private MemberRepository memberRepository;
-    @MockBean
-    private MemberService memberService;
     @Autowired
     private ChatMemberRepository chatMemberRepository;
     @Autowired
@@ -100,7 +98,7 @@ class ChatServiceTest {
         List<ChatMessageResponseDto> chatMessageResponseDtos = new ArrayList<>();
 
         for (ChatMessage chatMessage : chatMessageList) {
-            Member getMember = chatMessage.getMember();
+            Member getMember = memberRepository.findMemberById(chatMessage.getMemberId());
             chatMessageResponseDtos.add(new ChatMessageResponseDto(getMember, chatMessage));
         }
 

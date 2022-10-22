@@ -42,11 +42,7 @@ class GradeServiceTest {
 
     @BeforeEach
     public void setup() {
-        signupRequestDto = SignupRequestDto.builder()
-                .oauth("kakao")
-                .email("zzw@naver.com")
-                .nickname("요리왕").build();
-
+        signupRequestDto = new SignupRequestDto("요리왕", "zzw@naver.com", "kakao");
 
          member = new Member(signupRequestDto);
          memberRepository.save(member);

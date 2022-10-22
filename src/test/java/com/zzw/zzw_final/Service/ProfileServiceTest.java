@@ -2,15 +2,9 @@ package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Config.Jwt.TokenProvider;
 import com.zzw.zzw_final.Dto.Entity.Member;
-import com.zzw.zzw_final.Dto.Entity.Profile;
 import com.zzw.zzw_final.Dto.Entity.ProfileList;
-import com.zzw.zzw_final.Dto.Request.SignupRequestDto;
-import com.zzw.zzw_final.Dto.Response.ProfileResponseDto;
-import com.zzw.zzw_final.Dto.Response.ResponseDto;
-import com.zzw.zzw_final.Repository.GradeRepository;
 import com.zzw.zzw_final.Repository.MemberRepository;
 import com.zzw.zzw_final.Repository.ProfileListRepository;
-import com.zzw.zzw_final.Repository.ProfileRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
