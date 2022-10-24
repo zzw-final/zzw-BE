@@ -1,6 +1,5 @@
 package com.zzw.zzw_final.Dto.Response;
 
-import com.zzw.zzw_final.Dto.Entity.Content;
 import com.zzw.zzw_final.Dto.Entity.Post;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +33,7 @@ public class PostResponseDto {
                            Boolean isLike){
         this.postId = post.getId();
         this.title = post.getTitle();
-        this.isLike = true;
+        this.isLike = isLike;
         this.createAt = post.getCreatedAt().toString();
         this.nickname = post.getMember().getNickname();
         this.likeNum = post.getLikeNum();

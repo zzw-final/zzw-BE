@@ -270,7 +270,7 @@ public class PostService {
             isLike = false;
         }
 
-        post.setLikeNum(postLikeRepository.countAllByPost(post).intValue());
+        post.updateLikeNum(postLikeRepository.countAllByPost(post).intValue());
         postRepository.save(post);
 
         List<PostLike> postLikes = postLikeRepository.findAllByMember(member);
