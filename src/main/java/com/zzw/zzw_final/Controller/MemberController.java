@@ -9,13 +9,9 @@ import com.zzw.zzw_final.Service.KakaoService;
 import com.zzw.zzw_final.Service.MemberService;
 import com.zzw.zzw_final.Service.NaverService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 @RestController
 @RequiredArgsConstructor

@@ -30,7 +30,4 @@ public class CommentController {
     public ResponseDto<?> deleteComment(HttpServletRequest request, @PathVariable Long comment_id){
         return commentService.deleteComment(request, comment_id);
     }
-
-
-
 }

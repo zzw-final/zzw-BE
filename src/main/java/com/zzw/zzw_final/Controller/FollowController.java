@@ -20,7 +20,6 @@ public class FollowController {
         return followService.follow(request, member_id);
     }
 
-
     @GetMapping("/api/auth/mypage/follower")
     public ResponseDto<?> getFollower(HttpServletRequest request){
 
@@ -33,12 +32,10 @@ public class FollowController {
         return followService.getFollow(request);
     }
 
-
     @GetMapping("/api/mypage/{user_id}/follow")
     public ResponseDto<?> getOthersFollow(@PathVariable Long user_id,HttpServletRequest request){
         return followService.getOthersFollow(user_id, request);
     }
-
 
     @GetMapping("/api/mypage/{user_id}/follower")
     public ResponseDto<?> getOthersFollower(@PathVariable Long user_id, HttpServletRequest request){
