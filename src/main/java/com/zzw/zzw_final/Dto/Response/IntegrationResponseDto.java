@@ -14,9 +14,11 @@ public class IntegrationResponseDto {
     private String accessToken;
     private String refreshToken;
     private String invalidTime;
+    private String oauth;
 
     public IntegrationResponseDto(Member member, TokenDto tokenDto, String invalidTime) {
         this.email = member.getEmail();
+        this.oauth = member.getOauth();
         this.nickname = member.getNickname();
         this.grade = member.getGrade();
         this.userId = member.getId();
