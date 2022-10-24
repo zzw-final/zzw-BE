@@ -36,6 +36,7 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter{
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").authenticated()
+                .antMatchers("/zzw/**").permitAll()
                 .anyRequest().permitAll();
     }
 
@@ -43,7 +44,7 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter{
     public void configure(WebSecurity web) {
         web
                 .ignoring()
-                .antMatchers("/api/member/**", "/api/post/**","/api/chat/**");
+                .antMatchers("/api/member/**", "/api/post/**","/api/chat/**", "/zzw/**");
     }
 
 }
