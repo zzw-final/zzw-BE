@@ -2,10 +2,7 @@ package com.zzw.zzw_final.Service;
 
 import com.zzw.zzw_final.Dto.Entity.Follow;
 import com.zzw.zzw_final.Dto.Entity.Member;
-import com.zzw.zzw_final.Dto.Response.CommentGradeResponseDto;
-import com.zzw.zzw_final.Dto.Response.FollowResponseDto;
-import com.zzw.zzw_final.Dto.Response.GetGradeResponseDto;
-import com.zzw.zzw_final.Dto.Response.ResponseDto;
+import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Repository.FollowRepository;
 import com.zzw.zzw_final.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,14 +40,15 @@ public class FollowService {
 
             if (follows.size() >= 10){
                 if(memberService.isMemberGetGrade(5009L, member)) {
-                    return ResponseDto.success(new GetGradeResponseDto(true));
+                    return ResponseDto.success(new FollowPostResponseDto(true, true));
                 }
             }
+            return ResponseDto.success(new FollowPostResponseDto(false, true));
 
         } else
             followRepository.delete(follow);
 
-        return ResponseDto.success(new GetGradeResponseDto(false));
+        return ResponseDto.success(new FollowPostResponseDto(false, false));
     }
 
     public ResponseDto<?> getFollow(HttpServletRequest request) {
