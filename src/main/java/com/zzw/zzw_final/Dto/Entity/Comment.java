@@ -1,14 +1,11 @@
 package com.zzw.zzw_final.Dto.Entity;
 
 import com.zzw.zzw_final.Dto.Request.CommentRequestDto;
-import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
 @NoArgsConstructor
 @Entity
@@ -36,11 +33,10 @@ public class Comment extends Timestamped{
         this.comment = requestDto.getComment();
         this.post = post;
         this.member = member;
-        this.useremail = member.getEmail();         //수정
+        this.useremail = member.getEmail();
     }
 
     public void update(CommentRequestDto requestDto) {
         this.comment = requestDto.getComment();
-
     }
 }

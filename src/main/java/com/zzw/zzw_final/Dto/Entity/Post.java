@@ -3,12 +3,9 @@ package com.zzw.zzw_final.Dto.Entity;
 import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.List;
 
-@Setter
 @Getter
 @NoArgsConstructor
 @Entity
@@ -70,9 +67,5 @@ public class Post extends Timestamped{
         }else{
             this.thumbnail = requestDto.getImageUrl();
         }
-    }
-
-    public void update(int likeNum) {
-        this.likeNum = likeNum;
     }
 }
