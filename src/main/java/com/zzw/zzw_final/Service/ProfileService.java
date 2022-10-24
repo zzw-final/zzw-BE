@@ -8,7 +8,6 @@ import com.zzw.zzw_final.Repository.MemberRepository;
 import com.zzw.zzw_final.Repository.ProfileListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;

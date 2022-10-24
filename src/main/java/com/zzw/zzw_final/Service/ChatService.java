@@ -8,15 +8,12 @@ import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -39,7 +36,6 @@ public class ChatService {
     private final ChatReadRepository chatReadRepository;
     private final ChatRoomOutRepository chatRoomOutRepository;
 
-    @Transactional
     public ResponseDto<?> exitChatRoom(Long roomId, HttpServletRequest request) {
 
         Member member = memberService.getMember(request);
@@ -87,8 +83,6 @@ public class ChatService {
         return ResponseDto.success("나가기 완료");
     }
 
-    // 메세지 보내기
-    @Transactional
     public ResponseDto<?> sendMessage(ChatRequestDto message, String token, String oauth) {
         String ttoken = token.substring(7);
 
@@ -286,9 +280,7 @@ public class ChatService {
                 if (readMessageId < chatMessage.get(0).getId())
                     return ResponseDto.success(new ChatReadResponseDto(false));
             }
-
         }
-
         return ResponseDto.success(new ChatReadResponseDto(true));
     }
 

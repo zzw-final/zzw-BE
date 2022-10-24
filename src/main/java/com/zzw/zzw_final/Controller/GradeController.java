@@ -12,11 +12,6 @@ public class GradeController {
 
     private final GradeService gradeService;
 
-    @PostMapping("/api/grade/{grade_id}/{user_id}")
-    public ResponseDto<?> postGrade(HttpServletRequest request, @PathVariable Long grade_id,
-                                    @PathVariable Long user_id){
-        return gradeService.postGrade(request, grade_id, user_id);
-    }
     @GetMapping("/api/member/grade")
     public ResponseDto<?> getMemberGrade(HttpServletRequest request){
         return gradeService.getMemberGrade(request);

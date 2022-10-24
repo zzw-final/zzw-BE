@@ -43,7 +43,6 @@ public class GoogleService {
 
     public ResponseDto<?> googleLogin(String authCode, HttpServletResponse response) {
 
-        //authCode를 가지고 구글 유저 가져오기
         GoogleLoginDto googleUser = FindGoogleUser(authCode);
         List<Member> members = memberRepository.findAllByEmail(googleUser.getEmail());
 
@@ -68,7 +67,6 @@ public class GoogleService {
     }
 
     public GoogleLoginDto FindGoogleUser(String code){
-        // HTTP 통신을 위해 RestTemplate 활용
         RestTemplate restTemplate = new RestTemplate();
         GoogleLoginRequest requestParams = GoogleLoginRequest.builder()
                 .clientId(googleLoginConfiguration.getGoogleClientId())
@@ -79,22 +77,18 @@ public class GoogleService {
                 .build();
 
         try {
-            // Http Header 설정
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<GoogleLoginRequest> httpRequestEntity = new HttpEntity<>(requestParams, headers);
             ResponseEntity<String> apiResponseJson = restTemplate.postForEntity(googleLoginConfiguration.getGoogleAuthUrl() + "/token", httpRequestEntity, String.class);
 
-            // ObjectMapper를 통해 String to Object로 변환
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); // NULL이 아닌 값만 응답받기(NULL인 경우는 생략)
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             GoogleLoginResponse googleLoginResponse = objectMapper.readValue(apiResponseJson.getBody(), new TypeReference<GoogleLoginResponse>() {});
 
-            // 사용자의 정보는 JWT Token으로 저장되어 있고, Id_Token에 값을 저장한다.
             String jwtToken = googleLoginResponse.getIdToken();
 
-            // JWT Token을 전달해 JWT 저장된 사용자 정보 확인
             String requestUrl = UriComponentsBuilder.fromHttpUrl(googleLoginConfiguration.getGoogleAuthUrl() + "/tokeninfo").queryParam("id_token", jwtToken).toUriString();
 
             String resultJson = restTemplate.getForObject(requestUrl, String.class);

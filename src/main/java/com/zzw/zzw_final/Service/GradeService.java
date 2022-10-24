@@ -3,7 +3,6 @@ package com.zzw.zzw_final.Service;
 import com.zzw.zzw_final.Dto.Entity.Grade;
 import com.zzw.zzw_final.Dto.Entity.GradeList;
 import com.zzw.zzw_final.Dto.Entity.Member;
-import com.zzw.zzw_final.Dto.Response.GetGradeResponseDto;
 import com.zzw.zzw_final.Dto.Response.GradeListResponseDto;
 import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Repository.GradeListRepository;
@@ -52,24 +51,5 @@ public class GradeService {
         memberRepository.save(loginMember);
 
         return ResponseDto.success("success update grade");
-    }
-
-    public ResponseDto<?> postGrade(HttpServletRequest request, Long grade_id, Long user_id) {
-
-        Member member = memberRepository.findMemberById(user_id);
-
-        if(member != null){
-            GradeList gradeList = gradeListRepository.findGradeListById(grade_id);
-            Grade userGrade = new Grade(member, gradeList);
-            // 이 칭호를 이미 소유하고 있는가 ?를 판단
-            if (userGrade == null){
-                // 칭호를 획득하게 해준다.
-                return ResponseDto.success(new GetGradeResponseDto(true));
-            }
-
-            gradeRepository.save(userGrade);
-        }
-        //return ResponseDto.success("success post!");
-        return ResponseDto.success(new GetGradeResponseDto(true));
     }
 }
