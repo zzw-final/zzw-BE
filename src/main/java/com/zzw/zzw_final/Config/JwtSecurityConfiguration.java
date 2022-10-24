@@ -16,8 +16,6 @@ public class JwtSecurityConfiguration
     private final String SECRET_KEY;
     private final TokenProvider tokenProvider;
     private final UserDetailsServiceImpl userDetailsService;
-
-    // TokenProvider를 주입받아서 직접 만든 JwtFilter를 통해 Security 로직에 필터를 등록
     @Override
     public void configure(HttpSecurity httpSecurity) {
         JwtFilter customJwtFilter = new JwtFilter(SECRET_KEY, tokenProvider, userDetailsService);

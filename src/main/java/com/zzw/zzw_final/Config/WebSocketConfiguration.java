@@ -13,14 +13,13 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/sub"); // 구독 주소 : /sub/chat
-        registry.setApplicationDestinationPrefixes("/pub"); // 발행 주소  : /pub/chat
+        registry.enableSimpleBroker("/sub");
+        registry.setApplicationDestinationPrefixes("/pub");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/zzw")
-                .setAllowedOriginPatterns("*");  //"*://*"
-        //.withSockJS();
+                .setAllowedOriginPatterns("*");
     }
 }

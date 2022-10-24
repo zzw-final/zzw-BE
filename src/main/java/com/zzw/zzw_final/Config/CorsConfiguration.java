@@ -15,8 +15,6 @@ public class CorsConfiguration implements WebMvcConfigurer {
                 .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE", "HEAD")
                 .allowedHeaders("*")
                 .exposedHeaders("*")
-                //.allowCredentials(false)
-                //pre-flight 리퀘스트를 캐싱
                 .maxAge(3000);
     }
 }
