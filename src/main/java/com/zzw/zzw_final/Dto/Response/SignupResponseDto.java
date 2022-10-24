@@ -5,7 +5,7 @@ import com.zzw.zzw_final.Dto.TokenDto;
 import lombok.Getter;
 
 @Getter
-public class IntegrationResponseDto {
+public class SignupResponseDto {
     private String email;
     private String nickname;
     private String grade;
@@ -16,7 +16,7 @@ public class IntegrationResponseDto {
     private String invalidTime;
     private String oauth;
 
-    public IntegrationResponseDto(Member member, TokenDto tokenDto, String invalidTime) {
+    public SignupResponseDto(Member member, TokenDto tokenDto, String invalidTime) {
         this.email = member.getEmail();
         this.oauth = member.getOauth();
         this.nickname = member.getNickname();

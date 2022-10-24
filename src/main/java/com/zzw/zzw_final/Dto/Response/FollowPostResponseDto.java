@@ -11,5 +11,4 @@ public class FollowPostResponseDto {
         this.isGet = isGet;
         this.isFollow = isFollow;
     }
-
 }

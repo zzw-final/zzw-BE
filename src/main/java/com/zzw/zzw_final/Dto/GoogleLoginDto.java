@@ -24,5 +24,4 @@ public class GoogleLoginDto {
     private String alg;
     private String kid;
     private String typ;
-
 }

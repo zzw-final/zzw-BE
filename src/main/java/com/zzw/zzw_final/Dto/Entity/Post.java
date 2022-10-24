@@ -68,4 +68,8 @@ public class Post extends Timestamped{
             this.thumbnail = requestDto.getImageUrl();
         }
     }
+
+    public void updateLikeNum(int likeNum) {
+        this.likeNum = likeNum;
+    }
 }

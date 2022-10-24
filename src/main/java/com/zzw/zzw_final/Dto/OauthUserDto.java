@@ -1,7 +1,5 @@
 package com.zzw.zzw_final.Dto;
 
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

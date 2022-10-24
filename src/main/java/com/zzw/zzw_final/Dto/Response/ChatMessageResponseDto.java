@@ -22,12 +22,6 @@ public class ChatMessageResponseDto {
         this.messageId = chatMessage.getId();
     }
 
-    public ChatMessageResponseDto(Member member, String time) {
-        this.sender = member.getNickname();
-        this.message = member.getNickname() + "님이 입장하셨습니다.";
-        this.sendTime = time;
-    }
-
     public ChatMessageResponseDto(Member member, String time, String message, Long id) {
         this.sender = member.getNickname();
         this.profile = member.getProfile();

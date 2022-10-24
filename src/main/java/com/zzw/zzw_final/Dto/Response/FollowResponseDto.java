@@ -15,7 +15,6 @@ public class FollowResponseDto {
     private String profile;
     private Boolean isFollow;
 
-
     public FollowResponseDto(Member member1) {
         this.userId = member1.getId();
         this.nickname = member1.getNickname();
@@ -23,7 +22,6 @@ public class FollowResponseDto {
         this.profile = member1.getProfile();
         this.isFollow = false;
     }
-
 
     public FollowResponseDto(Member member2, boolean isFollow) {
         this.userId = member2.getId();
