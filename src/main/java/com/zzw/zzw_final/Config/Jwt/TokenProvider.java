@@ -31,8 +31,8 @@ public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7 ;          //1일
-    private static final long REFRESH_TOKEN_EXPRIRE_TIME = 1000 * 60 * 60 * 24 * 7;     //7일
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7 ;
+    private static final long REFRESH_TOKEN_EXPRIRE_TIME = 1000 * 60 * 60 * 24 * 7;
 
     private final Key key;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -51,13 +51,12 @@ public class TokenProvider {
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
-                .setSubject(member.getEmail())                           // payload "sub" : "name"
-                .claim(AUTHORITIES_KEY, Authority.ROLE_MEMBER.toString())   // payload "auth" : "ROLE_MEMBER"
-                .setExpiration(accessTokenExpiresIn)                        // payload "exp": 1516239022 (예시)
-                .signWith(key, SignatureAlgorithm.HS256)                    // header "alg": "HS256"
+                .setSubject(member.getEmail())
+                .claim(AUTHORITIES_KEY, Authority.ROLE_MEMBER.toString())
+                .setExpiration(accessTokenExpiresIn)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        // refresh Token 생성
         String refreshToken = Jwts.builder()
                 .setExpiration(new Date(now + REFRESH_TOKEN_EXPRIRE_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -80,16 +79,6 @@ public class TokenProvider {
 
     }
 
-    public Member getMemberFromAuthentication() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || AnonymousAuthenticationToken.class.
-                isAssignableFrom(authentication.getClass())) {
-            return null;
-        }
-        return ((UserDetailsImpl) authentication.getPrincipal()).getMember();
-    }
-
-    // 토큰의 유효성 검사
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -106,22 +95,6 @@ public class TokenProvider {
         return false;
     }
 
-    @Transactional(readOnly = true)
-    public RefreshToken isPresentRefreshToken(Member member) {
-        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByMember(member);
-        return optionalRefreshToken.orElse(null);
-    }
-
-    public ResponseDto<?> deleteRefreshToken(Member member) {
-        RefreshToken refreshToken = isPresentRefreshToken(member);
-        if (null == refreshToken) {
-            return ResponseDto.fail(ErrorCode.TOKEN_NOT_FOUND);
-        }
-
-        refreshTokenRepository.delete(refreshToken);
-        return ResponseDto.success("success");
-    }
-
     @Transactional
     public String getUserEmail(String token) {
         return this.parseClaims(token).getSubject();
@@ -131,7 +104,7 @@ public class TokenProvider {
     public Claims parseClaims(String accessToken) {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
-        } catch (ExpiredJwtException e) { // 만료된 토큰이 더라도 일단 파싱을 함
+        } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
     }
