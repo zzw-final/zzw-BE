@@ -91,7 +91,6 @@ public class MemberService {
         Grade grade = new Grade(member, gradeList);
         gradeRepository.save(grade);
 
-        //선착순 20명 repository
         if(memberRepository.findAll().size() <= 36){
             if(isMemberGetGrade(5012L, member)) {
                 return ResponseDto.success(responseDto);
@@ -159,8 +158,6 @@ public class MemberService {
 
         return ResponseDto.success(responseDto);
     }
-
-
 
     public ResponseDto<?> getOtherUserInfo(Long user_id, HttpServletRequest request) {
 

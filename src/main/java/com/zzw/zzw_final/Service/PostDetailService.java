@@ -54,12 +54,10 @@ public class PostDetailService {
            saveRecipeTag(ingredientName, post, false);
         }
 
-        //게시글 내용과 이미지를 Content 데이터베이스에 담기
         for(PostRecipeDetailRequestDto postRecipeDetailRequestDto : requestDto.getPageList()){
             Content content = new Content(postRecipeDetailRequestDto, post);
             contentRepository.save(content);
         }
-
 
         if (memberService.isGetGrade(member, post))
             return ResponseDto.success(new PostRecipeResponseDto(post.getId(), true));
@@ -124,7 +122,6 @@ public class PostDetailService {
 
         return ResponseDto.success("success update");
     }
-
 
     public ResponseDto<?> deleteRecipe(HttpServletRequest request, Long post_id) {
 

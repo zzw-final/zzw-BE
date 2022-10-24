@@ -13,7 +13,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FileUploaderService {
 
-
     private final UploadService uploadService;
 
     public String uploadImage(MultipartFile file){
