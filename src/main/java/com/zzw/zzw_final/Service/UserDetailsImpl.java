@@ -1,6 +1,5 @@
 package com.zzw.zzw_final.Service;
 
-import com.innovation.innovation_clone_be.Member.shared.Authority;
 import com.zzw.zzw_final.Dto.Entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,9 +21,9 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(Authority.ROLE_MEMBER.toString());
+//        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(Authority.ROLE_MEMBER.toString());
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(authority);
+//        authorities.add(authority);
         return authorities;
     }
 

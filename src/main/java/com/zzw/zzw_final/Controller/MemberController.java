@@ -37,7 +37,6 @@ public class MemberController {
             return naverService.naverLogin(code, response, state);
     }
 
-    //닉네임 중복검사도 추가
     @PostMapping("/api/member/signup")
     public ResponseDto<?> postUserNickname(HttpServletResponse response, @RequestBody SignupRequestDto requestDto){
         return memberService.postUserNickname(response, requestDto);

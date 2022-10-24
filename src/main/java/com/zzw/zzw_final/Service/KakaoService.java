@@ -20,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -45,6 +47,7 @@ public class KakaoService {
     private final MemberRepository memberRepository;
     private final TokenProvider jwtTokenProvider;
     private final MemberService memberService;
+    private final UserDetailsService details;
 
     @Value("${kakao.client-id}")
     private String KakaoClientId;
@@ -73,6 +76,7 @@ public class KakaoService {
                     OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, kakaoToken, "kakao", memberService.getInvalidToken());
                     response.addHeader("Authorization", tokenDto.getAccessToken());
                     response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+                    forceLogin(member);
                     return ResponseDto.success(responseDto);
                 }
             }
@@ -141,13 +145,6 @@ public class KakaoService {
         return new OauthUserDto(id, email);
     }
 
-    private void forceLogin(Member kakaoUser) {
-        UserDetailsImpl userDetails = new UserDetailsImpl();
-        userDetails.setAccount(kakaoUser);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
-
     public ResponseDto<?> logout(HttpServletRequest request) {
         String token = request.getHeader("kakaoToken");
 
@@ -174,6 +171,13 @@ public class KakaoService {
             e.printStackTrace();
         }
         return ResponseDto.success("logout success");
+    }
+
+    private void forceLogin(Member kakaoUser) {
+        UserDetails userDetails = this.details.loadUserByUsername(kakaoUser.getEmail()+","+kakaoUser.getOauth());
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
     }
 }
 

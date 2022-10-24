@@ -8,6 +8,10 @@ import com.zzw.zzw_final.Dto.Response.*;
 import com.zzw.zzw_final.Dto.TokenDto;
 import com.zzw.zzw_final.Repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +37,7 @@ public class MemberService {
     private final TagListRepository tagListRepository;
     private final ChatMemberRepository chatMemberRepository;
     private final ProfileListRepository profileListRepository;
+    private final UserDetailsService details;
 
     public ResponseDto<?> checkMember(HttpServletRequest request){
 
@@ -71,6 +76,11 @@ public class MemberService {
 
         Member member = new Member(requestDto, profileList);
         memberRepository.save(member);
+
+        UserDetails userDetails = this.details.loadUserByUsername(member.getEmail()+member.getOauth());
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
         TokenDto tokenDto = tokenProvider.generateTokenDto(member);
         response.addHeader("Authorization", tokenDto.getAccessToken());

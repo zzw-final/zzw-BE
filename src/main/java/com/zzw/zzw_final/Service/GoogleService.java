@@ -19,6 +19,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -35,6 +39,7 @@ public class GoogleService {
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
     private final MemberService memberService;
+    private final UserDetailsService details;
 
     public ResponseDto<?> googleLogin(String authCode, HttpServletResponse response) {
 
@@ -52,7 +57,7 @@ public class GoogleService {
                     TokenDto tokenDto = tokenProvider.generateTokenDto(member);
                     response.addHeader("Authorization", tokenDto.getAccessToken());
                     response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
-
+                    forceLogin(member);
                     OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, "googleToken", "google", memberService.getInvalidToken());
                     return ResponseDto.success(responseDto);
                 }
@@ -108,5 +113,12 @@ public class GoogleService {
         }
 
         return null;
+    }
+
+    private void forceLogin(Member googleUser) {
+        UserDetails userDetails = this.details.loadUserByUsername(googleUser.getEmail()+","+googleUser.getOauth());
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
     }
 }

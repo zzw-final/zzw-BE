@@ -32,8 +32,9 @@ oauth: kakao
 ### 마이페이지 유저 정보 GET
 GET http://localhost:8080/api/auth/mypage
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2MzkxNjcwNH0._qWbmpD0nawqfFnpcZLuXQ6sYxaKkvH1q5xDj2g3H9U
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ0MzUxMDR9.yrHBnLJppQOn5PZ4xxs_ZB0GJAnQfvetS7UeLEdsVig
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImV4cCI6MTY2NzIwNTEyNn0.5uytxDThu9Ppb3y_HF0HQwheNNbXIp0OZ4VUuc1ZQ-U
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjcyMDUxMjZ9.oglHkYhw4PfFAGHH_sMFaW8FBEsi8VeTfgZE66E6-L4
+oauth: kakao
 
 ### 마이페이지 유저가 쓴 글 GET
 GET http://localhost:8080/api/auth/mypage/myposts

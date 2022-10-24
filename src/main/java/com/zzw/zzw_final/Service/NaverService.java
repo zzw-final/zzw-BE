@@ -17,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -38,15 +39,14 @@ public class NaverService {
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
     private final MemberService memberService;
+    private final UserDetailsService details;
 
     public ResponseDto<?> naverLogin(String code, HttpServletResponse response, String state) throws JsonProcessingException {
 
         String accessToken = getAccessToken(code, state);
 
-        // 2. 토큰으로 네이버 API 호출
         OauthUserDto naverUserDto = getNaverUserInfo(accessToken);
 
-        // 3. DB에 등록된 유저인지 판별
         List<Member> members = memberRepository.findAllByEmail(naverUserDto.getEmail());
 
         if (members.size() == 0){
@@ -60,6 +60,7 @@ public class NaverService {
                     OAuthResponseDto responseDto = new OAuthResponseDto(member, tokenDto, accessToken, "naver", memberService.getInvalidToken());
                     response.addHeader("Authorization", tokenDto.getAccessToken());
                     response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+                    forceLogin(member);
                     return ResponseDto.success(responseDto);
                 }
             }
@@ -76,7 +77,7 @@ public class NaverService {
         params.add("client_id", NaverClientId);
         params.add("client_secret", NaverClientSecret);
         params.add("grant_type", "authorization_code");
-        params.add("state", state);  // state 일치를 확인
+        params.add("state", state);
         params.add("code", code);
 
         HttpEntity<MultiValueMap<String,String>> naverTokenRequest = new HttpEntity<>(params,httpHeaders);
@@ -89,7 +90,6 @@ public class NaverService {
                 String.class
         );
 
-        // HTTP 응답 (JSON) -> 액세스 토큰 파싱
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
@@ -97,12 +97,11 @@ public class NaverService {
     }
 
     private OauthUserDto getNaverUserInfo(String accessToken) throws JsonProcessingException {
-        // HTTP Header 생성
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-        // HTTP 요청 보내기
         HttpEntity<MultiValueMap<String, String>> naverUserInfoRequest = new HttpEntity<>(headers);
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange(
@@ -112,7 +111,6 @@ public class NaverService {
                 String.class
         );
 
-        // HTTP 응답 받아오기
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
@@ -123,17 +121,10 @@ public class NaverService {
         return new OauthUserDto(id, email);
     }
 
-    private Member registerNaverUserIfNeeded(OauthUserDto naverDto) {
-        Member naverUser = new Member(naverDto);
-        memberRepository.save(naverUser);
-        forceLogin(naverUser);
-        return naverUser;
-    }
-
     private void forceLogin(Member naverUser) {
-        UserDetailsImpl userDetails = new UserDetailsImpl();
-        userDetails.setAccount(naverUser);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetails userDetails = this.details.loadUserByUsername(naverUser.getEmail()+","+naverUser.getOauth());
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
     }
 }

@@ -1,29 +1,20 @@
 package com.zzw.zzw_final.Config.Jwt;
 
-import com.innovation.innovation_clone_be.Member.shared.Authority;
 import com.zzw.zzw_final.Dto.Entity.Member;
 import com.zzw.zzw_final.Dto.Entity.RefreshToken;
-import com.zzw.zzw_final.Dto.ErrorCode;
-import com.zzw.zzw_final.Dto.Response.ResponseDto;
 import com.zzw.zzw_final.Dto.TokenDto;
 import com.zzw.zzw_final.Repository.RefreshTokenRepository;
-import com.zzw.zzw_final.Service.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SecurityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Date;
-import java.util.Optional;
 
 @Slf4j
 @Component
@@ -52,7 +43,6 @@ public class TokenProvider {
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
                 .setSubject(member.getEmail())
-                .claim(AUTHORITIES_KEY, Authority.ROLE_MEMBER.toString())
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
@@ -71,7 +61,6 @@ public class TokenProvider {
         refreshTokenRepository.save(refreshTokenObject);
 
         return TokenDto.builder()
-                .grantType(BEARER_PREFIX)
                 .accessToken(accessToken)
                 .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
                 .refreshToken(refreshToken)
