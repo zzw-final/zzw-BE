@@ -1,14 +1,11 @@
 package com.zzw.zzw_final.Dto.Entity;
 
 import com.zzw.zzw_final.Dto.Request.PostRecipeDetailRequestDto;
-import com.zzw.zzw_final.Dto.Request.PostRecipeRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
 @NoArgsConstructor
 @Entity
@@ -42,16 +39,5 @@ public class Content {
         this.page = postRecipeDetailRequestDto.getPage();
         this.content = postRecipeDetailRequestDto.getContent();
         this.post = post;
-    }
-
-    public void update(PostRecipeRequestDto requestDto) {
-        //this.content= requestDto.getContent();
-        this.image = requestDto.getImageUrl();
-    }
-
-    public void update(PostRecipeDetailRequestDto postRecipeDetailRequestDto) {
-        this.image = postRecipeDetailRequestDto.getImageUrl();
-        this.content = postRecipeDetailRequestDto.getContent();
-        this.page = postRecipeDetailRequestDto.getPage();
     }
 }

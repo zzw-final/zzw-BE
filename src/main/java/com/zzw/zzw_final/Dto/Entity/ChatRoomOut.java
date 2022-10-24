@@ -3,7 +3,6 @@ package com.zzw.zzw_final.Dto.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -11,7 +10,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 public class ChatRoomOut {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
