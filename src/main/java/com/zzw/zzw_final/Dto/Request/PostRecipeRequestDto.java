@@ -10,7 +10,7 @@ public class PostRecipeRequestDto {
     private String title;
     private String foodName;
     private String time;
-    private String imageUrl; // 대표이미지
+    private String imageUrl;
     private List<String> ingredient;
     private List<PostRecipeDetailRequestDto> pageList;
 }

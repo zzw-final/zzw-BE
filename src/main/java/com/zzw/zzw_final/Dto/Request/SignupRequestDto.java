@@ -1,6 +1,5 @@
 package com.zzw.zzw_final.Dto.Request;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
