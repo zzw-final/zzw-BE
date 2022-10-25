@@ -66,6 +66,7 @@ public class PostDetailService {
     }
 
     private void saveRecipeTag(String foodName, Post post, Boolean isTitle) {
+
         Tag tag = tagRepository.findTagByName(foodName);
 
         if (tag == null){

@@ -13,4 +13,16 @@ public class PostRecipeRequestDto {
     private String imageUrl;
     private List<String> ingredient;
     private List<PostRecipeDetailRequestDto> pageList;
+
+    public PostRecipeRequestDto(List<String> ingredient, String imageUrl,List<PostRecipeDetailRequestDto> recipeDetailRequestDtos){
+        this.ingredient=ingredient;
+        this.imageUrl = imageUrl;
+        this.title = "제목";
+        this.foodName = "닭볶음탕";
+        this.time = "15분";
+        this.pageList = recipeDetailRequestDtos;
+
+
+    }
 }
+
