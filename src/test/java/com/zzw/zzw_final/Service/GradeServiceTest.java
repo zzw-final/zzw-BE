@@ -48,9 +48,9 @@ class GradeServiceTest {
         member = new Member(signupRequestDto, profileList);
         memberRepository.save(member);
 
-        GradeList gradeList = new GradeList("먹잘알");
-        GradeList gradeList2 = new GradeList("된장찌개신");
-        GradeList gradeList3 = new GradeList("비건요리왕");
+        GradeList gradeList = gradeListRepository.findGradeListById(5005L);
+        GradeList gradeList2 = gradeListRepository.findGradeListById(5004L);
+        GradeList gradeList3 = gradeListRepository.findGradeListById(5006L);
         gradeListRepository.save(gradeList);
         gradeListRepository.save(gradeList2);
         gradeListRepository.save(gradeList3);
