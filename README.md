@@ -76,6 +76,13 @@ hyeincha"><img style="width:150px; height:50px;" src="https://zzwimage.s3.ap-nor
   <br>
   <br>
   
+  ## 👻 ERD 설계
+![https://zzwimage.s3.ap-northeast-2.amazonaws.com/github/%EC%9D%B4%EB%85%B8%EB%B2%A0%EC%9D%B4%EC%85%98+%EC%8B%A4%EC%A0%84%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8+(4).png](https://zzwimage.s3.ap-northeast-2.amazonaws.com/github/%EC%9D%B4%EB%85%B8%EB%B2%A0%EC%9D%B4%EC%85%98+%EC%8B%A4%EC%A0%84%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8+(4).png)
+ 
+ <br>
+  <br>
+  <br>
+  
 ## 🔍 미리 보기
 ![https://zzwimage.s3.ap-northeast-2.amazonaws.com/github/%EC%9C%A0%ED%8A%9C%EB%B8%8C+%EC%8D%B8%EB%84%A4%EC%9D%BC+-+%EA%B3%A0%EB%AF%BC%EC%A4%91+%2C%2C%2C.png](https://zzwimage.s3.ap-northeast-2.amazonaws.com/github/%EC%9C%A0%ED%8A%9C%EB%B8%8C+%EC%8D%B8%EB%84%A4%EC%9D%BC+-+%EA%B3%A0%EB%AF%BC%EC%A4%91+%2C%2C%2C.png)
 
