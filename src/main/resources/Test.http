@@ -264,11 +264,16 @@ GET http://localhost:8080/api/member/profile
 Content-Type: application/json
 
 ### 프로필 사진 변경하기
-PUT http://localhost:8080/api/member/profile/5
+PUT http://localhost:8080/api/member/update
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjYwNjU1Njd9.vJtmCwajGZzdsq4W8JsPbL1dymVy7CkYpkA0dl296_g
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImV4cCI6MTY2NzM3ODg2NH0.psMy0KehVsY6Skqkb2TOsUT8azos1XMAfKuxPYXpgZE
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjczNzg4NjR9.ds5ErzHCzTJgTMaowaVvgjCTwoQMlbJIJMgsPuX3HCs
 oauth: kakao
+
+{
+  "profileId" : 10,
+  "gradeId" : 5005
+}
 
 ### 칭호 모두 불러오기
 GET http://localhost:8080/api/member/grade
