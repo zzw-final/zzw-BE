@@ -61,6 +61,7 @@ class PostDetailServiceTest {
     List<String> ingredient = new ArrayList<>();
     List<PostRecipeDetailRequestDto> postRecipeDetailRequestDtos = new ArrayList<>();
 
+
     @BeforeEach
     public void setup() {
         request = mock(HttpServletRequest.class);
@@ -118,6 +119,11 @@ class PostDetailServiceTest {
         }
 
         //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
         Assertions.assertEquals(post.getMember(), member);
         Assertions.assertEquals(requestDto.getIngredient(), ingredient);
         Assertions.assertEquals(requestDto.getIngredient().size(), 2);
@@ -152,7 +158,9 @@ class PostDetailServiceTest {
         Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
 
         Post post = postRepository.findPostById(2661L);
+
         post.update(requestDto);
+
         List <Content> contents = contentRepository.findAllByPostOrderByPage(post);
         for(Content content : contents){
             contentRepository.delete(content);
@@ -168,151 +176,143 @@ class PostDetailServiceTest {
             tagListRepository.delete(tagList1);
         }
 
-//        saveRecipeTag(requestDto.getFoodName(), post, true);
+        Tag tag1 = new Tag(requestDto.getFoodName());
+        tagRepository.save(tag1);
+        TagList tagList = new TagList(requestDto.getFoodName(), post, tag1, true);
+        tagListRepository.save(tagList);
 
         List<String> ingredients = requestDto.getIngredient();
 
         for(String ingredient : ingredients){
-//            saveRecipeTag(ingredient, post, false);
+
+            Tag tag2 = new Tag(requestDto.getFoodName());
+            tagRepository.save(tag1);
+            TagList tagList2 = new TagList(ingredient, post, tag2, true);
+            tagListRepository.save(tagList2);
         }
 
 
         //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertEquals(post.getMember(), member);
         Assertions.assertEquals(post.getId(), 2661L);
+        Assertions.assertEquals(contents, post.getContents() );
+        Assertions.assertEquals(requestDto.getPageList(), postRecipeDetailRequestDtos);
+        Assertions.assertEquals(post.getTitle(), requestDto.getTitle());
+        Assertions.assertEquals(post.getTime(), requestDto.getTime());
+        Assertions.assertEquals(post.getLikeNum(), 0);
+        Assertions.assertEquals(post.getThumbnail(), "https://zzwimage.s3.ap-northeast-2.amazonaws.com/Frame+3.png");
+        Assertions.assertEquals(post.getMember(), member);
+        Assertions.assertEquals(post.getUseremail(), member.getEmail());
     }
 
 
 
 
-//    @Test
-//    void deleteRecipe() {
-//
-//        //when
-//        String token = request.getHeader("Authorization");
-//        String oauth = request.getHeader("oauth");
-//        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
-//        String email = tokenProvider.getUserEmail(token.substring(7));
-//        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
-//
-//        Post post = postRepository.findPostById(post_id);
-//
-//        if (!member.getEmail().equals(post.getUseremail())) return ResponseDto.fail(ErrorCode.NOT_EQUAL_MEMBER);
-//
-//        List<TagList> tagLists = tagListRepository.findAllByPost(post);
-//        for (TagList tagList : tagLists){
-//
-//            Tag tag = tagRepository.findTagByName(tagList.getName());
-//
-//            if (tag.getCount() == 1){
-//                tagRepository.delete(tag);
-//            }else{
-//                tag.countUpdate(tag.getCount()-1);
-//            }
-//            tagListRepository.delete(tagList);
-//        }
-//        postRepository.deleteById(post_id);
-//
-//        //then
-//
-//
-//    }
-//
-//    @Test
-//    void getRecipe() {
-//
-//        //when
-//        String token = request.getHeader("Authorization");
-//        String oauth = request.getHeader("oauth");
-//        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
-//        String email = tokenProvider.getUserEmail(token.substring(7));
-//        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
-//
-//        Member member = memberService.getMember(request);
-//
-//        Post post = postRepository.findPostById(post_id);
-//
-//        List<TagList> tagLists = tagListRepository.findAllByPost(post);
-//        List<IngredientResponseDto> responseDtos = new ArrayList<>();
-//
-//        for (TagList tagList : tagLists)
-//            responseDtos.add(new IngredientResponseDto(tagList));
-//
-//        List<ContentResponseDto> contentResponseDtos = new ArrayList<>();
-//        List<Content> contentList = contentRepository.findAllByPostOrderByPage(post);
-//        for (Content content : contentList)
-//            contentResponseDtos.add(new ContentResponseDto(content));
-//
-//        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
-//        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
-//
-//        for (Comment comment : commentList)
-//            commentResponseDtos.add(new CommentResponseDto(comment));
-//
-//        //then
-//
-//
-//    }
-//
-//    @Test
-//    void postImage() {
-//
-//        //when
-//        String token = request.getHeader("Authorization");
-//        String oauth = request.getHeader("oauth");
-//        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
-//        String email = tokenProvider.getUserEmail(token.substring(7));
-//        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
-//
-//        if (multipartFile == null) {
-//            return ResponseDto.fail(NULL_FILE);
-//        }
-//        String url = fileUploaderService.uploadImage(multipartFile);
-//        return ResponseDto.success(new ImageUrlResponseDto(url));
-//
-//        //then
-//    }
-//
-//    @Test
-//    void getRecipeComment() {
-//
-//        //when
-//        String token = request.getHeader("Authorization");
-//        String oauth = request.getHeader("oauth");
-//        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
-//        String email = tokenProvider.getUserEmail(token.substring(7));
-//        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
-//
-//        Post post = postRepository.findPostById(post_id);
-//
-//        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
-//
-//        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
-//
-//        for (Comment comment : commentList)
-//            commentResponseDtos.add(new CommentResponseDto(comment));
-//
-//        //then
-//
-//
-//    }
-//
-//    @Test
-//    void getRecipeByPage() {
-//
-//        //when
-//        String token = request.getHeader("Authorization");
-//        String oauth = request.getHeader("oauth");
-//        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
-//        String email = tokenProvider.getUserEmail(token.substring(7));
-//        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
-//
-//        Post post = postRepository.findPostById(post_id);
-//
-//        Content content = contentRepository.findContentByPostAndPage(post, page);
-//
-//        ContentResponseDto contentResponseDto = new ContentResponseDto(content);
-//
-//        //then
-//
-//    }
+    @Test
+    void deleteRecipe() {
+
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        Post post = postRepository.findPostById(2661L);
+
+        List<TagList> tagLists = tagListRepository.findAllByPost(post);
+        for (TagList tagList : tagLists){
+
+            Tag tag = tagRepository.findTagByName(tagList.getName());
+
+            if (tag.getCount() == 1){
+                tagRepository.delete(tag);
+            }else{
+                tag.countUpdate(tag.getCount()-1);
+            }
+            tagListRepository.delete(tagList);
+        }
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+        Assertions.assertEquals(post.getMember(), member);
+        Assertions.assertEquals(post.getId(), 2661L);
+
+    }
+
+    @Test
+    void getRecipe() {
+
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        Post post = postRepository.findPostById(5041L);
+
+        List<TagList> tagLists = tagListRepository.findAllByPost(post);
+        List<IngredientResponseDto> responseDtos = new ArrayList<>();
+
+        for (TagList tagList : tagLists)
+            responseDtos.add(new IngredientResponseDto(tagList));
+
+        List<ContentResponseDto> contentResponseDtos = new ArrayList<>();
+        List<Content> contentList = contentRepository.findAllByPostOrderByPage(post);
+        for (Content content : contentList)
+            contentResponseDtos.add(new ContentResponseDto(content));
+
+        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
+        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+
+        for (Comment comment : commentList)
+            commentResponseDtos.add(new CommentResponseDto(comment));
+
+        //then
+        Assertions.assertEquals(post.getId(), 5041L);
+        Assertions.assertEquals(post.getTagLists(), tagLists);
+        Assertions.assertEquals(post.getContents(), contentList);
+        Assertions.assertEquals(post.getComments(), commentList);
+
+    }
+
+
+
+    @Test
+    void getRecipeComment() {
+
+        //when
+        String token = request.getHeader("Authorization");
+        String oauth = request.getHeader("oauth");
+        when(tokenProvider.getUserEmail(token.substring(7))).thenReturn("good9712@nate.com");
+        String email = tokenProvider.getUserEmail(token.substring(7));
+        Member member = memberRepository.findMemberByEmailAndOauth(email, oauth);
+
+        Post post = postRepository.findPostById(1551L);
+
+        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
+
+        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+
+        for (Comment comment : commentList)
+            commentResponseDtos.add(new CommentResponseDto(comment));
+
+        //then
+        Assertions.assertEquals(token, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NTU0NzE2N30.PQvOV9mzyNbtFPpY71XYlMjcjqpgN3HG2nzEChjMuo4");
+        Assertions.assertEquals(oauth, "kakao");
+        Assertions.assertEquals(email, "good9712@nate.com");
+        Assertions.assertEquals(member.getEmail(), "good9712@nate.com");
+        Assertions.assertEquals(member.getOauth(), "kakao");
+    }
+
 }
