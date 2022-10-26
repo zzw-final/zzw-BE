@@ -272,7 +272,7 @@ class PostDetailServiceTest {
         for (Content content : contentList)
             contentResponseDtos.add(new ContentResponseDto(content));
 
-        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
+        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtAsc(post);
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
 
         for (Comment comment : commentList)
@@ -300,7 +300,7 @@ class PostDetailServiceTest {
 
         Post post = postRepository.findPostById(1551L);
 
-        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
+        List<Comment> commentList = commentRepository.findAllByPostOrderByCreatedAtAsc(post);
 
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
 
