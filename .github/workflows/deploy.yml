@@ -11,7 +11,7 @@ env:
   AWS_REGION: ap-northeast-2
   S3_BUCKET_NAME: zzwimage
   CODE_DEPLOY_APPLICATION_NAME: zzw
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: zzwgroup
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: zzw-deployment-group
 
 permissions:
   contents: read
