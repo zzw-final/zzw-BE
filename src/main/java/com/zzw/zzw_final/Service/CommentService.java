@@ -52,6 +52,7 @@ public class CommentService {
         if(!member.getEmail().equals(comment.getUseremail())) return ResponseDto.fail(ErrorCode.NOT_EQUAL_MEMBER);
 
         comment.update(requestDto);
+        commentRepository.save(comment);
 
         return ResponseDto.success("success comment update");
     }
