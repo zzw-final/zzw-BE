@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @EnableJpaAuditing
 public class ZzwFinalApplication {
-	// 자동배포 TEST
+	// 자동배포 TEST 22
 	public static void main(String[] args) {
 		SpringApplication.run(ZzwFinalApplication.class, args);
 	}
