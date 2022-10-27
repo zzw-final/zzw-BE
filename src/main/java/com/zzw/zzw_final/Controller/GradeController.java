@@ -17,8 +17,4 @@ public class GradeController {
         return gradeService.getMemberGrade(request);
     }
 
-    @PutMapping("/api/member/grade/{gradeId}")
-    public ResponseDto<?> updateMemberGrade(HttpServletRequest request, @PathVariable Long gradeId){
-        return gradeService.updateMemberGrade(request, gradeId);
-    }
 }

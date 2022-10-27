@@ -22,8 +22,7 @@ import static com.zzw.zzw_final.Dto.ErrorCode.MEMBER_NOT_FOUND;
 public class GradeService {
     private final MemberService memberService;
     private final GradeRepository gradeRepository;
-    private final GradeListRepository gradeListRepository;
-    private final MemberRepository memberRepository;
+
     public ResponseDto<?> getMemberGrade(HttpServletRequest request) {
         Member loginMember = memberService.getMember(request);
         if (loginMember == null){
@@ -38,18 +37,5 @@ public class GradeService {
         }
 
         return ResponseDto.success(gradeListResponseDtos);
-    }
-
-    public ResponseDto<?> updateMemberGrade(HttpServletRequest request, Long gradeId) {
-        Member loginMember = memberService.getMember(request);
-        if (loginMember == null){
-            return ResponseDto.fail(MEMBER_NOT_FOUND);
-        }
-
-        GradeList gradeList = gradeListRepository.findGradeListById(gradeId);
-        loginMember.updateGrade(gradeList.getName());
-        memberRepository.save(loginMember);
-
-        return ResponseDto.success("success update grade");
     }
 }
