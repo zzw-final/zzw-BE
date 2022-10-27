@@ -1,6 +1,7 @@
 package com.zzw.zzw_final.Dto.Request;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 public class PostRecipeDetailRequestDto {

@@ -1,11 +1,13 @@
 package com.zzw.zzw_final.Dto.Request;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class PostRecipeRequestDto {
     private String title;
     private String foodName;
@@ -21,8 +23,6 @@ public class PostRecipeRequestDto {
         this.foodName = "닭볶음탕";
         this.time = "15분";
         this.pageList = recipeDetailRequestDtos;
-
-
     }
 }
 
