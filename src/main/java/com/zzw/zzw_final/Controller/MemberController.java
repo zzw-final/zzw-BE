@@ -62,5 +62,10 @@ public class MemberController {
     public ResponseDto<?> putUserNickname(HttpServletRequest request, @RequestBody NicknameUpdateRequestDto requestDto){
         return memberService.putUserNickname(request, requestDto);
     }
+
+    @GetMapping("/api/member")
+    public ResponseDto<?> getAllMember(){
+        return memberService.getAllMember();
+    }
 }
 

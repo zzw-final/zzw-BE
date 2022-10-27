@@ -124,10 +124,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsI
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ5NDIxOTV9.QZ5OQoqjDzhPEp8RMBcF4856GOlksEMXhIgnBUZq6TQ
 
 ### 게시글 수정
-PUT http://localhost:8080/api/auth/post/19
+PUT http://localhost:8080/api/auth/post/5192
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTY2NDQyMzc5NX0.9mGRHXkIL1ErCRq_9UzsUHsjx82WOGaoNE-rDyDL3bg
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ5NDIxOTV9.QZ5OQoqjDzhPEp8RMBcF4856GOlksEMXhIgnBUZq6TQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29kOTcxMkBuYXRlLmNvbSIsImV4cCI6MTY2NzM3ODg2NH0.psMy0KehVsY6Skqkb2TOsUT8azos1XMAfKuxPYXpgZE
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjczNzg4NjR9.ds5ErzHCzTJgTMaowaVvgjCTwoQMlbJIJMgsPuX3HCs
+oauth: kakao
 
 {
   "title": "존존존맛 계란국",
@@ -135,13 +136,14 @@ Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjQ5NDIxOTV9.QZ5OQoqjDzhPEp8RMBc
   "content" : "게시글 내용 수정중입니다 테스트중임",
   "time" : "5분",
   "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/55c8c12f-571a-4c46-9379-705e28da9946.JPG",
-  "ingredient" : [{
-    "ingredientName": "계란"
-  },{
-    "ingredientName" : "감자"
-  },{
-    "ingredientName" : "멸치"
-  }]
+  "ingredient" : ["아아", "앙아아"],
+  "pageList" : [
+    {
+      "imageUrl" : "https://zzwimage.s3.ap-northeast-2.amazonaws.com/55c8c12f-571a-4c46-9379-705e28da9946.JPG",
+      "content" : "dkdkd",
+      "page" : 1
+    }
+  ]
 }
 
 ### 검색 필터 - 제목

@@ -291,4 +291,13 @@ public class MemberService {
 
         return ResponseDto.success("success update nickname");
     }
+
+    public ResponseDto<?> getAllMember() {
+        List<Member> members = memberRepository.findAllByOrderByNicknameAsc();
+        List<MemberListResponseDto> memberListResponseDtos = new ArrayList<>();
+        for(Member member: members)
+            memberListResponseDtos.add(new MemberListResponseDto(member));
+
+        return ResponseDto.success(memberListResponseDtos);
+    }
 }
