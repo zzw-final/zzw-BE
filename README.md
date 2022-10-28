@@ -11,7 +11,7 @@
 
 ### [사이트 구경하러 가기](https://zezewaste.site/)
 ### [시연 영상 보러가기](https://youtu.be/iztcAPJc8WA)
-### [발표 영상 보러가기](https://youtu.be/a8e6UQHPWMU)
+### [발표 영상 보러가기](https://www.youtube.com/watch?v=04Qp0ySUk_s)
 ### [노션 구경하러 가기](https://hail-scorpio-9a3.notion.site/zzw-c959ff660efa454a95d8686e605b3b26)
 ### [발표 자료 보러 가기](https://www.miricanvas.com/v/11huqzr)
   
